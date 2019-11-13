@@ -24,15 +24,49 @@ var players=[
         picture: "",
         name: "",
         nick: "",
-        puntaje: ""
+        points: 0,
+        pointTTT: 0,
+        pointMT: 0,
+        pointCP: 0
     },
     {
         picture: "",
         name: "",
         nick: "",
-        puntaje: ""
+        points: 0,
+        pointTTT: 0,
+        pointMT: 0,
+        pointCP: 0
     }
 ];
+
+var dataTTT = 
+{
+    dataSaved: false,
+    board: [],
+    player1ID: 0,
+    player2ID: 0,
+    turnPlayer: 0,
+    canClick: true
+}
+
+var dataMT =
+{
+    dataSaved: false,
+    size: 0,
+    matrix: [],
+    player1ID: 0,
+    player2ID: 0,
+    pairsFound: 0,
+    turnPlayer: 0,
+}
+
+var dataCP =
+{
+    dataSaved: 0,
+    player1Points: 0,
+    player2Points: 0
+}
 
 
 var app = {
@@ -75,13 +109,13 @@ function loadInputs()
     document.getElementById("shadowBox").hidden = false;
     document.getElementById("sendData").disabled = false;
     var btn1 = document.getElementById('takePicture1');
-    btn1.onclick = takePicture(1);
+    btn1.setAttribute("onclick", "takePicture(1)");
     document.getElementById("takePicture1").disabled = false;
     document.getElementById("namePlayer1").disabled = false;
     document.getElementById("nickName1").disabled = false;
     document.getElementById('myImage1').hidden = false;
     var btn2 = document.getElementById('takePicture2');
-    btn2.onclick = takePicture(2);
+    btn2.setAttribute("onclick", "takePicture(2)");
     document.getElementById("takePicture2").disabled = false;
     document.getElementById("namePlayer2").disabled = false;
     document.getElementById("nickName2").disabled = false;
@@ -94,8 +128,6 @@ function takePicture(num)
         quality: 20,
         mediaType: Camera.MediaType.PICTURE,
         destinationType: Camera.DestinationType.DATA_URL,
-        targetWidth: 200,
-        targetHeight: 200,
         correctOrientation: true
     });
     
@@ -109,75 +141,15 @@ function takePicture(num)
         alert('Failed because: ' + message);
     }
 }
-//SubmitForm
-
-/*
-function saveLocalData()
-{
-    localStorage.setItem('players', JSON.stringify(players));
-}
-
-function loadLocalData()
-{
-    players = localStorage.getItem('players');
-    players = JSON.parse(players);
-}
 
 function submitData()
 {
-    var allRight = true;
-    var nameP = document.getElementById("namePlayer");
-    var nickP = document.getElementById("nickName");
-    var imgP = document.getElementById("myImage");
-    var btnImg = document.getElementById("takePicture");
-    if(nameP.value == "")
-    {
-        allRight = false;
-        nameP.style.backgroundColor = "#f23f3f";
-        nameP.style.color = "#fff";
-    }
-    else
-    {
-        nameP.style.backgroundColor = "";
-        nameP.style.color = "";
-    }
-
-    if(nickP.value == "")
-    {
-        allRight = false;
-        nickP.style.backgroundColor = "#f23f3f";
-        nickP.style.color = "#fff";
-    }
-    else
-    {
-        nickP.style.backgroundColor = "";
-        nickP.style.color = "";
-    }
-
-    if(imgP.src == "")
-    {
-        allRight = false;
-        btnImg.style.backgroundColor = "#f23f3f";
-        btnImg.style.color = "#fff";
-    }
-    else
-    {
-        btnImg.style.backgroundColor = "";
-        btnImg.style.color = "";
-    }
-
-    if(allRight)
-    {
-        players[playerNumberData].name = nameP.value;
-        players[playerNumberData].nick = nickP.value;
-        players[playerNumberData].picture = imgP.src; 
-        document.getElementById("shadowBox").hidden = true;
-        if(localStorage.length > 0)
-        {
-            //If new
-            loadInputs()
-        }
-        console.log('All datas loaded successful');
-    }
-}*/
-
+    var nameP1 = document.getElementById('namePlayer1');
+    var nameP2 = document.getElementById('namePlayer2');
+    var nickP1 = document.getElementById('nickName1');
+    var nickP2 = document.getElementById('nickName2');
+    var img1 = document.getElementById('myImage1');
+    var img2 = document.getElementById('myImage2');
+    var btnImg1 = document.getElementById('takePicture1');
+    var btnImg2 = document.getElementById('takePicture2');
+}
