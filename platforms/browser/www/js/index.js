@@ -89,7 +89,7 @@ var app = {
         //My code starts here
         if(localStorage.length > 0)
         {
-
+            showGames();
         }
         else
         {
@@ -103,6 +103,12 @@ var app = {
 
 app.initialize();
 
+function showGames()
+{
+    var div = document.querySelector('#games div');
+    div.hidden = false;
+}
+
 //Enable all inputs
 function loadInputs()
 {
@@ -113,13 +119,11 @@ function loadInputs()
     document.getElementById("takePicture1").disabled = false;
     document.getElementById("namePlayer1").disabled = false;
     document.getElementById("nickName1").disabled = false;
-    document.getElementById('myImage1').hidden = false;
     var btn2 = document.getElementById('takePicture2');
     btn2.setAttribute("onclick", "takePicture(2)");
     document.getElementById("takePicture2").disabled = false;
     document.getElementById("namePlayer2").disabled = false;
     document.getElementById("nickName2").disabled = false;
-    document.getElementById('myImage2').hidden = false;
 }
 
 function takePicture(num)
@@ -134,6 +138,7 @@ function takePicture(num)
     function onSuccess(imageData) {
         var image = document.getElementById('myImage' + num);
         image.hidden = false;
+        image.alt = "Photo";
         image.src = "data:image/jpeg;base64," + imageData;
     }
     
@@ -152,4 +157,46 @@ function submitData()
     var img2 = document.getElementById('myImage2');
     var btnImg1 = document.getElementById('takePicture1');
     var btnImg2 = document.getElementById('takePicture2');
+    var allRight = true;
+    if(nameP1.value == "")
+    {
+        allRight = false;
+        nameP1.setAttribute("style", "color: white; background-color:red;");
+    }
+
+    if(nameP2.value == "")
+    {
+        allRight = false;
+        nameP2.setAttribute("style", "color: white; background-color:red;");
+    }
+
+    if(nickP1.value == "")
+    {
+        allRight = false;
+        nickP1.setAttribute("style", "color: white; background-color:red;");
+    }
+
+    if(nickP2.value == "")
+    {
+        allRight = false;
+        nickP2.setAttribute("style", "color: white; background-color:red;");
+    }
+    
+    if(img1.alt == "None")
+    {
+        allRight = false;
+        btnImg1.setAttribute("style", "color:white; background-color:red;");
+    }
+
+    if(img2.alt == "None")
+    {
+        allRight = false;
+        btnImg2.setAttribute("style", "color:white; background-color:red;");
+    }
+
+    if(allRight == true)
+    {
+        saveData();
+        showGames();
+    }
 }
