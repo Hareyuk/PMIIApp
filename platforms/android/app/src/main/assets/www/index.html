@@ -36,50 +36,55 @@
         <title>Hello World</title>
     </head>
     <body>
-        <div class="backgroundTexture">
             <div id="character1">
             </div>
-            <div class="app">
-                <h1>AD Game</h1>
-                <div id='shadowBox' hidden>
-                    <form id="formPlayers" action="javascript:submitData()">
-                        <label class="namePlayer">Perfil del jugador 1</label>
-                        <label>Foto: </label> <br> 
-                        <button id="takePicture1" disabled>Tomar foto</button> <br>
-                        
-                        <label>Nombre: </label> <input type="text" id="namePlayer1" placeholder="Ingrese su nombre" value="" disabled><br>
-                        
-                        <label>Apodo: </label> <input type="text" id="nickName1" placeholder="Ingrese su apodo" value="" disabled><br>
-                        
-                        <img id="myImage1" src="" alt="None" hidden> 
-                        
-                        <label class="namePlayer">Perfil del jugador 2</label>
-                        <label>Foto: </label> <br> 
-                        <button id="takePicture2" disabled>Tomar foto</button> <br>
-                        
-                        <label>Nombre: </label> <input type="text" id="namePlayer2" placeholder="Ingrese su nombre" value="" disabled><br>
-                        
-                        <label>Apodo: </label> <input type="text" id="nickName2" placeholder="Ingrese su apodo" value="" disabled><br>
-                        
-                        <img id="myImage2" src="" alt="None" hidden> 
-                        
-                        <input type="submit" id="sendData" value="Subir datos" disabled>
-                        
-                        </form>
-                </div>
 
-                <section id="games">
-                    <div hidden>
-                        <!--Juegos-->
-                        <a href="tictactoe/index.html"><img src="img/tictactoe.png" alt="tictactoe"><p>Ta-Te-Ti</p></a> 
-                        <a href="memotest/index.html"><img src="img/memotest.png" alt="memotest"><p>Memotest</p></a>
-                        <a href="catch_puzzle/index.html"><img src="img/catchPuzzle.jpg"><p>Catch Puzzles</p></a>          
-                    </div>     
-                </section>
+            <div class="app">
+                    <h1>AD Game</h1>
+                    <div id='shadowBox' hidden>
+                        <form id="formPlayers" action="javascript:submitData()">
+                            <label class="namePlayer">Perfil del jugador 1</label>
+                            <label>Foto: </label> <br> 
+                            <button id="takePicture1" disabled>Tomar foto</button> <br>
+                            
+                            <label>Nombre: </label> <input type="text" id="namePlayer1" placeholder="Ingrese su nombre" value="" disabled><br>
+                            
+                            <label>Apodo: </label> <input type="text" id="nickName1" placeholder="Ingrese su apodo" value="" disabled><br>
+                            
+                            <img id="myImage1" src="" alt="None" hidden> 
+                            
+                            <label class="namePlayer">Perfil del jugador 2</label>
+                            <label>Foto: </label> <br> 
+                            <button id="takePicture2" disabled>Tomar foto</button> <br>
+                            
+                            <label>Nombre: </label> <input type="text" id="namePlayer2" placeholder="Ingrese su nombre" value="" disabled><br>
+                            
+                            <label>Apodo: </label> <input type="text" id="nickName2" placeholder="Ingrese su apodo" value="" disabled><br>
+                            
+                            <img id="myImage2" src="" alt="None" hidden> 
+                            
+                            <input type="submit" id="sendData" value="Subir datos" disabled>
+                            
+                            </form>
+                    </div>
+    
+                    <section>
+                        <div id="games" hidden>
+                            <!--Juegos-->
+                            <a href="tictactoe/index.html"><img src="img/tictactoe.png" alt="tictactoe"><p>Ta-Te-Ti</p></a> 
+                            <a href="memotest/index.html"><img src="img/memotest.png" alt="memotest"><p>Memotest</p></a>
+                            <a href="catch_puzzle/index.html"><img src="img/catchPuzzle.png"><p>Catch Puzzles</p></a>          
+                        </div>
+                             
+                    </section>
             </div>
+            
             <div id="character2">
             </div>
+
+        <div class="backgroundTexture">
         </div>
+        
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
     </body>

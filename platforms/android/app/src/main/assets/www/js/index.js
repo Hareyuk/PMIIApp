@@ -89,6 +89,7 @@ var app = {
         //My code starts here
         if(localStorage.length > 0)
         {
+            loadData();
             showGames();
         }
         else
@@ -105,7 +106,7 @@ app.initialize();
 
 function showGames()
 {
-    var div = document.querySelector('#games div');
+    var div = document.getElementById('games');
     div.hidden = false;
 }
 
@@ -129,9 +130,10 @@ function loadInputs()
 function takePicture(num)
 {
     navigator.camera.getPicture(onSuccess, onFail, { 
-        quality: 20,
+        quality: 25,
         mediaType: Camera.MediaType.PICTURE,
         destinationType: Camera.DestinationType.DATA_URL,
+        targetWidth: 250,
         correctOrientation: true
     });
     
@@ -166,6 +168,7 @@ function submitData()
     else
     {
         nameP1.setAttribute("style", "");
+        players[0].name = nameP1.value;
     }
 
     if(nameP2.value == "")
@@ -176,6 +179,7 @@ function submitData()
     else
     {
         nameP2.setAttribute("style", "");
+        players[1].name = nameP2.value;
     }
 
     if(nickP1.value == "")
@@ -186,6 +190,7 @@ function submitData()
     else
     {
         nickP1.setAttribute("style", "");
+        players[0].nick = nickP1.value;
     }
 
     if(nickP2.value == "")
@@ -196,6 +201,7 @@ function submitData()
     else
     {
         nickP2.setAttribute("style", "");
+        players[1].nick = nickP2.value;
     }
     
     if(img1.alt == "None")
@@ -206,6 +212,7 @@ function submitData()
     else
     {
         btnImg1.setAttribute("style", "");
+        players[0].picture = img1.src;
     }
 
     if(img2.alt == "None")
@@ -216,11 +223,24 @@ function submitData()
     else
     {
         btnImg2.setAttribute("style", "");
+        players[1].picture = img2.src;
     }
 
     if(allRight == true)
     {
         saveData();
+        document.getElementById('shadowBox').hidden = true;
         showGames();
     }
+}
+
+function saveData()
+{
+    localStorage.setItem('players', JSON.stringify(players));
+}
+
+function loadData()
+{
+    players = localStorage.getItem('players');
+    players = JSON.parse(players);
 }

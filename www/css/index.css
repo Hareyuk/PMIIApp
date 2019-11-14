@@ -64,13 +64,18 @@ table {
 .backgroundTexture
 {
     background-image: url("../img/texture.png");
+    position: fixed;
+    height: 100vh;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: -40;
 }
 
 .app
 {
     text-align: center;
     width: 70%;
-    height: 100vh;
     margin: 0 auto;
     background-color: rgba(255,255,255,0.6);
 }
@@ -80,7 +85,7 @@ table {
     background-position: center;
     height: 100vh;
     width: 15%;
-    position: absolute;   
+    position: fixed;   
     top: 0;
     background-size: cover;;
 }
@@ -120,7 +125,7 @@ form
     transition: 0.2s;
 }
 
-#games
+#games, #profiles
 {
     display: flex;
     flex-wrap: wrap;
@@ -129,13 +134,24 @@ form
 
 #games a
 {
-    width: 30%;
+    width: 45%;
     margin: 0 auto;
 }
 
 #games img
 {
     max-width: 100%;
+}
+
+#profiles article
+{
+    width: 45%;
+    background-color: rgba(0,0,0,0.25);
+}
+
+.hidden
+{
+    display: none !important;
 }
 
 @media only screen and (max-width: 600px) {
@@ -148,8 +164,4 @@ form
         width: 100%;
     }
 
-    #games a
-    {
-        width: 40%;
-    }
 }

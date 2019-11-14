@@ -64,6 +64,10 @@ table {
 .backgroundTexture
 {
     background-image: url("../img/texture.png");
+    position: fixed;
+    height: 100vh;
+    width: 100%;
+    z-index: -40;
 }
 
 .app
@@ -80,7 +84,7 @@ table {
     background-position: center;
     height: 100vh;
     width: 15%;
-    position: absolute;   
+    position: fixed;   
     top: 0;
     background-size: cover;;
 }
@@ -129,7 +133,7 @@ form
 
 #games a
 {
-    width: 30%;
+    width: 45%;
     margin: 0 auto;
 }
 
@@ -148,8 +152,4 @@ form
         width: 100%;
     }
 
-    #games a
-    {
-        width: 40%;
-    }
 }

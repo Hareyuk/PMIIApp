@@ -89,13 +89,15 @@ var app = {
         //My code starts here
         if(localStorage.length > 0)
         {
+            loadData();
             showGames();
+            showInfo();
         }
         else
         {
             //Enable all inputs, is first time
             var shadowBox = document.getElementById('shadowBox');
-            shadowBox.hidden = false;
+            shadowBox.classList.remove('hidden');
             loadInputs();
         }
     }
@@ -105,14 +107,14 @@ app.initialize();
 
 function showGames()
 {
-    var div = document.querySelector('#games div');
-    div.hidden = false;
+    var div = document.getElementById('games');
+    div.classList.remove('hidden');
 }
 
 //Enable all inputs
 function loadInputs()
 {
-    document.getElementById("shadowBox").hidden = false;
+    document.getElementById("shadowBox").classList.remove('hidden');
     document.getElementById("sendData").disabled = false;
     var btn1 = document.getElementById('takePicture1');
     btn1.setAttribute("onclick", "takePicture(1)");
@@ -129,15 +131,16 @@ function loadInputs()
 function takePicture(num)
 {
     navigator.camera.getPicture(onSuccess, onFail, { 
-        quality: 20,
+        quality: 25,
         mediaType: Camera.MediaType.PICTURE,
         destinationType: Camera.DestinationType.DATA_URL,
+        targetWidth: 250,
         correctOrientation: true
     });
     
     function onSuccess(imageData) {
         var image = document.getElementById('myImage' + num);
-        image.hidden = false;
+        image.classList.remove('hidden');
         image.alt = "Photo";
         image.src = "data:image/jpeg;base64," + imageData;
     }
@@ -166,6 +169,7 @@ function submitData()
     else
     {
         nameP1.setAttribute("style", "");
+        players[0].name = nameP1.value;
     }
 
     if(nameP2.value == "")
@@ -176,6 +180,7 @@ function submitData()
     else
     {
         nameP2.setAttribute("style", "");
+        players[1].name = nameP2.value;
     }
 
     if(nickP1.value == "")
@@ -186,6 +191,7 @@ function submitData()
     else
     {
         nickP1.setAttribute("style", "");
+        players[0].nick = nickP1.value;
     }
 
     if(nickP2.value == "")
@@ -196,6 +202,7 @@ function submitData()
     else
     {
         nickP2.setAttribute("style", "");
+        players[1].nick = nickP2.value;
     }
     
     if(img1.alt == "None")
@@ -206,6 +213,7 @@ function submitData()
     else
     {
         btnImg1.setAttribute("style", "");
+        players[0].picture = img1.src;
     }
 
     if(img2.alt == "None")
@@ -216,11 +224,65 @@ function submitData()
     else
     {
         btnImg2.setAttribute("style", "");
+        players[1].picture = img2.src;
     }
 
     if(allRight == true)
     {
         saveData();
+        document.getElementById('shadowBox').classList.add('hidden');
         showGames();
+        showInfo();
     }
+}
+
+function saveData()
+{
+    localStorage.setItem('players', JSON.stringify(players));
+    localStorage.setItem('dataTTT', JSON.stringify(dataTTT));
+    localStorage.setItem('dataMT', JSON.stringify(dataMT));
+    localStorage.setItem('dataCP', JSON.stringify(dataCP));
+}
+
+function loadData()
+{
+    players = localStorage.getItem('players');
+    players = JSON.parse(players);
+    dataTTT = localStorage.getItem('dataTTT');
+    dataTTT = JSON.parse(dataTTT);
+    dataMT = localStorage.getItem('dataMT');
+    dataMT = JSON.parse(dataMT);
+    dataCP = localStorage.getItem('dataCP');
+    dataCP = JSON.parse(dataCP);
+    
+}
+
+function showInfo()
+{
+    document.getElementById('profiles').classList.remove('hidden');
+    for(var i=1; i <= 2; i++)
+    {
+        var namePl = document.querySelector('#player'+i+' h3');
+        namePl.innerHTML = "Nombre: "+ players[(i-1)].name;
+        
+        var nickPl = document.querySelector('#player'+i+' h4');
+        nickPl.innerHTML = "Apodo: " + players[(i-1)].nick;
+        
+        var imgPl = document.querySelector('#player'+i+' img');
+        imgPl.src = players[(i-1)].picture;
+        imgPl.alt = players[(i-1)].name;
+
+        var pPl = document.querySelector('#player'+i+' p');
+        var pointsTTT = players[(i-1)].pointTTT;
+        var pointsMT = players[(i-1)].pointMT;
+        var pointsCP = players[(i-1)].pointCP;
+        var generalPoint = pointsTTT*750 + pointsMT + pointsCP; 
+        pPl.innerHTML = "Puntaje general: " + generalPoint;
+
+    }
+}
+
+function hideInfo()
+{
+    document.getElementById('profiles').classList.add('hidden');   
 }
