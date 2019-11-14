@@ -239,16 +239,27 @@ function submitData()
 function saveData()
 {
     localStorage.setItem('players', JSON.stringify(players));
+    localStorage.setItem('dataTTT', JSON.stringify(dataTTT));
+    localStorage.setItem('dataMT', JSON.stringify(dataMT));
+    localStorage.setItem('dataCP', JSON.stringify(dataCP));
 }
 
 function loadData()
 {
     players = localStorage.getItem('players');
     players = JSON.parse(players);
+    dataTTT = localStorage.getItem('dataTTT');
+    dataTTT = JSON.parse(dataTTT);
+    dataMT = localStorage.getItem('dataMT');
+    dataMT = JSON.parse(dataMT);
+    dataCP = localStorage.getItem('dataCP');
+    dataCP = JSON.parse(dataCP);
+    
 }
 
 function showInfo()
 {
+    document.getElementById('editButton').classList.remove('hidden');
     document.getElementById('profiles').classList.remove('hidden');
     for(var i=1; i <= 2; i++)
     {
@@ -275,4 +286,19 @@ function showInfo()
 function hideInfo()
 {
     document.getElementById('profiles').classList.add('hidden');   
+}
+
+function editProfiles()
+{
+    loadInputs();
+    document.getElementById("namePlayer1").value = players[0].name;
+    document.getElementById("nickName1").value = players[0].nick;
+    document.getElementById('myImage1').src = players[0].picture;
+    document.getElementById('myImage1').classList.remove('hidden');
+    document.getElementById('myImage1').alt = players[0].name;
+    document.getElementById("namePlayer2").value = players[1].name;
+    document.getElementById("nickName2").value = players[1].nick;
+    document.getElementById('myImage2').src = players[1].picture;
+    document.getElementById('myImage2').alt = players[1].name;
+    document.getElementById('myImage2').classList.remove('hidden');
 }

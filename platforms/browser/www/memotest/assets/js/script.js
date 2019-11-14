@@ -94,6 +94,11 @@ var listObjs=
     id: 18,
     found: 0
 }];
+var dataGame = [
+    {
+        
+    }
+]
 var matrixGame = [];
 var canClick = true;
 var player1 = {points: 0};
@@ -123,14 +128,11 @@ var card1 = null;
 
 function loadData()
 {
-    if(localStorage.length > 0)
+    getData();
+    if (finishingPair < size*size-1)
     {
-        getData();
-        if (finishingPair < size*size-1)
-        {
-            buildTable();   
-            document.getElementById('rowsAndCols').disabled = true;
-        }
+        buildTable();   
+        document.getElementById('rowsAndCols').disabled = true;
     }
 }
 
