@@ -45,7 +45,7 @@ var dataTTT =
     dataSaved: false,
     board: [],
     player1ID: 0,
-    player2ID: 0,
+    player2ID: 1,
     turnPlayer: 0,
     canClick: true
 }
@@ -56,7 +56,7 @@ var dataMT =
     size: 0,
     matrix: [],
     player1ID: 0,
-    player2ID: 0,
+    player2ID: 1,
     pairsFound: 0,
     turnPlayer: 0,
 }
@@ -65,7 +65,7 @@ var dataCP =
 {
     dataSaved: 0,
     player1Points: 0,
-    player2Points: 0
+    player2Points: 1
 }
 
 
@@ -117,12 +117,12 @@ function loadInputs()
     document.getElementById("shadowBox").classList.remove('hidden');
     document.getElementById("sendData").disabled = false;
     var btn1 = document.getElementById('takePicture1');
-    btn1.setAttribute("onclick", "takePicture(1)");
+    btn1.setAttribute("formaction", "javascript:takePicture(1)");
     document.getElementById("takePicture1").disabled = false;
     document.getElementById("namePlayer1").disabled = false;
     document.getElementById("nickName1").disabled = false;
     var btn2 = document.getElementById('takePicture2');
-    btn2.setAttribute("onclick", "takePicture(2)");
+    btn2.setAttribute("formaction", "javascript:takePicture(2)");
     document.getElementById("takePicture2").disabled = false;
     document.getElementById("namePlayer2").disabled = false;
     document.getElementById("nickName2").disabled = false;
@@ -131,11 +131,14 @@ function loadInputs()
 function takePicture(num)
 {
     navigator.camera.getPicture(onSuccess, onFail, { 
-        quality: 25,
+        quality: 30,
         mediaType: Camera.MediaType.PICTURE,
         destinationType: Camera.DestinationType.DATA_URL,
-        targetWidth: 250,
-        correctOrientation: true
+        targetHeight: 100,
+        targetWidth: 100,   
+        correctOrientation: true,
+        allowEdit: false
+        
     });
     
     function onSuccess(imageData) {
@@ -160,6 +163,7 @@ function submitData()
     var img2 = document.getElementById('myImage2');
     var btnImg1 = document.getElementById('takePicture1');
     var btnImg2 = document.getElementById('takePicture2');
+
     var allRight = true;
     if(nameP1.value == "")
     {
@@ -234,6 +238,7 @@ function submitData()
         showGames();
         showInfo();
     }
+
 }
 
 function saveData()

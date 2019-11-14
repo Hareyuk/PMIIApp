@@ -45,7 +45,7 @@ var dataTTT =
     dataSaved: false,
     board: [],
     player1ID: 0,
-    player2ID: 0,
+    player2ID: 1,
     turnPlayer: 0,
     canClick: true
 }
@@ -56,7 +56,7 @@ var dataMT =
     size: 0,
     matrix: [],
     player1ID: 0,
-    player2ID: 0,
+    player2ID: 1,
     pairsFound: 0,
     turnPlayer: 0,
 }
@@ -65,7 +65,7 @@ var dataCP =
 {
     dataSaved: 0,
     player1Points: 0,
-    player2Points: 0
+    player2Points: 1
 }
 
 
@@ -91,12 +91,13 @@ var app = {
         {
             loadData();
             showGames();
+            showInfo();
         }
         else
         {
             //Enable all inputs, is first time
             var shadowBox = document.getElementById('shadowBox');
-            shadowBox.hidden = false;
+            shadowBox.classList.remove('hidden');
             loadInputs();
         }
     }
@@ -107,21 +108,21 @@ app.initialize();
 function showGames()
 {
     var div = document.getElementById('games');
-    div.hidden = false;
+    div.classList.remove('hidden');
 }
 
 //Enable all inputs
 function loadInputs()
 {
-    document.getElementById("shadowBox").hidden = false;
+    document.getElementById("shadowBox").classList.remove('hidden');
     document.getElementById("sendData").disabled = false;
     var btn1 = document.getElementById('takePicture1');
-    btn1.setAttribute("onclick", "takePicture(1)");
+    btn1.setAttribute("formaction", "javascript:takePicture(1)");
     document.getElementById("takePicture1").disabled = false;
     document.getElementById("namePlayer1").disabled = false;
     document.getElementById("nickName1").disabled = false;
     var btn2 = document.getElementById('takePicture2');
-    btn2.setAttribute("onclick", "takePicture(2)");
+    btn2.setAttribute("formaction", "javascript:takePicture(2)");
     document.getElementById("takePicture2").disabled = false;
     document.getElementById("namePlayer2").disabled = false;
     document.getElementById("nickName2").disabled = false;
@@ -130,16 +131,19 @@ function loadInputs()
 function takePicture(num)
 {
     navigator.camera.getPicture(onSuccess, onFail, { 
-        quality: 25,
+        quality: 40,
         mediaType: Camera.MediaType.PICTURE,
         destinationType: Camera.DestinationType.DATA_URL,
-        targetWidth: 250,
-        correctOrientation: true
+        targetHeight: 100,
+        targetWidth: 100,   
+        correctOrientation: true,
+        allowEdit: false
+        
     });
     
     function onSuccess(imageData) {
         var image = document.getElementById('myImage' + num);
-        image.hidden = false;
+        image.classList.remove('hidden');
         image.alt = "Photo";
         image.src = "data:image/jpeg;base64," + imageData;
     }
@@ -159,6 +163,7 @@ function submitData()
     var img2 = document.getElementById('myImage2');
     var btnImg1 = document.getElementById('takePicture1');
     var btnImg2 = document.getElementById('takePicture2');
+
     var allRight = true;
     if(nameP1.value == "")
     {
@@ -229,18 +234,76 @@ function submitData()
     if(allRight == true)
     {
         saveData();
-        document.getElementById('shadowBox').hidden = true;
+        document.getElementById('shadowBox').classList.add('hidden');
         showGames();
+        showInfo();
     }
+
 }
 
 function saveData()
 {
     localStorage.setItem('players', JSON.stringify(players));
+    localStorage.setItem('dataTTT', JSON.stringify(dataTTT));
+    localStorage.setItem('dataMT', JSON.stringify(dataMT));
+    localStorage.setItem('dataCP', JSON.stringify(dataCP));
 }
 
 function loadData()
 {
     players = localStorage.getItem('players');
     players = JSON.parse(players);
+    dataTTT = localStorage.getItem('dataTTT');
+    dataTTT = JSON.parse(dataTTT);
+    dataMT = localStorage.getItem('dataMT');
+    dataMT = JSON.parse(dataMT);
+    dataCP = localStorage.getItem('dataCP');
+    dataCP = JSON.parse(dataCP);
+    
+}
+
+function showInfo()
+{
+    document.getElementById('editButton').classList.remove('hidden');
+    document.getElementById('profiles').classList.remove('hidden');
+    for(var i=1; i <= 2; i++)
+    {
+        var namePl = document.querySelector('#player'+i+' h3');
+        namePl.innerHTML = "Nombre: "+ players[(i-1)].name;
+        
+        var nickPl = document.querySelector('#player'+i+' h4');
+        nickPl.innerHTML = "Apodo: " + players[(i-1)].nick;
+        
+        var imgPl = document.querySelector('#player'+i+' img');
+        imgPl.src = players[(i-1)].picture;
+        imgPl.alt = players[(i-1)].name;
+
+        var pPl = document.querySelector('#player'+i+' p');
+        var pointsTTT = players[(i-1)].pointTTT;
+        var pointsMT = players[(i-1)].pointMT;
+        var pointsCP = players[(i-1)].pointCP;
+        var generalPoint = pointsTTT*750 + pointsMT + pointsCP; 
+        pPl.innerHTML = "Puntaje general: " + generalPoint;
+
+    }
+}
+
+function hideInfo()
+{
+    document.getElementById('profiles').classList.add('hidden');   
+}
+
+function editProfiles()
+{
+    loadInputs();
+    document.getElementById("namePlayer1").value = players[0].name;
+    document.getElementById("nickName1").value = players[0].nick;
+    document.getElementById('myImage1').src = players[0].picture;
+    document.getElementById('myImage1').classList.remove('hidden');
+    document.getElementById('myImage1').alt = players[0].name;
+    document.getElementById("namePlayer2").value = players[1].name;
+    document.getElementById("nickName2").value = players[1].nick;
+    document.getElementById('myImage2').src = players[1].picture;
+    document.getElementById('myImage2').alt = players[1].name;
+    document.getElementById('myImage2').classList.remove('hidden');
 }

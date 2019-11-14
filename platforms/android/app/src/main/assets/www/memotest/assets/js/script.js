@@ -94,10 +94,10 @@ var listObjs=
     id: 18,
     found: 0
 }];
+var dataGame;
 var matrixGame = [];
 var canClick = true;
-var player1 = {points: 0};
-var player2 = {points: 0};
+var players = [];
 var turn;
 var size;
 var finishingPair = 0;
@@ -123,62 +123,52 @@ var card1 = null;
 
 function loadData()
 {
-    if(localStorage.length > 0)
+    dataGame = localStorage.getItem('dataMT');
+    dataGame = JSON.parse(dataGame);
+    players = localStorage.getItem('players');
+    players = JSON.parse(players);
+    if(dataGame.dataSaved == true)
     {
         getData();
-        if (finishingPair < size*size-1)
-        {
-            buildTable();   
-            document.getElementById('rowsAndCols').disabled = true;
-        }
+    }
+    if (finishingPair < size*size-1)
+    {
+        buildTable();   
+        document.getElementById('rowsAndCols').disabled = true;
     }
 }
 
 function getData()
 {
-    matrixGame = localStorage.getItem('matrixData');
-    matrixGame = JSON.parse(matrixGame);
-    size = localStorage.getItem('sizeTable');
-    size = parseInt(size);
-    player1 = localStorage.getItem('player1');
-    player1 = JSON.parse(player1);
-    player2 = localStorage.getItem('player2');
-    player2 = JSON.parse(player2);
-    turn = localStorage.getItem('dataTurn');
-    turn = parseInt(turn);
-    finishingPair = localStorage.getItem("pairsFound");
-    finishingPair = parseInt(finishingPair);
-    size = localStorage.getItem("size");
-    size = parseInt(size);
+    matrixGame = dataGame.matrix;
+    size = dataGame.size;
+    finishingPair = dataGame.pairsFound;
+    turn = dataGame.turn;
 }
 
 function saveData()
 {
-    localStorage.setItem('matrixData', JSON.stringify(matrixGame));
-    localStorage.setItem('sizeTable', size);
-    localStorage.setItem('player1', JSON.stringify(player1));
-    localStorage.setItem('player2', JSON.stringify(player2));
-    localStorage.setItem('dataTurn', turn);
-    localStorage.setItem('pairsFound', finishingPair);
-    localStorage.setItem('size',size);
-}
-
-function removeData()
-{
-    localStorage.clear();
+    dataGame.dataSaved = true;
+    dataGame.matrix = matrixGame;
+    dataGame.pairsFound = finishingPair;
+    dataGame.size = size;
+    dataGame.turn = turn;
+    localStorage.setItem('dataMT', JSON.stringify(dataGame))
+    localStorage.setItem('players', JSON.stringify(players))
 }
 
 function showPoints(){
-    document.getElementById("turnos").innerHTML = "Es el turno del jugador " + turn;
-    document.getElementById("point1").innerHTML = "Jugador 1: " + player1.points;
-    document.getElementById("point2").innerHTML = "Jugador 2: " + player2.points;
+    document.getElementById("turnos").innerHTML = "Es el turno del jugador " + players[(turn-1)].nick;
+    document.getElementById("point1").innerHTML = players[0].nick + ": " + players[0].pointMT;
+    document.getElementById("point2").innerHTML = players[1].nick + ": " + players[1].pointMT;
 }
 
 function selectTable()
 {
-    removeData();
-    player1.points = 0;
-    player2.points = 0;
+    dataGame.dataSaved = false;
+    localStorage.setItem('dataMT', JSON.stringify(dataGame));
+    players[0].pointMT = 0;
+    players[1].pointMT = 0;
     finishingPair = 0;
     var select = document.getElementById('rowsAndCols');
     size = select.value;
@@ -308,10 +298,10 @@ function swapIt(pos1,pos2,card) {
                         points = 100 * size;
                     }
                     if (turn ==  1) {
-                        player1.points += points;
+                        players[0].pointMT += points;
                         classAdd = "find1";
                     }else{
-                        player2.points += points;
+                        players[1].pointMT += points;
                         classAdd = "find2";
                     }
                     matrixGame[pos1][pos2].found = turn;
@@ -342,9 +332,9 @@ function swapIt(pos1,pos2,card) {
                         if (fruitAux.id == 18 || fruit.id == 18){
                             console.log("onion spoted! -750 points to current player")
                             if (turn == 1) {
-                                player1.points -= 750;
+                                players[0].pointMT -= 750;
                             }else{
-                                player2.points -= 750;
+                                players[1].pointMT -= 750;
                             }
                         }
                         card.classList.add("reverse");
@@ -403,11 +393,11 @@ function endGame() {
 
 function winPlayer()
 {
-    if(player1.points > player2.points)
+    if(players[0].pointMT > players[1].pointMT)
     {
         alert('Ganó el jugador 1');
     }
-    else if(player2.points > player1.points)
+    else if(players[1].pointMT > players[0].pointMT)
     {
         alert('Ganó el jugador 2');
     }

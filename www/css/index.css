@@ -151,12 +151,18 @@ form
 
 #shadowBox
 {
+    color: white;
     padding: 2em;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
     background-color: rgba(0,0,0,0.5);
+}
+
+#player2
+{
+    margin-bottom: 1em;
 }
 
 .hidden

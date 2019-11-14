@@ -67,6 +67,8 @@ table {
     position: fixed;
     height: 100vh;
     width: 100%;
+    top: 0;
+    left: 0;
     z-index: -40;
 }
 
@@ -74,7 +76,6 @@ table {
 {
     text-align: center;
     width: 70%;
-    height: 100vh;
     margin: 0 auto;
     background-color: rgba(255,255,255,0.6);
 }
@@ -124,7 +125,7 @@ form
     transition: 0.2s;
 }
 
-#games
+#games, #profiles
 {
     display: flex;
     flex-wrap: wrap;
@@ -140,6 +141,33 @@ form
 #games img
 {
     max-width: 100%;
+}
+
+#profiles article
+{
+    width: 45%;
+    background-color: rgba(0,0,0,0.25);
+}
+
+#shadowBox
+{
+    color: white;
+    padding: 2em;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background-color: rgba(0,0,0,0.5);
+}
+
+#player2
+{
+    margin-bottom: 1em;
+}
+
+.hidden
+{
+    display: none !important;
 }
 
 @media only screen and (max-width: 600px) {
