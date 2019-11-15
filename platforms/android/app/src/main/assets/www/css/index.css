@@ -63,7 +63,7 @@ table {
 /*mi propio CSS*/
 .backgroundTexture
 {
-    background-image: url("../img/texture.png");
+    background-image: url("../memotest/assets/images/apple.svg");
     position: fixed;
     height: 100vh;
     width: 100%;

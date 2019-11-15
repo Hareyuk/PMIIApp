@@ -6,9 +6,20 @@ var winPl2 = 0;
 var flagGaming = true; //Si alguien gana, que no se pueda hacer más clicks en el tablero pasandolo a FALSE
 var winnerCells = []; //Cuando un jugador gana, sus celdas ganadoras se colorean
 var savingCells = [];
+var gameData = [];
+var players = [];
 
 function loadLocalStorage()
 {
+    gameData = localStorage.getItem('dataTTT');
+    gameData = JSON.parse(gameData);
+    players = localStorage.getItem('players');
+    players = JSON.parse(players);
+    if(gameData.dataSaved == true)
+    {
+        getData();
+    }
+
     if(localStorage.length > 0)
     {
         winPl1= parseInt(localStorage.getItem('player1PointsTtt'));
@@ -39,6 +50,11 @@ function loadLocalStorage()
         }
     }
     buildGame();
+}
+
+function getData()
+{
+    winPl1;
 }
 
 function reloadTableData()

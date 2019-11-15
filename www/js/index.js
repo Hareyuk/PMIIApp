@@ -47,7 +47,10 @@ var dataTTT =
     player1ID: 0,
     player2ID: 1,
     turnPlayer: 0,
-    canClick: true
+    canClick: true,
+    gameClean: false,
+    winnerCells: [],
+    savingCells: []
 }
 
 var dataMT =

@@ -263,7 +263,6 @@ function createCards(a,b,objectArray) {
 function swapIt(pos1,pos2,card) {
     var clase = card.classList;
     if (canClick == true) {
-        //the card is not swapped
         if(clase == "theCard reverse"){
             turnCard(card,false);
             console.log("the card was not swapped and now is");

@@ -54,6 +54,8 @@ td{
     width: 70px;
     height: 110px;
     transform-style: preserve-3d;
+    -webkit-transition: all 0.7s ease-in-out;
+    -webkit-transform-style: preserve-3d;    /* Safari 4-8 */
     transition: all 0.7s ease-in-out;
     box-shadow: rgba(12, 12, 12, 0.13) 3px 3px 3px;
 }
@@ -65,6 +67,7 @@ td{
 
 .theFront{
     background-color:#ff7eb3;
+    -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
 }
 
@@ -76,7 +79,9 @@ td{
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    -webkit-transform: rotateY(180deg);
     transform: rotateY(180deg);
+    -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
 }
 

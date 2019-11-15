@@ -1,35 +1,25 @@
 var count = 1;
-var player = 0; // 0 = X | 1 = O
+var turn = 0; // 0 = X | 1 = O
 var tableGame = [ [-1, -2, -3], [-4, -5, -6], [-7, -8, -9]];
 var winPl1 = 0;
 var winPl2 = 0;
 var flagGaming = true; //Si alguien gana, que no se pueda hacer más clicks en el tablero pasandolo a FALSE
 var winnerCells = []; //Cuando un jugador gana, sus celdas ganadoras se colorean
 var savingCells = [];
+var gameData = [];
+var gameClean;
+var players = [];
 
 function loadLocalStorage()
 {
-    if(localStorage.length > 0)
-    {
-        winPl1= parseInt(localStorage.getItem('player1PointsTtt'));
-        winPl2= parseInt(localStorage.getItem('player2PointsTtt'));
-        //turn
-        player= parseInt(localStorage.getItem('playerTurnTtt'));
+    gameData = localStorage.getItem('dataTTT');
+    gameData = JSON.parse(gameData);
+    players = localStorage.getItem('players');
+    players = JSON.parse(players);
 
-        if(localStorage.getItem('gameClean') != 'true')
-        {
-            flagGaming= localStorage.getItem('clickTtt');
-            if(flagGaming == 'true')
-            {
-                flagGaming = true; // true no es lo mismo que 'true', por eso. Ahora que hice que false y true sean booleans y no textos, funciono
-            }
-            else if(flagGaming == 'false')
-            {
-                flagGaming = false;
-                winnerCells = localStorage.getItem('cellsWinTtt');
-                winnerCells = winnerCells.split(',');
-            }
-        }
+    if(gameData.dataSaved == true)
+    {
+        getData();
         //table
         savingCells = localStorage.getItem('matrixPos');
         if(savingCells !== "undefined" && savingCells !== null)
@@ -39,6 +29,16 @@ function loadLocalStorage()
         }
     }
     buildGame();
+}
+
+function getData()
+{
+    gameClean = gameData.gameClean;
+    winPl1 = players[0].pointTTT;
+    winPl2 = players[1].pointTTT;
+    flagGaming = gameData.canClick;
+    savingCells = gameData.savingCells;
+    winnerCells = gameData.winnerCells;
 }
 
 function reloadTableData()
@@ -76,10 +76,8 @@ function msgBoxDone(num)
     $("#msgBox").removeClass("sureAbout");
 
     restartGame();
-    localStorage.setItem('gameClean', 'true');
-    localStorage.setItem('clickTtt', 'true');
     localStorage.removeItem('matrixPos');
-    saveLocalPoints();
+    saveData();
 }
 
 function buildInfo(num)
@@ -89,7 +87,7 @@ function buildInfo(num)
         $("#game").append("<div id='info'></div>");
     }
     var classHand = 1;
-    if(player == 1)
+    if(turn == 1)
     {
         classHand = 2;
     }
@@ -166,14 +164,12 @@ function restartGame(num)
 {
     if(num==1)
     {
-        localStorage.setItem('clickTtt', 'true');
-        localStorage.setItem('gameClean', 'true');
-        localStorage.removeItem('matrixPos');
+        saveData();
     }
     localStorage.removeItem('cellsWinTtt');
     flagGaming = true;  
     $("#ttt").empty();
-    player = 0;
+    turn = 0;
     tableGame = [ [-1, -2, -3], [-4, -5, -6], [-7, -8, -9]];
     buildTable();
     $("#info").empty();
@@ -186,8 +182,7 @@ function putSymbol(num)
 {
     if(flagGaming)
     {
-        saveLocalPoints();
-        localStorage.setItem('gameClean', 'false');
+        saveData();
         var col = $('#col'+num);
         if(col.is(':empty') ) { 
             col.removeClass('pointingActive');
@@ -198,24 +193,24 @@ function putSymbol(num)
             {
                 //col 0
                 var result = parseInt(num / 3);
-                tableGame[0][result] = player;
+                tableGame[0][result] = turn;
             }
             else if(num == 2 || num == 5 || num == 8)
             {
                 //col 1
                 var result = parseInt(num / 3);
-                tableGame[1][result] = player;
+                tableGame[1][result] = turn;
             }
             else
             {
                 //col 2
                 var result = (parseInt(num / 3))-1;
-                tableGame[2][result] = player;
+                tableGame[2][result] = turn;
     
             }
             
             //Append SVG
-            if(player == 0)
+            if(turn == 0)
             {
                 
                 col.append('<img src="assets/images/x.svg" alt="mark X">');
@@ -224,7 +219,7 @@ function putSymbol(num)
             {
                 col.append('<img src="assets/images/o.svg" alt="mark O">');
             }
-            localStorage.setItem('matrixPos', tableGame);
+            saveData();
             validateWin();
         }
     }
@@ -299,7 +294,7 @@ function validateWin()
         {
             changePlayer();
             $("#winner").remove();
-            localStorage.setItem('playerTurnTtt',player);
+            saveData();
         }
 
     }
@@ -309,7 +304,7 @@ function validateWin()
         let imgPlayerWin;
         //Player winner! *claps claps*
         paintCellsWin();
-        if(player == 0)
+        if(turn == 0)
         {
             //LOCALSTORAGE: Podríamos meter aquí los localStorage de victorias de jugadores
             winPl1++;
@@ -323,15 +318,13 @@ function validateWin()
         }
         $("#handPlayer").remove();
         noOneIsClickable();
-        saveLocalPoints();
-        localStorage.setItem('cellsWinTtt', winnerCells);
+        saveData();
         showPoints();
-        $("#winner").append('<div><p>¡Jugador ' + (player + 1) + ' gana!</p><button onclick="javascript:$(\'#winner\').remove()">Ver el tablero</button><button onclick="restartGame(1)">Jugar de nuevo</button></div>');
+        $("#winner").append('<div><p>¡Jugador ' + (turn + 1) + ' gana!</p><button onclick="javascript:$(\'#winner\').remove()">Ver el tablero</button><button onclick="restartGame(1)">Jugar de nuevo</button></div>');
         $("#winner div").css("background-image",imgPlayerWin);
 
     }
-    //No one wins
-    localStorage.setItem('clickTtt',flagGaming);
+    saveData();
 }
 
 
@@ -348,21 +341,21 @@ function restartPoints()
 {
     winPl1 = 0;
     winPl2 = 0;
-    saveLocalPoints();
+    saveData();
     showPoints();
 }
 
 function changePlayer()
 {
-    if(player == 0)
+    if(turn == 0)
     {
        $("#handPlayer").removeClass('pointing1');
         $("#handPlayer").addClass('pointing2');
-        player++;
+        turn++;
     }
     else
     {
-        player--;
+        turn--;
         $("#handPlayer").removeClass('pointing2');
         $("#handPlayer").addClass('pointing1');
     }
@@ -387,17 +380,25 @@ function tieGame()
 function paintCellsWin()
 {
     var classWinner;
-    classWinner = (1+player);
+    classWinner = (1+turn);
     for(i=0; i < 3; i++)
     {
         $("#col"+winnerCells[i]).addClass('cellWinner'+classWinner);
     }
 }
 
-function saveLocalPoints()
+function saveData()
 {
-    localStorage.setItem('player1PointsTtt',winPl1);
-    localStorage.setItem('player2PointsTtt',winPl2);
+    gameData.gameClean = gameClean;
+    gameData.turn = turn;
+    gameData.dataSaved = true;
+    gameData.savingCells  = savingCells;
+    gameData.winnerCells = winnerCells;
+    gameData.canClick = flagGaming;
+    players[0].pointTTT = winPl1;
+    players[1].pointTTT = winPl2;
+    localStorage.setItem('dataTTT', JSON.stringify(gameData));
+    localStorage.setItem('players', JSON.stringify(players));
 }
 
 function noOneIsClickable()

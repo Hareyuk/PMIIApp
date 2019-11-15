@@ -47,7 +47,10 @@ var dataTTT =
     player1ID: 0,
     player2ID: 1,
     turnPlayer: 0,
-    canClick: true
+    canClick: true,
+    gameClean: false,
+    winnerCells: [],
+    savingCells: []
 }
 
 var dataMT =
@@ -131,12 +134,14 @@ function loadInputs()
 function takePicture(num)
 {
     navigator.camera.getPicture(onSuccess, onFail, { 
-        quality: 40,
+        quality: 30,
         mediaType: Camera.MediaType.PICTURE,
         destinationType: Camera.DestinationType.DATA_URL,
-        targetHeight: 150,
-        targetWidth: 200,
-        correctOrientation: true
+        targetHeight: 100,
+        targetWidth: 100,   
+        correctOrientation: true,
+        allowEdit: false
+        
     });
     
     function onSuccess(imageData) {

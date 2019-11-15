@@ -131,7 +131,7 @@ function loadInputs()
 function takePicture(num)
 {
     navigator.camera.getPicture(onSuccess, onFail, { 
-        quality: 40,
+        quality: 30,
         mediaType: Camera.MediaType.PICTURE,
         destinationType: Camera.DestinationType.DATA_URL,
         targetHeight: 100,
