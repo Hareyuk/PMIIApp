@@ -1,16 +1,72 @@
 /*font-family: 'Rajdhani', sans-serif;*/
+@font-face {
+    font-family: "BlackOpsOne";
+    src: url("../../../fonts/BlackOpsOne-Regular.ttf");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "NotoSerif";
+    src: url("../../../fonts/NotoSerif-Regular.ttf");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "NotoSerif";
+    src: url("../../../fonts/NotoSerif-Regular.ttf");
+    font-weight: bold;
+    font-style: normal;
+}
+
+.texture
+{
+    background-image: url("../../../img/texture.png");
+    font-family: NotoSerif;
+}
+
+
+
 *
 {
-    font-family: 'Rajdhani', sans-serif;;
+    margin: 0;
+    padding: 0;
 }
+
+main
+{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#character1, #character2
+{
+    width: 15%;
+    position: absolute;
+    top: 0;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+}
+
+#character1
+{
+    left: 0;
+    background-image: url('../images/volt.png');
+}
+
+#character2
+{
+    left: 100%;
+    transform: translate(-100%,0);
+    background-image: url('../images/nina.png');
+}
+
 
 .none
 {
     display: none;  
-}
-
-body{
-    background-color: black;
 }
 
 #msgBox, #winner
@@ -58,66 +114,17 @@ body{
     font-size: 40px;
 }
 
-td
-{
-    border: 5px solid #979696;
-    padding: 10px;
-}
-
-table
-{
-    border-collapse: collapse;
-    margin: 0 auto;
-    transform: scalez(3) rotate(-10deg) rotate3d(1, 1, 0, -43deg);
-    perspective-origin: bottom;
-}
-
-td
-{
-    cursor: pointer;
-}
-
- td
-{
-    width: 120px;
-    height: 120px;
-}
-
 img:active
 {
     opacity: 0.5;
 }
 
-tr:first-child td
-{
-    border-top: none;
-}
-
-tr td:first-child
-{
-    border-left: none;
-}
-
-tr td:last-child
-{
-    border-right: none;
-}
-
-tr:last-child td
-{
-    border-bottom: none;
-}
-
 #content
 {
-    background: #fbfbfb;
-    width: 100%;
-    max-width: 1024px;
+    background-color: rgba(255,255,255,0.6);
+    width: 70%;
     margin: 0 auto;
-    padding: 1em;
-    height: 660px;
-    background-image: url(../images/fondo.jpg);
-    background-size: cover;
+    height: 95vh;
 }
 
 #game{
@@ -132,7 +139,21 @@ tr:last-child td
 
 table{
     margin: 0 auto;
+    border-collapse: collapse;
+    margin: 0 auto;
 }
+
+td
+{
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    border: 5px;
+    padding: 0.8em;
+    border-style: groove;
+    border-color: brown;
+}
+
 
 #msgBox div{
     padding: 2em;
@@ -177,32 +198,44 @@ button:hover{
     margin-bottom: 1em;
 }
 
+footer
+{
+    background-color: rgba(255,255,255,0.6);
+    height: 5vh;
+    width: 70%;
+    margin: 0 auto;
+}
+
 address{
     text-align: center;
-    padding-top: 0.6em;
-    color: white;
-    font-size: 19px;
+    font-size: 1.2em;
+}
+
+a img
+{
+    width: 2em;
+    color: brown;
 }
 
 img{
     padding: 0;
     margin: 0;
-    width: 100px;
+    max-width: 100%;
 }
 
 #handPlayer{
     position: absolute;
-    width: 60px;
-    left: -60px;
+    width: 1.5em;
+    left: -50px;
     transition: 1s ease-in-out;
 }
 
 .pointing1{
-    top: 12px;
+    top: 5px;
 }
 
 .pointing2{
-    top: 68px;
+    top: 40px;
     filter: hue-rotate(155deg);
 }
 

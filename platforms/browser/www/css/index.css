@@ -184,6 +184,39 @@ h1
     display: none !important;
 }
 
+@font-face {
+    font-family: "BlackOpsOne";
+    src: url("../fonts/BlackOpsOne-Regular.ttf");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "NotoSerif";
+    src: url("../fonts/NotoSerif-Regular.ttf");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "NotoSerif";
+    src: url("../fonts/NotoSerif-Regular.ttf");
+    font-weight: bold;
+    font-style: normal;
+}
+
+h1
+{
+    font-family: 'BlackOpsOne';
+}
+
+@media only screen and (orientation: portrait)
+{
+    .app{
+        width: 100%;
+    }
+}
+
 @media only screen and (max-width: 600px) {
     #games, #profiles
     {
@@ -197,10 +230,6 @@ h1
     #games a
     {
         width: 45%;
-    }
-    
-    .app{
-        width: 100%;
     }
 
     #games a:last-child

@@ -17,7 +17,7 @@
     specific language governing permissions and limitations
     under the License.
 -->
-<html lang="en>
+<html lang="es">
     <head>
         <!--
         Customize this policy to fit your own app's needs. For more guidance, see:
@@ -28,7 +28,7 @@
             * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
                 * Enable inline JS: add 'unsafe-inline' to default-src
         -->
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
@@ -40,7 +40,7 @@
             </div>
 
             <div class="app">
-                    <h1>AD Game</h1>
+                    <h1>AD Games</h1>
                     <div id='shadowBox' class="hidden">
                         <form id="formPlayers" action="javascript:submitData()">
                             <label class="namePlayer">Perfil del jugador 1</label>
@@ -73,10 +73,10 @@
                             <!--Juegos-->
                             <a href="tictactoe/index.html"><img src="img/tictactoe.png" alt="tictactoe"><p>Ta-Te-Ti</p></a> 
                             <a href="memotest/index.html"><img src="img/memotest.png" alt="memotest"><p>Memotest</p></a>
-                            <a href="catch_puzzle/index.html"><img src="img/catchPuzzle.png"><p>Catch Puzzles</p></a>          
+                            <a href="catch_puzzle/index.html"><img src="img/catchPuzzle.png"><p>Atrapa puzzles</p></a>          
                         </div>
                         
-                        <button id="editButton" class="hidden" onclick="editProfiles()">Editar perfiles</button>
+                        <button id="editButton" class="hidden" onclick="javascript:editProfiles();">Editar perfiles</button>
                         <div id="profiles" class="hidden">
                             <article id="player1">
                                     <h3>Nombre de jugador</h3>
@@ -93,6 +93,8 @@
                                 </article>
                         </div>
                     </section>
+                    <div>Icons made by <a href="https://www.flaticon.es/autores/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.es/"     title="Flaticon">www.flaticon.com</a></div>
+        
             </div>
             
             <div id="character2">
@@ -100,6 +102,7 @@
 
         <div class="backgroundTexture">
         </div>
+        
 
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>

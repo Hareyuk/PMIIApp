@@ -287,6 +287,9 @@ function showInfo()
         var pointsCP = players[(i-1)].pointCP;
         var generalPoint = pointsTTT*750 + pointsMT + pointsCP; 
         pPl.innerHTML = "Puntaje general: " + generalPoint;
+        pPl.innerHTML += "<br>Puntaje de tateti: "+players[(i-1)].pointTTT; 
+        pPl.innerHTML += " <br>Puntaje de memotest: " + players[(i-1)].pointMT;
+        pPl.innerHTML += "<br>Puntaje de Catch puzzle: " + players[(i-1)].pointCP;
 
     }
 }

@@ -33,6 +33,7 @@ function loadLocalStorage()
 
 function getData()
 {
+    tableGame = gameData.board;
     gameClean = gameData.gameClean;
     winPl1 = players[0].pointTTT;
     winPl2 = players[1].pointTTT;
@@ -76,7 +77,7 @@ function msgBoxDone(num)
     $("#msgBox").removeClass("sureAbout");
 
     restartGame();
-    localStorage.removeItem('matrixPos');
+    gameData.dataSaved = false;
     saveData();
 }
 
@@ -333,8 +334,8 @@ function showPoints()
     
     $("#point1").empty();
     $("#point2").empty();
-    $("#point1").append("Jugador Uno: <span>" + winPl1+"</span>");
-    $("#point2").append("Jugador Dos: <span>" + winPl2+"</span>");
+    $("#point1").append(players[0].nick +": <span>" + winPl1+"</span>");
+    $("#point2").append(players[1].nick +": <span>" + winPl2+"</span>");
 }
 
 function restartPoints()
@@ -391,6 +392,7 @@ function saveData()
 {
     gameData.gameClean = gameClean;
     gameData.turn = turn;
+    gameData.board = tableGame;
     gameData.dataSaved = true;
     gameData.savingCells  = savingCells;
     gameData.winnerCells = winnerCells;
