@@ -20,18 +20,38 @@
     font-style: normal;
 }
 
-.texture
+body
 {
-    background-image: url("../../../img/texture.png");
     font-family: NotoSerif;
 }
 
-
+.texture
+{
+    background-image: url("../../../img/background.png");
+    background-position: center;
+    width: 100vw;
+    height: 100vh;
+    z-index: -999;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
 
 *
 {
     margin: 0;
     padding: 0;
+}
+
+header
+{
+    height: 10vh;
+    color: white;
+    margin: 0 auto;
+    background-color: rgba(255,255,255,0.6);
+    margin: 0 auto;
+    width: 70%;
+    text-align: center;
 }
 
 main
@@ -119,15 +139,16 @@ img:active
     opacity: 0.5;
 }
 
-#content
+.app
 {
     background-color: rgba(255,255,255,0.6);
     width: 70%;
     margin: 0 auto;
-    height: 95vh;
+    height: 90vh;
 }
 
 #game{
+    margin: 0 auto;
     text-align: center;
 }
 
@@ -143,17 +164,26 @@ table{
     margin: 0 auto;
 }
 
+tr{
+    width: 100%;
+    height: 100%;
+}
+
 td
 {
     cursor: pointer;
-    width: 50px;
-    height: 50px;
+    width: 7vw;
+    height: 7vw;
     border: 5px;
     padding: 0.8em;
     border-style: groove;
     border-color: brown;
 }
 
+img[alt="back"]
+{
+    width: 10vh;
+}
 
 #msgBox div{
     padding: 2em;
@@ -169,21 +199,20 @@ td
 }
 
 button {
-    background-color: #1eaba7;
+    background-color: rgba(0,0,0,0.4);
     color: white;
     font-size: 20px;
     border: none;
-    padding: 0.7em;
-    border-radius: 0.5em;
-    margin-right: 0.5em;
-    margin-left: 0.5em;
-    font-weight: bold;
+    padding: 0.8em 0.5em;
+    margin: 0 0.8em;
     cursor: pointer;
-    filter: drop-shadow(1px 1px 3px #444);
+    border-width: 5px;
+    border-style: groove;
+    border-color: brown;
 }
 
 button:hover{
-    background-color: #27d2cd;
+    background-color: rgba(0,0,0,0.8);
 }
 
 
@@ -197,18 +226,10 @@ button:hover{
     display: inline-block;
     margin-bottom: 1em;
 }
-
-footer
-{
-    background-color: rgba(255,255,255,0.6);
-    height: 5vh;
-    width: 70%;
-    margin: 0 auto;
-}
-
 address{
     text-align: center;
     font-size: 1.2em;
+    margin: 0 auto;
 }
 
 a img
@@ -264,22 +285,80 @@ span{
     font-weight: bold;
 }
 
-#btns button:last-child
+@media only screen and (orientation: portrait)
 {
-    background-color: rgb(227, 52, 52);
+    
+    #character1, #character2
+    {
+        width:0;
+    }
+
+    header
+    {
+        width: 100%;
+    }
+    .app{
+        width: 100vw;
+    }
+
 }
 
-#btns button:last-child:hover
-{
-    background-color: rgb(255, 87, 87);
+@media only screen and (max-width: 600px) {
+    
+    #games, #profiles
+    {
+        padding: 1em;
+    }
+    
+
+    #games a
+    {
+        width: 45%;
+    }
+
+    #games a:last-child
+    {
+        margin-top: 1em;
+    }
+
+    td
+    {
+        width: 22vw;
+        height: 22vw;
+        padding: 0.8em;
+    }
+
+    img[alt="back"]
+    {
+        position: fixed;
+        top: 0;
+        left: 0;
+    }
 }
 
-#msgBox button:first-of-type
-{
-    filter: drop-shadow(1px 1px 3px #444);
-    background-color: rgb(227, 52, 52);
-}
+@media only screen and (max-height: 600px) and (orientation: landscape) {
+    
+    #games a
+    {
+        font-size: 1em;
+    }
+    
+    h1
+    {
+        font-size: 1.5em;
+    }
 
-#msgBox button:first-of-type:hover{
-    background-color: rgb(255, 87, 87);
+    #games
+    {
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+    }
+
+    #profiles
+    {
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+    }
+
+
 }

@@ -313,3 +313,15 @@ function editProfiles()
     document.getElementById('myImage2').alt = players[1].name;
     document.getElementById('myImage2').classList.remove('hidden');
 }
+
+function credits(num)
+{
+    if(num == 0)
+    {
+        document.getElementById('credits').classList.remove("hidden");
+    }
+    else
+    {
+        document.getElementById('credits').classList.add("hidden");
+    }
+}
