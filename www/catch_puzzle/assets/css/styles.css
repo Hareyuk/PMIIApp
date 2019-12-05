@@ -1,0 +1,110 @@
+img[alt="back"]
+{
+    width: 5vw;
+}
+
+@font-face {
+    font-family: "BlackOpsOne";
+    src: url("../fonts/BlackOpsOne-Regular.ttf");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "NotoSerif";
+    src: url("../fonts/Noto0Serif-Regular.ttf");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "NotoSerif";
+    src: url("../fonts/NotoSerif-Regular.ttf");
+    font-weight: bold;
+    font-style: normal;
+}
+
+#character1
+{
+    background-image: url('../img/kylian.png');
+    left: 0;
+}
+
+#character2
+{
+    background-image: url('../img/camile.png');
+    left: 100%;
+    transform: translate(-100%,0);
+}
+
+
+@media only screen and (min-width: 992px)
+{
+
+}
+
+@media only screen and (orientation: portrait)
+{
+    .app{
+        width: 100%;
+    }
+
+    #character1, #character2
+    {
+        width:0;
+    }
+
+    #games, #profiles
+    {
+        padding: 1em;
+    }
+    
+
+    #games a
+    {
+        width: 45%;
+    }
+
+    #games a:last-child
+    {
+        margin-top: 1em;
+    }
+}
+
+@media only screen and (max-height: 600px) and (orientation: landscape) {
+
+    #profiles img
+    {
+        width: 80px;
+    }
+    
+    #games a
+    {
+        font-size: 1em;
+        width: 30%;
+    }
+    
+    h1
+    {
+        font-size: 1.35em;
+    }
+
+    #games
+    {
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+    }
+
+    #profiles
+    {
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+    }
+
+    button
+    {
+        padding: 0.5em 2em;
+    }
+    
+
+}

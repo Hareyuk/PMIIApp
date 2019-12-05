@@ -47,7 +47,10 @@ var dataTTT =
     player1ID: 0,
     player2ID: 1,
     turnPlayer: 0,
-    canClick: true
+    canClick: true,
+    gameClean: false,
+    winnerCells: [],
+    savingCells: []
 }
 
 var dataMT =
@@ -284,6 +287,9 @@ function showInfo()
         var pointsCP = players[(i-1)].pointCP;
         var generalPoint = pointsTTT*750 + pointsMT + pointsCP; 
         pPl.innerHTML = "Puntaje general: " + generalPoint;
+        pPl.innerHTML += "<br>Puntaje de tateti: "+players[(i-1)].pointTTT; 
+        pPl.innerHTML += " <br>Puntaje de memotest: " + players[(i-1)].pointMT;
+        pPl.innerHTML += "<br>Puntaje de Catch puzzle: " + players[(i-1)].pointCP;
 
     }
 }
@@ -306,4 +312,16 @@ function editProfiles()
     document.getElementById('myImage2').src = players[1].picture;
     document.getElementById('myImage2').alt = players[1].name;
     document.getElementById('myImage2').classList.remove('hidden');
+}
+
+function credits(num)
+{
+    if(num == 0)
+    {
+        document.getElementById('credits').classList.remove("hidden");
+    }
+    else
+    {
+        document.getElementById('credits').classList.add("hidden");
+    }
 }

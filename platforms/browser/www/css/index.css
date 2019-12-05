@@ -61,18 +61,6 @@ table {
 }
 
 /*mi propio CSS*/
-.backgroundTexture
-{
-    background-image: url("../img/background.png");
-    position: fixed;
-    height: 100vh;
-    width: 100vw;
-    background-position: center;
-    top: 0;
-    left: 0;
-    z-index: -40;
-}
-
 .app
 {
     text-align: center;
@@ -153,13 +141,15 @@ h1
 #games img
 {
     max-width: 100%;
+    display: flex;
 }
 
 #profiles article
 {
     width: 45%;
-    background-color: rgba(0,0,0,0.25);
+    background-color: rgba(0,0,0,0.5);
     margin: 0 auto;
+    color: white;
 }
 
 #profiles
@@ -183,10 +173,6 @@ h1
     margin-bottom: 1em;
 }
 
-.hidden
-{
-    display: none !important;
-}
 
 #credits
 {
@@ -206,59 +192,49 @@ h1
     margin:  1em 0;
 }
 
+
 #credits button
 {
-    background-color: rgba(255,255,255,0.8);
-    color: black;
-    border-width: 5px;
-    border-style: groove;
-    border-color: brown;
+
     margin: 0 auto;
     display: block;
 }
 
-@font-face {
-    font-family: "BlackOpsOne";
-    src: url("../fonts/BlackOpsOne-Regular.ttf");
-    font-weight: normal;
-    font-style: normal;
-}
 
-@font-face {
-    font-family: "NotoSerif";
-    src: url("../fonts/NotoSerif-Regular.ttf");
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: "NotoSerif";
-    src: url("../fonts/NotoSerif-Regular.ttf");
-    font-weight: bold;
-    font-style: normal;
-}
 
 h1
 {
     font-family: 'BlackOpsOne';
 }
 
-@media only screen and (orientation: portrait)
+@media only screen and (min-width: 992px)
 {
-    .app{
-        width: 100%;
+    #profiles article
+    {
+        font-size: 1.3em;
+        padding: 1em 0.3em;
+    }
+     
+    button
+    {
+        font-size: 1em;     
     }
 }
 
-@media only screen and (max-width: 600px) {
+
+@media only screen and (orientation: portrait)
+{
+
     #games, #profiles
     {
-        padding: 1em;
+        padding: 0.5em;
     }
-    #character1, #character2
+    
+    #profiles article
     {
-        width:0;
+        padding: 0.3em;
     }
+    
 
     #games a
     {
@@ -269,19 +245,24 @@ h1
     {
         margin-top: 1em;
     }
-
 }
 
 @media only screen and (max-height: 600px) and (orientation: landscape) {
+
+    #profiles img
+    {
+        width: 80px;
+    }
     
     #games a
     {
         font-size: 1em;
+        width: 30%;
     }
     
     h1
     {
-        font-size: 1.5em;
+        font-size: 1.35em;
     }
 
     #games
@@ -294,6 +275,11 @@ h1
     {
         padding-top: 0.5em;
         padding-bottom: 0.5em;
+    }
+
+    button
+    {
+        padding: 0.5em 2em !important;
     }
 
 }

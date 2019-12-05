@@ -25,18 +25,6 @@ body
     font-family: NotoSerif;
 }
 
-.texture
-{
-    background-image: url("../../../img/background.png");
-    background-position: center;
-    width: 100vw;
-    height: 100vh;
-    z-index: -999;
-    position: fixed;
-    top: 0;
-    left: 0;
-}
-
 *
 {
     margin: 0;
@@ -106,7 +94,8 @@ main
     left:50%;
     transform: translate(-50%, -50%);
     position: absolute;
-    background: #fafafa;
+    background-color: rgba(0,0,0,0.5);
+    color: white;
 }
 
 #winner div{
@@ -199,9 +188,7 @@ img[alt="back"]
 }
 
 button {
-    background-color: rgba(0,0,0,0.4);
-    color: white;
-    font-size: 20px;
+    font-size: 1.2em;
     border: none;
     padding: 0.8em 0.5em;
     margin: 0 0.8em;
@@ -209,6 +196,10 @@ button {
     border-width: 5px;
     border-style: groove;
     border-color: brown;
+    background-color: #640505;
+    color: white;
+    box-shadow: 0px 4px 0px 0px rgba(0,0,0,0.5);
+    border-radius: 5px;
 }
 
 button:hover{
