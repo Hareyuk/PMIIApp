@@ -74,11 +74,13 @@ function msgBoxDone(num)
 {
     $("#msgBox").empty();
     $("#msgBox").addClass("none");
-    $("#msgBox").removeClass("sureAbout");
-
-    restartGame();
-    gameData.dataSaved = false;
-    saveData();
+    $("#msgBox").removeClass("sureAbout");  
+    if(num == 1)
+    {  
+        restartGame();
+        gameData.dataSaved = false;
+        saveData();
+    }
 }
 
 function buildInfo(num)

@@ -51,10 +51,12 @@ button, input[type="submit"]{
     border-radius: 5px;
     cursor: pointer;
     padding: 0.8em 0.5em;
+    transition: 0.25s;
 }
 
 button:hover{
     background-color: rgba(0,0,0,0.8);
+    transform: scale(1.1);
 }
 
 
