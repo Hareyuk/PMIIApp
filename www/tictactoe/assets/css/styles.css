@@ -44,11 +44,6 @@ main
     background-image: url('../images/nina.png');
 }
 
-h1
-{
-    font-family: 'BlackOpsOne';
-}
-
 .none
 {
     display: none;  
@@ -82,6 +77,17 @@ h1
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+}
+
+#msgBox p, #msgBox h3, #msgBox h4
+{
+    width: 100%;
+    display: block;
+}
+
+#msgBox h3, #msgBox h4
+{
+    text-align: center;
 }
 
 
@@ -133,10 +139,9 @@ img:active
     text-align: center;
 }
 
-#game h1{
-    font-size: 100px;
-    color: #4c4c4c;
-    margin-top: 0.5em;
+h1{
+    font-size: 2.5em;
+    color: black;
 }
 
 table{
@@ -337,6 +342,41 @@ span{
     {
         padding-top: 0.5em;
         padding-bottom: 0.5em;
+    }
+
+    #game
+    {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    #ttt
+    {
+        width: 60%;
+    }
+
+    img[alt="back"]
+    {
+        position: absolute;
+        top: 0;
+    }
+
+    #displayInfo
+    {
+        width: 40%;
+    }
+
+    button
+    {
+        font-size: 1em;
+        padding: 0.5em 0.2em !important;
+        margin: 0.3em 0;
+        width: 90%;
+    }
+
+    td
+    {
+        width: 8vw;
     }
 
 }
