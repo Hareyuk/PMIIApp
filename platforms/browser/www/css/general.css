@@ -6,47 +6,42 @@
 }
 
 @font-face {
-    font-family: "NotoSerif";
-    src: url("../fonts/Noto0Serif-Regular.ttf");
+    font-family: "Lato";
+    src: url("../fonts/Lato-Regular.ttf");
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
-    font-family: "NotoSerif";
-    src: url("../fonts/NotoSerif-Regular.ttf");
+    font-family: "Lato";
+    src: url("../fonts/Lato-Bold.ttf");
     font-weight: bold;
     font-style: normal;
 }
+
+body
+{
+    font-family: "Lato";
+}
+
+h1 
+{
+    font-family: 'BlackOpsOne';
+}
+
 
 @media only screen and (min-width: 992px)
 {
 
 }
 
-@media only screen and (orientation: portrait)
+input:not([type="submit"])
 {
-    .app{
-        width: 100%;
-    }
-
-    #character1, #character2
-    {
-        width:0;
-    }
-
+    border-radius: 5px;
+    padding: 0.2em;
 }
 
-@media only screen and (max-height: 600px) and (orientation: landscape) {
-
-    button
-    {
-        padding: 0.5em 2em;
-    }
-
-}
-
-button{
+button, input[type="submit"]{
     border-width: 5px;
     border-style: groove;
     border-color: brown;
@@ -56,6 +51,10 @@ button{
     border-radius: 5px;
     cursor: pointer;
     padding: 0.8em 0.5em;
+}
+
+button:hover{
+    background-color: rgba(0,0,0,0.8);
 }
 
 
@@ -93,4 +92,26 @@ button{
         background-position-x: 100px;
         background-position-y: 99px;
     }
+}
+
+@media only screen and (orientation: portrait)
+{
+    .app{
+        width: 100%;
+    }
+
+    #character1, #character2
+    {
+        width:0;
+    }
+
+}
+
+@media only screen and (max-height: 600px) and (orientation: landscape) {
+
+    button
+    {
+        padding: 0.5em 2em;
+    }
+
 }

@@ -95,13 +95,15 @@ table {
 
 .cordova-camera-capture
 {
-    background-color: #A7A7A7;
-    display: inline-block;
+    background-color: rgba(255,255,255,0.6);
     padding: 2em;
     position: fixed !important;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .playerName
@@ -114,6 +116,26 @@ form
 {
     transition: 0.2s;
 }
+
+#credits a
+{
+    color: white;
+}
+
+form div
+{
+    margin: 1em,
+}
+
+ form button, form input[type="submit"]
+ {
+    padding: 0.5em 2em !important;
+ }
+
+ form label
+ {
+     margin: 0.2em 0;
+ }
 
 #games, #profiles
 {
@@ -198,13 +220,6 @@ h1
 
     margin: 0 auto;
     display: block;
-}
-
-
-
-h1
-{
-    font-family: 'BlackOpsOne';
 }
 
 @media only screen and (min-width: 992px)

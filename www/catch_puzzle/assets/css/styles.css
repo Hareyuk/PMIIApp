@@ -3,27 +3,6 @@ img[alt="back"]
     width: 5vw;
 }
 
-@font-face {
-    font-family: "BlackOpsOne";
-    src: url("../fonts/BlackOpsOne-Regular.ttf");
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: "NotoSerif";
-    src: url("../fonts/Noto0Serif-Regular.ttf");
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: "NotoSerif";
-    src: url("../fonts/NotoSerif-Regular.ttf");
-    font-weight: bold;
-    font-style: normal;
-}
-
 #character1
 {
     background-image: url('../img/kylian.png');
