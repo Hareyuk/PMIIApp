@@ -122,9 +122,14 @@ main
     font-size: 40px;
 }
 
-img:active
-{
-    opacity: 0.5;
+img:active[alt="mark X"]
+{ 
+    filter: drop-shadow(0px 0px 3px red) brightness(5);
+}
+
+img:active[alt="mark O"]
+{ 
+    filter: drop-shadow(0px 0px 3px rgb(75, 75, 255)) brightness(1.2)
 }
 
 .app
@@ -189,8 +194,6 @@ img[alt="back"]
 button {
     font-size: 1.2em;
     border: none;
-    padding: 0.8em 0.5em;
-    margin: 0 0.8em;
     cursor: pointer;
     border-width: 5px;
     border-style: groove;
@@ -199,6 +202,10 @@ button {
     color: white;
     box-shadow: 0px 4px 0px 0px rgba(0,0,0,0.5);
     border-radius: 5px;
+    font-size: 1em;
+    padding: 0.5em 0.2em !important;
+    margin: 0.3em 0;
+    width: 90%;
 }
 
 
@@ -229,6 +236,7 @@ img{
     padding: 0;
     margin: 0;
     max-width: 100%;
+    display: flex;
 }
 
 #handPlayer{
@@ -249,7 +257,7 @@ img{
 
 .pointingActive:hover
 {
-    background-color: rgba(0, 0, 0, 0.04);
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 .dontClick
@@ -257,28 +265,61 @@ img{
     cursor: not-allowed;
 }
 
-.cellWinner1
+.cellWinner1 img
 {
-    background-color: #d1ccff;
+    animation-name: markX;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
 }
 
-.cellWinner2
+@keyframes markX
 {
-    background-color: #ffcccc;
+    0%
+    {
+        filter: drop-shadow(0px 0px 5px rgba(255,0,0,1)) brightness(1);
+    }
+
+    50%
+    {
+        filter: drop-shadow(0px 0px 2px rgba(255,0,0,1)) brightness(0.5);
+    }
+
+    100%
+    {
+        filter: drop-shadow(0px 0px 5px rgba(255,0,0,1)) brightness(1);   
+    }
+}
+
+.cellWinner2 img
+{
+    animation-name: markO;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+@keyframes markO
+{
+    0%
+    {
+        filter: drop-shadow(0px 0px 5px rgba(0,0,255,1)) brightness(1);
+    }
+
+    50%
+    {
+        filter: drop-shadow(0px 0px 2px rgba(0,0,255,1)) brightness(1.5);
+    }
+
+    100%
+    {
+        filter: drop-shadow(0px 0px 5px rgba(0,0,255,1)) brightness(1);   
+    }
 }
 
 span{
     padding-left: 1em;
     font-weight: bold;
-}
-
-@media only screen and (min-width: 768px) and (orientation: portrait)
-{
-    #displayInfo
-    {
-        margin: 0 auto;
-        font-size: 1.3em;
-    }
 }
 
 @media only screen and (orientation: portrait)
@@ -297,11 +338,6 @@ span{
         width: 100vw;
     }
 
-    #btns button:last-child
-    {
-        margin-top: 0.8em;
-    }
-
     td
     {
         width: 22vw;
@@ -312,6 +348,12 @@ span{
     #ttt
     {
         margin: 0 auto;
+    }
+
+    #displayInfo
+    {
+        margin: 0 auto;
+        font-size: 1em;
     }
 
 }
@@ -342,9 +384,6 @@ span{
     button
     {
         font-size: 1em;
-        padding: 0.5em 0.2em !important;
-        margin: 0.3em 0;
-        width: 90%;
     }
 
     td

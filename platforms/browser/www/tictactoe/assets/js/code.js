@@ -156,11 +156,11 @@ function generateCol(row)
 
         if(tableGame[j][row] == 0)
         {
-            txt += "<td id='col" +count+"' class='dontClick'><img src='assets/images/x.svg' alt='mark X'></td>";
+            txt += "<td id='col" +count+"' class='dontClick'><img src='assets/images/x.png' alt='mark X'></td>";
         }
         else if(tableGame[j][row] == 1)
         {
-            txt += "<td id='col" +count+"' class='dontClick'><img src='assets/images/o.svg' alt='mark O'></td>";    
+            txt += "<td id='col" +count+"' class='dontClick'><img src='assets/images/o.png' alt='mark O'></td>";    
 
         }
         else
@@ -221,15 +221,15 @@ function putSymbol(num)
     
             }
             
-            //Append SVG
+            //Append PNG
             if(turn == 0)
             {
                 
-                col.append('<img src="assets/images/x.svg" alt="mark X">');
+                col.append('<img src="assets/images/x.png" alt="mark X">');
             }
             else
             {
-                col.append('<img src="assets/images/o.svg" alt="mark O">');
+                col.append('<img src="assets/images/o.png" alt="mark O">');
             }
             saveData();
             validateWin();
