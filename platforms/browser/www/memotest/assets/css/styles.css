@@ -54,8 +54,8 @@ td{
 
 .theCard{
     overflow: visible;
-    border-radius: .5rem;
-    border: .7rem double white;
+    border-radius: 0.5em;
+    border: 0.2em black solid;
     width: 70px;
     height: 110px;
     transform-style: preserve-3d;
@@ -71,8 +71,8 @@ td{
 }
 
 .theFront{
-    background-color:#ff7eb3;
-    -webkit-backface-visibility: hidden;
+    background-image:url(../images/reverse.png);
+    background-size: contain;
     backface-visibility: hidden;
 }
 
@@ -103,13 +103,13 @@ td{
 .find1
 {
     /* filter: invert(1); */
-    border-color: greenyellow;
+    border-color: rgb(255, 78, 101);
 }
 
 .find2
 {
     /* filter: sepia(1); */
-    border-color: lightskyblue;
+    border-color: rgb(55, 75, 255);
 }
 
 img[alt="back"]
