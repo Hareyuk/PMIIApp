@@ -66,9 +66,12 @@ var dataMT =
 
 var dataCP =
 {
-    dataSaved: 0,
+    dataSaved: false,
     player1Points: 0,
-    player2Points: 1
+    player2Points: 1,
+    mapMatrix: [],
+    posPlayer: {},
+    turn: 0,
 }
 
 

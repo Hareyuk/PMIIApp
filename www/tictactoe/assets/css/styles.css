@@ -23,7 +23,6 @@ main
 
 #character1
 {
-    transform: rotateY(180deg);
     left: 0;
     background-image: url('../images/volt.png');
 }

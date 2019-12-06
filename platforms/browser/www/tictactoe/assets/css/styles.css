@@ -21,19 +21,8 @@ main
     flex-wrap: wrap;
 }
 
-#character1, #character2
-{
-    width: 15%;
-    position: absolute;
-    top: 0;
-    height: 100vh;
-    background-size: cover;
-    background-position: center;
-}
-
 #character1
 {
-    transform: rotateY(180deg);
     left: 0;
     background-image: url('../images/volt.png');
 }
@@ -320,11 +309,6 @@ img{
 span{
     padding-left: 1em;
     font-weight: bold;
-}
-
-#displayInfo
-{
-    font-size: 1.3em;
 }
 
 @media only screen and (orientation: portrait)

@@ -3,14 +3,6 @@
     margin: 0;
 }
 
-body{
-    max-width: 700px;
-    margin: 0 auto;
-}
-header main footer{
-    width: 100%;
-}
-
 p, #turnos{
     height: 1.5rem;
 }
@@ -115,16 +107,6 @@ td{
 img[alt="back"]
 {
     width: 10vh;
-}
-
-#character1, #character2
-{
-    width: 15%;
-    position: absolute;
-    top: 0;
-    height: 100vh;
-    background-size: cover;
-    background-position: center;
 }
 
 #character1
