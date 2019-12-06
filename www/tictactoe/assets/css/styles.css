@@ -21,16 +21,6 @@ main
     flex-wrap: wrap;
 }
 
-#character1, #character2
-{
-    width: 15%;
-    position: absolute;
-    top: 0;
-    height: 100vh;
-    background-size: cover;
-    background-position: center;
-}
-
 #character1
 {
     transform: rotateY(180deg);
