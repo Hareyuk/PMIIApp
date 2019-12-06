@@ -71,6 +71,7 @@ var dataCP =
     player2Points: 1,
     mapMatrix: [],
     posPlayer: {},
+    times: [],
     turn: 0,
 }
 
