@@ -33,6 +33,7 @@ main
 
 #character1
 {
+    transform: rotateY(180deg);
     left: 0;
     background-image: url('../images/volt.png');
 }
@@ -137,6 +138,8 @@ img:active
 #game{
     margin: 0 auto;
     text-align: center;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 h1{
@@ -169,6 +172,8 @@ td
 img[alt="back"]
 {
     width: 10vh;
+    position: absolute;
+    top: 0;
 }
 
 #msgBox h3{
@@ -267,6 +272,15 @@ span{
     font-weight: bold;
 }
 
+@media only screen and (min-width: 768px) and (orientation: portrait)
+{
+    #displayInfo
+    {
+        margin: 0 auto;
+        font-size: 1.3em;
+    }
+}
+
 @media only screen and (orientation: portrait)
 {
     
@@ -288,22 +302,6 @@ span{
         margin-top: 0.8em;
     }
 
-    #games, #profiles
-    {
-        padding: 1em;
-    }
-    
-
-    #games a
-    {
-        width: 45%;
-    }
-
-    #games a:last-child
-    {
-        margin-top: 1em;
-    }
-
     td
     {
         width: 22vw;
@@ -311,31 +309,18 @@ span{
         padding: 0.8em;
     }
 
-    img[alt="back"]
+    #ttt
     {
-        position: fixed;
-        top: 0;
-        left: 0;
+        margin: 0 auto;
     }
 
 }
 
 @media only screen and (max-height: 600px) and (orientation: landscape) {
     
-    #games a
-    {
-        font-size: 1em;
-    }
-    
     h1
     {
         font-size: 1.5em;
-    }
-
-    #games
-    {
-        padding-top: 0.5em;
-        padding-bottom: 0.5em;
     }
 
     #profiles
@@ -344,21 +329,9 @@ span{
         padding-bottom: 0.5em;
     }
 
-    #game
-    {
-        display: flex;
-        flex-wrap: wrap;
-    }
-
     #ttt
     {
         width: 60%;
-    }
-
-    img[alt="back"]
-    {
-        position: absolute;
-        top: 0;
     }
 
     #displayInfo
