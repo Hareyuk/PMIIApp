@@ -33,6 +33,9 @@
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
         <link rel="stylesheet" type="text/css" href="css/index.css">
+        <link rel="stylesheet" type="text/css" href="css/general.css">
+        <link rel="shortcut icon" type="image/png" href="img/fav.png"/>
+        <link rel="shortcut icon" type="image/png" href="img/fav.png"/>
         <title>Hello World</title>
     </head>
     <body>
@@ -43,40 +46,41 @@
                     <h1>AD Games</h1>
                     <div id='shadowBox' class="hidden">
                         <form id="formPlayers" action="javascript:submitData()">
-                            <label class="namePlayer">Perfil del jugador 1</label>
-                            <label>Foto: </label> <br> 
-                            <button id="takePicture1" disabled>Tomar foto</button> <br>
+                            <div>
+                                <label class="namePlayer">Perfil del jugador 1</label>
+                                
+                                <label>Nombre: </label> <input type="text" id="namePlayer1" placeholder="Ingrese su nombre" value="" disabled>
+                                
+                                <label>Apodo: </label> <input type="text" id="nickName1" placeholder="Ingrese su apodo" value="" disabled>
+                                
+                                <button id="takePicture1" disabled>Tomar foto</button>
+                                <img id="myImage1" src="" alt="None" class="hidden">
+                            </div>
                             
-                            <label>Nombre: </label> <input type="text" id="namePlayer1" placeholder="Ingrese su nombre" value="" disabled><br>
-                            
-                            <label>Apodo: </label> <input type="text" id="nickName1" placeholder="Ingrese su apodo" value="" disabled><br>
-                            
-                            <img id="myImage1" src="" alt="None" class="hidden"> <br>
-                            
-                            <label class="namePlayer">Perfil del jugador 2</label>
-                            <label>Foto: </label> <br> 
-                            <button id="takePicture2" disabled>Tomar foto</button> <br>
-                            
-                            <label>Nombre: </label> <input type="text" id="namePlayer2" placeholder="Ingrese su nombre" value="" disabled><br>
-                            
-                            <label>Apodo: </label> <input type="text" id="nickName2" placeholder="Ingrese su apodo" value="" disabled><br>
-                            
-                            <img id="myImage2" src="" alt="None" class="hidden"> 
-                            
+                                <div>
+                                <label class="namePlayer">Perfil del jugador 2</label>
+                                
+                                <label>Nombre: </label> <input type="text" id="namePlayer2" placeholder="Ingrese su nombre" value="" disabled>
+                                
+                                <label>Apodo: </label> <input type="text" id="nickName2" placeholder="Ingrese su apodo" value="" disabled>
+                                
+                                <button id="takePicture2" disabled>Tomar foto</button>
+                                <img id="myImage2" src="" alt="None" class="hidden"> 
+                            </div>
                             <input type="submit" id="sendData" value="Subir datos" disabled>
-                            
-                            </form>
+                        </form>
                     </div>
     
                     <section>
                         <div id="games" class="hidden">
                             <!--Juegos-->
-                            <a href="tictactoe/index.html"><img src="img/tictactoe.png" alt="tictactoe"><p>Ta-Te-Ti</p></a> 
-                            <a href="memotest/index.html"><img src="img/memotest.png" alt="memotest"><p>Memotest</p></a>
-                            <a href="catch_puzzle/index.html"><img src="img/catchPuzzle.png"><p>Atrapa puzzles</p></a>          
+                            <a href="tictactoe/index.html"><img src="img/tictactoe.png" alt="tictactoe"></a> 
+                            <a href="memotest/index.html"><img src="img/memotest.png" alt="memotest"></a>
+                            <a href="catch_puzzle/index.html"><img src="img/catchPuzzle.png" alt="catch Puzzle"></a>          
                         </div>
                         
                         <button id="editButton" class="hidden" onclick="javascript:editProfiles();">Editar perfiles</button>
+                        <button onclick="credits(0)">Mostrar Créditos</button>
                         <div id="profiles" class="hidden">
                             <article id="player1">
                                     <h3>Nombre de jugador</h3>
@@ -93,7 +97,6 @@
                                 </article>
                         </div>
                     </section>
-                    <button onclick="credits(0)">Mostrar Créditos</button>
         
             </div>
             
@@ -108,7 +111,7 @@
                 <p>Íconos hechos por:<a href="https://www.flaticon.es/autores/smashicons" title="Smashicons">Smashicons</a>, desde <a href="https://www.flaticon.es/"     title="Flaticon">www.flaticon.com</a></p>
                 <button onclick="credits(1)">Cerrar</button>
             </div>
-        <div class="backgroundTexture">
+        <div id="texture">
         </div>
         
 

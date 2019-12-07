@@ -61,18 +61,6 @@ table {
 }
 
 /*mi propio CSS*/
-.backgroundTexture
-{
-    background-image: url("../img/background.png");
-    position: fixed;
-    height: 100vh;
-    width: 100vw;
-    background-position: center;
-    top: 0;
-    left: 0;
-    z-index: -40;
-}
-
 .app
 {
     text-align: center;
@@ -80,16 +68,6 @@ table {
     min-height: 100vh;
     margin: 0 auto;
     background-color: rgba(255,255,255,0.6);
-}
-
-#character1, #character2
-{
-    background-position: center;
-    height: 100vh;
-    width: 15%;
-    position: fixed;   
-    top: 0;
-    background-size: cover;;
 }
 
 #character1
@@ -107,13 +85,15 @@ table {
 
 .cordova-camera-capture
 {
-    background-color: #A7A7A7;
-    display: inline-block;
+    background-color: rgba(255,255,255,0.6);
     padding: 2em;
     position: fixed !important;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .playerName
@@ -127,11 +107,41 @@ form
     transition: 0.2s;
 }
 
+section button
+{
+    margin: 0 1em;
+}
+
+#credits a
+{
+    color: white;
+}
+
+form div
+{
+    margin: 1em;
+}
+
+ form button, form input[type="submit"]
+ {
+    padding: 0.5em 2em !important;
+ }
+
+ form label
+ {
+     margin: 0.2em 0;
+ }
+
 #games, #profiles
 {
     display: flex;
     flex-wrap: wrap;
     padding: 1.5em;
+}
+
+#profiles
+{
+    padding-bottom: 0;
 }
 
 h1
@@ -153,13 +163,15 @@ h1
 #games img
 {
     max-width: 100%;
+    display: flex;
 }
 
 #profiles article
 {
     width: 45%;
-    background-color: rgba(0,0,0,0.25);
+    background-color: rgba(0,0,0,0.5);
     margin: 0 auto;
+    color: white;
 }
 
 #profiles
@@ -167,15 +179,21 @@ h1
     padding-top: 0.5em;
 }
 
+#profiles p, #profiles h3, #profiles h4
+{
+    margin: 0.2em 0;
+}
+
 #shadowBox
 {
+    z-index: 2;
     color: white;
     padding: 2em;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0,0,0,0.8);
 }
 
 #player2
@@ -183,10 +201,6 @@ h1
     margin-bottom: 1em;
 }
 
-.hidden
-{
-    display: none !important;
-}
 
 #credits
 {
@@ -206,59 +220,57 @@ h1
     margin:  1em 0;
 }
 
+
 #credits button
 {
-    background-color: rgba(255,255,255,0.8);
-    color: black;
-    border-width: 5px;
-    border-style: groove;
-    border-color: brown;
+
     margin: 0 auto;
     display: block;
 }
 
-@font-face {
-    font-family: "BlackOpsOne";
-    src: url("../fonts/BlackOpsOne-Regular.ttf");
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: "NotoSerif";
-    src: url("../fonts/NotoSerif-Regular.ttf");
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: "NotoSerif";
-    src: url("../fonts/NotoSerif-Regular.ttf");
-    font-weight: bold;
-    font-style: normal;
-}
-
-h1
+#games img
 {
-    font-family: 'BlackOpsOne';
+    transition: 0.2s linear;
 }
+
+#games img:hover
+{
+    filter: brightness(1.5);
+}
+
+#shadowBox img
+{
+    margin: 0.5em 0;
+}
+
+@media only screen and (min-width: 768px)
+{
+    #profiles article
+    {
+        font-size: 1.3em;
+        padding: 1em 0.3em;
+    }
+     
+    button
+    {
+        font-size: 1em;     
+    }
+}
+
 
 @media only screen and (orientation: portrait)
 {
-    .app{
-        width: 100%;
-    }
-}
 
-@media only screen and (max-width: 600px) {
     #games, #profiles
     {
-        padding: 1em;
+        padding: 0.5em;
     }
-    #character1, #character2
+    
+    #profiles article
     {
-        width:0;
+        padding: 0.3em;
     }
+    
 
     #games a
     {
@@ -270,18 +282,54 @@ h1
         margin-top: 1em;
     }
 
+    *:hover
+    {
+        transform: scale(1);
+    }
+}
+
+@media only screen and (orientation: landscape) and (max-height: 600px)
+{
+    
+    .app{
+        width: 100%;
+    }
+
+    #character1, #character2
+    {
+        width:0;
+    }
+
+    #shadowBox
+    {
+        top: 5%;
+        position: absolute;
+        padding: 1em 2em;
+        transform: translate(-50%,0);
+    }
+
+    *:hover
+    {
+        transform: scale(1);
+    }
 }
 
 @media only screen and (max-height: 600px) and (orientation: landscape) {
+
+    #profiles img
+    {
+        width: 80px;
+    }
     
     #games a
     {
         font-size: 1em;
+        width: 30%;
     }
     
     h1
     {
-        font-size: 1.5em;
+        font-size: 1.35em;
     }
 
     #games
@@ -294,6 +342,12 @@ h1
     {
         padding-top: 0.5em;
         padding-bottom: 0.5em;
+        font-size: 0.9em;
+    }
+
+    button
+    {
+        padding: 0.5em 2em !important;
     }
 
 }

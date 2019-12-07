@@ -2,8 +2,8 @@ var turn;
 var mapMatrix = [];
 var posPlayer = [];
 var gameData;
-var widthMap = 20;
-var heightMap = 20;
+var widthMap = 30;
+var heightMap = 30;
 var players;
 var playersTimes = [{points: 0, time: 0}, {points: 0, time: 0}];
 
@@ -34,7 +34,7 @@ function generateMatrix(w, h, m)
         m.push([]);
         for(var j=0; j < h; j++)
         {
-            m[i][j] = null; 
+            m[i][j] = 0; 
         }
     }
     return m;
@@ -51,11 +51,11 @@ function generateMaze(w, h, m)
             var td = document.createElement("td");
             td.style.width = "20px";
             td.style.height = "20px";
-            if(m[i][j] == null)
+            if(m[i][j] == 0)
             {
                 td.classList.add("passThrough");
             }
-            else if(m[i][j] == "X")
+            else if(m[i][j] == 1)
             {
                 td.classList.add("doNotPass");
             }
@@ -73,23 +73,18 @@ function genRandom(min, max)
 
 function markWallsMatrix(w, h, m)
 {
-    //Left & Right
     for(var i = 0; i < w; i++)
     {
+        //Up
+        m[0][i] = 1;
+        //Down
+        m[m.length-1][i] = 1;
         //Left
-        m[i][0] = "X";
+        m[i][0] = 1;
         //Right
-        m[i][h-1] = "X";
+        m[i][m.length-1] = 1;
     }
 
-    //Up & Down
-    for(var i = 0; i < h; i++)
-    {
-        //Up
-        m[0][i] = "X";
-        //Down
-        m[m.length-1][i] = "X";
-    }
     m = buildWalls(w, h, m);
     m = cellsLocked(w, h, m);
     return m;
@@ -97,17 +92,17 @@ function markWallsMatrix(w, h, m)
 
 function cellsLocked(w, h, m)
 {
-    for(var i=1;i<w-2;i++)
+    for(var i=1;i<h-2;i++)
     {
-        for(var j=1;j<h-2;j++)
+        for(var j=1;j<w-2;j++)
         {
             var top = m[i-1][j];
             var left = m[i][j-1];
             var bottom = m[i+1][j];
             var right = m[i][j+1];
-            if(top == left && top == right && top == bottom && top == "X")
+            if(top == left && top == right && top == bottom && top == 1)
             {
-                m[i][j] = "X";
+                m[i][j] = 1;
             }
         }
     }
@@ -116,12 +111,14 @@ function cellsLocked(w, h, m)
 
 function buildWalls(w, h, m)
 {
-    var cellFree = true;
     var arrayPositions = obtainPositions(w, h);
     arrayPositions = shuffle(arrayPositions);
     arrayPositions.splice(w*h/(w+h));
+    var dir = genRandom(0, 3); //0 = up | 1 = left | 2 = down | 3 = right
     while(arrayPositions.length>0)
     {
+        var limitFree = m.length/arrayPositions.length;
+        var amountFrees = 0;
         var amountPos = arrayPositions.length - 1;
         var posRandom = genRandom(0, amountPos);
         var positions = arrayPositions[posRandom];
@@ -129,124 +126,96 @@ function buildWalls(w, h, m)
         arrayPositions.splice(posRandom, 1);
         var posX = parseInt(positions[0]);
         var posY = parseInt(positions[1]); 
-        var dir = genRandom(0, 3); //0 = up | 1 = left | 2 = down | 3 = right
         while(posY > 1 && posY < h-2 && posX > 1 && posX < w-2)
-        {
+        {   
             if(dir == 0)
             {
-                //Found a wall in two cells top
-                if(m[posX-1][posY] == "X" && cellFree == true)
+                if(m[posX-1][posY] == 1 && amountFrees < limitFree)
                 {
-                    //Coming from other side?
-                    if(m[posX-1][posY-1] == "X" && m[posX-1][posY+1] =="X")
-                    {   
-                        cellFree = false;
-                        m[posX][posY] = null;
-                        if(posX > 3)
-                        {
-                            m[posX-3][posY] = null;
-                        }
-                        posX-=3;
+                    if(posX > 3)
+                    {
+                        m[posX-2][posY] = 0;
                     }
-                    else m[posX-1][posY] == "X"; break;
+                    posX-=3;
+                    amountFrees++;
                 }
                 else
                 {
-                    if(cellFree == false)
-                    {
-                        cellFree= true;
-                    }
+                    m[posX][posY] = 1;
                     posX--;
-                    m[posX][posY] = "X";
+                    m[posX][posY] = 1;
                     posX--;
                 }
             }
             else if(dir == 1)
             {
-                if(m[posX][posY+1] == "X")
+                if(m[posX][posY+1] == 1 && amountFrees < limitFree)
                 {
-                    if(m[posX+1][posY+1] == "X" && m[posX-1][posY+1] == "X" && cellFree == true)
-                    {   
-                        cellFree= false;
-                        m[posX][posY] = null;
-                        if(posY < h-3)
-                        {
-                            m[posX][posY+3] = null;
-                        }
-                        posY+=3;
+                    if(posY < h-3)
+                    {
+                        m[posX][posY+2] = 0;
                     }
-                    else m[posX][posY+1] == "X"; break;
+                    posY+=3;
+                    amountFrees++;
                 }
                 else
                 {
-                    if(cellFree == false)
-                    {
-                        cellFree= true;
-                    }
+                    m[posX][posY] = 1;
                     posY++;
-                    m[posX][posY] = "X";
+                    m[posX][posY] = 1;
                     posY++;
                 }
             }
             else if(dir == 2)
             {
-                if(m[posX+1][posY] == "X")
+                if(m[posX+1][posY] == 1 && amountFrees < limitFree)
                 {
-                    if(m[posX+1][posY+1] == "X" && m[posX+1][posY-1] == "X"  && cellFree == true)
+                    if(posX < w-3)
                     {
-                        cellFree= false;
-                        m[posX][posY] = null;
-                        if(posX < w-3)
-                        {
-                            m[posX+3][posY] = null;
-                        }
-                        posX+=3;
+                        m[posX+2][posY] = 0;
                     }
-                    else m[posX+1][posY] == "X"; break;
+                    posX+=3;
+                    amountFrees++;
                 }
                 else
                 {
-                    if(cellFree == false)
-                    {
-                        cellFree= true;
-                    }
+                    m[posX][posY] = 1;
                     posX++;
-                    m[posX][posY] = "X";
+                    m[posX][posY] = 1;
                     posX++;
                 }
             }
             else if(dir == 3)
             {
-                if(m[posX][posY-1] == "X")
+                if(m[posX][posY-1] == 1 && amountFrees < limitFree)
                 {
-                    if(m[posX+1][posY-1] == "X" && m[posX-1][posY-1] == "X" && cellFree == true)
+                    if(posY > 3)
                     {
-                        cellFree= false;
-                        m[posX][posY] = null;
-                        if(posY > 3)
-                        {
-                            m[posX][posY-3] = null;
-                        }
-                        posY-=3;
+                        m[posX][posY-2] = 0;
                     }
-                    else m[posX][posY-1] == "X"; break;
+                    posY-=3;
+                    amountFrees++;
                 }
                 else
                 {
-                    if(cellFree == false)
-                    {
-                        cellFree= true;
-                    }
+                    m[posX][posY] = 1;
                     posY--;
-                    m[posX][posY] = "X";
+                    m[posX][posY] = 1;
                     posY--;
                 }
             }
         }
-        (dir < 3) ? dir++ : dir = 0;
+        amountFrees=0;
+        (dir < 3) ? dir++ : dir=0;
         
     }
     return m;
+}
+
+
+function canPassAll(m)
+{
+
 }
 
 function obtainPositions(w, h)

@@ -1,42 +1,3 @@
-/*font-family: 'Rajdhani', sans-serif;*/
-@font-face {
-    font-family: "BlackOpsOne";
-    src: url("../../../fonts/BlackOpsOne-Regular.ttf");
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: "NotoSerif";
-    src: url("../../../fonts/NotoSerif-Regular.ttf");
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: "NotoSerif";
-    src: url("../../../fonts/NotoSerif-Regular.ttf");
-    font-weight: bold;
-    font-style: normal;
-}
-
-body
-{
-    font-family: NotoSerif;
-}
-
-.texture
-{
-    background-image: url("../../../img/background.png");
-    background-position: center;
-    width: 100vw;
-    height: 100vh;
-    z-index: -999;
-    position: fixed;
-    top: 0;
-    left: 0;
-}
-
 *
 {
     margin: 0;
@@ -60,16 +21,6 @@ main
     flex-wrap: wrap;
 }
 
-#character1, #character2
-{
-    width: 15%;
-    position: absolute;
-    top: 0;
-    height: 100vh;
-    background-size: cover;
-    background-position: center;
-}
-
 #character1
 {
     left: 0;
@@ -83,7 +34,6 @@ main
     background-image: url('../images/nina.png');
 }
 
-
 .none
 {
     display: none;  
@@ -96,17 +46,44 @@ main
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgba(0,0,0,0.5);
     z-index: 1;
 }
 
 #msgBox div, #winner div
 {
-    top: 43%;
+    top: 50%;
     left:50%;
     transform: translate(-50%, -50%);
     position: absolute;
-    background: #fafafa;
+    background-color: rgba(0,0,0,0.8);
+    color: white;
+}
+
+#msgBox div
+{
+    padding: 2em;
+    width: 60%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#msgBox p, #msgBox h3, #msgBox h4
+{
+    width: 100%;
+    display: block;
+}
+
+#msgBox h3, #msgBox h4
+{
+    text-align: center;
+}
+
+
+#msgBox button
+{
+    margin: 1em;
 }
 
 #winner div{
@@ -134,9 +111,14 @@ main
     font-size: 40px;
 }
 
-img:active
-{
-    opacity: 0.5;
+img:active[alt="mark X"]
+{ 
+    filter: drop-shadow(0px 0px 3px red) brightness(5);
+}
+
+img:active[alt="mark O"]
+{ 
+    filter: drop-shadow(0px 0px 3px rgb(75, 75, 255)) brightness(1.2)
 }
 
 .app
@@ -150,12 +132,13 @@ img:active
 #game{
     margin: 0 auto;
     text-align: center;
+    display: flex;
+    flex-wrap: wrap;
 }
 
-#game h1{
-    font-size: 100px;
-    color: #4c4c4c;
-    margin-top: 0.5em;
+h1{
+    font-size: 2.5em;
+    color: black;
 }
 
 table{
@@ -183,37 +166,37 @@ td
 img[alt="back"]
 {
     width: 10vh;
-}
-
-#msgBox div{
-    padding: 2em;
+    position: absolute;
+    top: 0;
 }
 
 #msgBox h3{
-    font-size: 30px;
+    font-size: 1.5em;
     margin-top: 0;
 }
 
 #msgBox p{
-    font-size: 19px;
+    font-size: 1.1em;
+    margin: 0.3em 0;
 }
 
 button {
-    background-color: rgba(0,0,0,0.4);
-    color: white;
-    font-size: 20px;
+    font-size: 1.2em;
     border: none;
-    padding: 0.8em 0.5em;
-    margin: 0 0.8em;
     cursor: pointer;
     border-width: 5px;
     border-style: groove;
     border-color: brown;
+    background-color: #640505;
+    color: white;
+    box-shadow: 0px 4px 0px 0px rgba(0,0,0,0.5);
+    border-radius: 5px;
+    font-size: 1em;
+    padding: 0.5em 0.2em !important;
+    margin: 0.3em 0;
+    width: 90%;
 }
 
-button:hover{
-    background-color: rgba(0,0,0,0.8);
-}
 
 
 #startButton{
@@ -242,6 +225,7 @@ img{
     padding: 0;
     margin: 0;
     max-width: 100%;
+    display: flex;
 }
 
 #handPlayer{
@@ -262,7 +246,7 @@ img{
 
 .pointingActive:hover
 {
-    background-color: rgba(0, 0, 0, 0.04);
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 .dontClick
@@ -270,14 +254,56 @@ img{
     cursor: not-allowed;
 }
 
-.cellWinner1
+.cellWinner1 img
 {
-    background-color: #d1ccff;
+    animation-name: markX;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
 }
 
-.cellWinner2
+@keyframes markX
 {
-    background-color: #ffcccc;
+    0%
+    {
+        filter: drop-shadow(0px 0px 5px rgba(255,0,0,1)) brightness(1);
+    }
+
+    50%
+    {
+        filter: drop-shadow(0px 0px 2px rgba(255,0,0,1)) brightness(0.5);
+    }
+
+    100%
+    {
+        filter: drop-shadow(0px 0px 5px rgba(255,0,0,1)) brightness(1);   
+    }
+}
+
+.cellWinner2 img
+{
+    animation-name: markO;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+@keyframes markO
+{
+    0%
+    {
+        filter: drop-shadow(0px 0px 5px rgba(0,0,255,1)) brightness(1);
+    }
+
+    50%
+    {
+        filter: drop-shadow(0px 0px 2px rgba(0,0,255,1)) brightness(1.5);
+    }
+
+    100%
+    {
+        filter: drop-shadow(0px 0px 5px rgba(0,0,255,1)) brightness(1);   
+    }
 }
 
 span{
@@ -301,26 +327,6 @@ span{
         width: 100vw;
     }
 
-}
-
-@media only screen and (max-width: 600px) {
-    
-    #games, #profiles
-    {
-        padding: 1em;
-    }
-    
-
-    #games a
-    {
-        width: 45%;
-    }
-
-    #games a:last-child
-    {
-        margin-top: 1em;
-    }
-
     td
     {
         width: 22vw;
@@ -328,30 +334,24 @@ span{
         padding: 0.8em;
     }
 
-    img[alt="back"]
+    #ttt
     {
-        position: fixed;
-        top: 0;
-        left: 0;
+        margin: 0 auto;
     }
+
+    #displayInfo
+    {
+        margin: 0 auto;
+        font-size: 1em;
+    }
+
 }
 
 @media only screen and (max-height: 600px) and (orientation: landscape) {
     
-    #games a
-    {
-        font-size: 1em;
-    }
-    
     h1
     {
         font-size: 1.5em;
-    }
-
-    #games
-    {
-        padding-top: 0.5em;
-        padding-bottom: 0.5em;
     }
 
     #profiles
@@ -360,5 +360,24 @@ span{
         padding-bottom: 0.5em;
     }
 
+    #ttt
+    {
+        width: 60%;
+    }
+
+    #displayInfo
+    {
+        width: 40%;
+    }
+
+    button
+    {
+        font-size: 1em;
+    }
+
+    td
+    {
+        width: 8vw;
+    }
 
 }

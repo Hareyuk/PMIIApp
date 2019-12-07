@@ -66,9 +66,13 @@ var dataMT =
 
 var dataCP =
 {
-    dataSaved: 0,
+    dataSaved: false,
     player1Points: 0,
-    player2Points: 1
+    player2Points: 1,
+    mapMatrix: [],
+    posPlayer: {},
+    times: [],
+    turn: 0,
 }
 
 
@@ -140,7 +144,8 @@ function takePicture(num)
         targetHeight: 100,
         targetWidth: 100,   
         correctOrientation: true,
-        allowEdit: false
+        allowEdit: false,
+        sourceType:Camera.PictureSourceType.PHOTOLIBRARY
         
     });
     
@@ -289,7 +294,7 @@ function showInfo()
         pPl.innerHTML = "Puntaje general: " + generalPoint;
         pPl.innerHTML += "<br>Puntaje de tateti: "+players[(i-1)].pointTTT; 
         pPl.innerHTML += " <br>Puntaje de memotest: " + players[(i-1)].pointMT;
-        pPl.innerHTML += "<br>Puntaje de Catch puzzle: " + players[(i-1)].pointCP;
+        pPl.innerHTML += "<br>Puntaje de Atrapa puzzles: " + players[(i-1)].pointCP;
 
     }
 }

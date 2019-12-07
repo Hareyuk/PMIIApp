@@ -11,7 +11,7 @@
     <link rel="shortcut icon" type="image/png" href="../img/fav.png"/>
     <title>Atrapa puzzle!</title>
 </head>
-<body>
+<body onload="startGame();">
     <header>
         <h1>Atrapa puzzle!</h1>
     </header>
@@ -21,6 +21,7 @@
         </div>
         <div class="app">
                 <a href="../index.html"><img src="../img/back.svg" alt="back"></a>
+                <div id="game"></div>
                 
         </div>
         
@@ -33,5 +34,6 @@
             <source src="sounds/theme.mp3" type="audio/mpeg">
         </audio>
     </footer>
+    <script src="assets/js/code.js"></script>
 </body>
 </html>

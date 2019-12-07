@@ -278,6 +278,19 @@ h1
     }
 }
 
+@media only screen and (orientation: landscape) and (max-height: 600px)
+{
+    
+    .app{
+        width: 100%;
+    }
+
+    #character1, #character2
+    {
+        width:0;
+    }
+}
+
 @media only screen and (max-height: 600px) and (orientation: landscape) {
 
     #profiles img

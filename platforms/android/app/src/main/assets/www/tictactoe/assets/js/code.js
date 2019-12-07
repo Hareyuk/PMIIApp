@@ -40,6 +40,7 @@ function getData()
     flagGaming = gameData.canClick;
     savingCells = gameData.savingCells;
     winnerCells = gameData.winnerCells;
+    turn = gameData.turn;
 }
 
 function reloadTableData()
@@ -69,23 +70,33 @@ function areYouSure()
     $("#msgBox").addClass("sureAbout");
 }
 
-//Cerrar el cartel con un parámetro según si es para reiniciar o salir del juego
+
 function msgBoxDone(num)
 {
     $("#msgBox").empty();
     $("#msgBox").addClass("none");
-    $("#msgBox").removeClass("sureAbout");
+    $("#msgBox").removeClass("sureAbout");  
+    if(num == 1)
+    {  
+        restartGame();
+        gameData.dataSaved = false;
+        saveData();
+    }
 
-    restartGame();
-    gameData.dataSaved = false;
-    saveData();
+    if(num ==2)
+    {
+        winPl1 = 0;
+        winPl2 = 0;
+        saveData();
+        showPoints();
+    }
 }
 
 function buildInfo(num)
 {
     if(num == 0)
     {
-        $("#game").append("<div id='info'></div>");
+        $("#displayInfo").append("<div id='info'></div>");
     }
     var classHand = 1;
     if(turn == 1)
@@ -101,7 +112,7 @@ function buildInfo(num)
 
 function buildButtons()
 {
-    $("#game").append("<div id='btns'></div>");
+    $("#displayInfo").append("<div id='btns'></div>");
     $("#btns").append("<button onclick='areYouSure(1)'>Reiniciar</button>");
     $("#btns").append("<button onclick='instruc()'>Instrucciones</button>");
     $("#btns").append("<button onclick='restartPoints()'>Reiniciar puntos</button>")
@@ -113,7 +124,7 @@ function buildGame()
 {
     $("#game").empty();
     //Create <table>
-    $("#game").append("<div id='ttt'></div>");
+    $("#game").append("<div id='ttt'></div><div id='displayInfo'></div>");
     buildTable();
     buildInfo(0);
     buildButtons();
@@ -145,11 +156,11 @@ function generateCol(row)
 
         if(tableGame[j][row] == 0)
         {
-            txt += "<td id='col" +count+"' class='dontClick'><img src='assets/images/x.svg' alt='mark X'></td>";
+            txt += "<td id='col" +count+"' class='dontClick'><img src='assets/images/x.png' alt='mark X'></td>";
         }
         else if(tableGame[j][row] == 1)
         {
-            txt += "<td id='col" +count+"' class='dontClick'><img src='assets/images/o.svg' alt='mark O'></td>";    
+            txt += "<td id='col" +count+"' class='dontClick'><img src='assets/images/o.png' alt='mark O'></td>";    
 
         }
         else
@@ -210,15 +221,15 @@ function putSymbol(num)
     
             }
             
-            //Append SVG
+            //Append PNG
             if(turn == 0)
             {
                 
-                col.append('<img src="assets/images/x.svg" alt="mark X">');
+                col.append('<img src="assets/images/x.png" alt="mark X">');
             }
             else
             {
-                col.append('<img src="assets/images/o.svg" alt="mark O">');
+                col.append('<img src="assets/images/o.png" alt="mark O">');
             }
             saveData();
             validateWin();
@@ -340,10 +351,10 @@ function showPoints()
 
 function restartPoints()
 {
-    winPl1 = 0;
-    winPl2 = 0;
-    saveData();
-    showPoints();
+    $("#msgBox").removeClass("none");
+     $("#msgBox").append('<div><h3>¿Reiniciar los puntos?</h3><button onclick="msgBoxDone(2)">Sí</button><button onclick="msgBoxDone()">No</button></div>');
+    $("#msgBox").addClass("sureAbout");
+
 }
 
 function changePlayer()

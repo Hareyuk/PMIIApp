@@ -3,28 +3,10 @@
     margin: 0;
 }
 
-body{
-    max-width: 700px;
-    margin: 0 auto;
-}
-header main footer{
-    width: 100%;
-}
-
 p, #turnos{
     height: 1.5rem;
 }
 
-.texture
-{
-    background-image: url(../../../img/background.png);
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    z-index: -999;
-    top: 0;
-    left: 0;
-}
 
 #game
 {
@@ -64,8 +46,8 @@ td{
 
 .theCard{
     overflow: visible;
-    border-radius: .5rem;
-    border: .7rem double white;
+    border-radius: 0.5em;
+    border: 0.2em black solid;
     width: 70px;
     height: 110px;
     transform-style: preserve-3d;
@@ -81,8 +63,8 @@ td{
 }
 
 .theFront{
-    background-color:#ff7eb3;
-    -webkit-backface-visibility: hidden;
+    background-image:url(../images/reverse.png);
+    background-size: contain;
     backface-visibility: hidden;
 }
 
@@ -113,28 +95,18 @@ td{
 .find1
 {
     /* filter: invert(1); */
-    border-color: greenyellow;
+    border-color: rgb(255, 78, 101);
 }
 
 .find2
 {
     /* filter: sepia(1); */
-    border-color: lightskyblue;
+    border-color: rgb(55, 75, 255);
 }
 
 img[alt="back"]
 {
     width: 10vh;
-}
-
-#character1, #character2
-{
-    width: 15%;
-    position: absolute;
-    top: 0;
-    height: 100vh;
-    background-size: cover;
-    background-position: center;
 }
 
 #character1

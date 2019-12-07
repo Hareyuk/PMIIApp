@@ -144,7 +144,8 @@ function takePicture(num)
         targetHeight: 100,
         targetWidth: 100,   
         correctOrientation: true,
-        allowEdit: false
+        allowEdit: false,
+        sourceType:Camera.PictureSourceType.PHOTOLIBRARY
         
     });
     
