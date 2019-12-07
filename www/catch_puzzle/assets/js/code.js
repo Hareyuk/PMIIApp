@@ -109,37 +109,8 @@ function markWallsMatrix(w, h, m)
         m[i][m.length-1] = "X";
     }
 
-    var r = genRandom(0,1);
-    var amount = (w*h) / m.length;
-    amount = (amount / 2) - 1; 
-    var placeRandom = m.length / 2;
-    var placeRandom = genRandom(placeRandom*0.8, placeRandom*1.2);
-    var cellFree = genRandom(1, (m.length - 2));
-    if(r == 0)
-    {
-        m = createWallH(placeRandom, 0, (m.length-1), cellFree, m);
-    }
-    else
-    {
-        m = createWallV(placeRandom, 0, (m.length-1), cellFree, m);
-    }
-
-    for(var i = 0; i < amount; i++)
-    {
-        for(var j = 0; j < amount; j++)
-        {
-            if(r == 0)
-            {
-
-                r++;
-            }
-            else 
-            {
-
-                r--;
-            }
-        }
-    }
+    var arrayPositions;
+    
     return m;
 }
 
