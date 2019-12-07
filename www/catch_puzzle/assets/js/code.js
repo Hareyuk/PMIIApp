@@ -25,7 +25,6 @@ function startGame()
     mapMatrix = generateMatrix(widthMap, heightMap, mapMatrix);
     mapMatrix = markWallsMatrix(widthMap, heightMap, mapMatrix);
     generateMaze(widthMap, heightMap, mapMatrix);
-    
 }
 
 function generateMatrix(w, h, m)
@@ -67,14 +66,28 @@ function generateMaze(w, h, m)
     document.getElementById("game").appendChild(table);
 }
 
-function createWallH()
+function createWallH(posX, posI, posF, free, m)
 {
-
+    for(var i = posI; i <= posF; i++)
+    {
+        if(i != free)
+        {
+            m[posX][i] = "X";
+        }
+    }
+    return m;
 }
 
-function createWallV()
+function createWallV(posY, posI, posF, free, m)
 {
-
+    for(var i = posI; i <= posF; i++)
+    {
+        if(i!=free)
+        {
+            m[i][posY] = "X";
+        }
+    }
+    return m;
 }
 
 function genRandom(min, max)
@@ -94,6 +107,38 @@ function markWallsMatrix(w, h, m)
         m[i][0] = "X";
         //Right
         m[i][m.length-1] = "X";
+    }
+
+    var r = genRandom(0,1);
+    var amount = (w*h) / m.length;
+    amount = (amount / 2) - 1; 
+    var placeRandom = m.length / 2;
+    var placeRandom = genRandom(placeRandom*0.8, placeRandom*1.2);
+    var cellFree = genRandom(1, (m.length - 2));
+    if(r == 0)
+    {
+        m = createWallH(placeRandom, 0, (m.length-1), cellFree, m);
+    }
+    else
+    {
+        m = createWallV(placeRandom, 0, (m.length-1), cellFree, m);
+    }
+
+    for(var i = 0; i < amount; i++)
+    {
+        for(var j = 0; j < amount; j++)
+        {
+            if(r == 0)
+            {
+
+                r++;
+            }
+            else 
+            {
+
+                r--;
+            }
+        }
     }
     return m;
 }
