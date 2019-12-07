@@ -2,8 +2,8 @@ var turn;
 var mapMatrix = [];
 var posPlayer = [];
 var gameData;
-var widthMap = 10;
-var heightMap = 50;
+var widthMap = 20;
+var heightMap = 20;
 var players;
 var playersTimes = [{points: 0, time: 0}, {points: 0, time: 0}];
 
@@ -116,10 +116,10 @@ function cellsLocked(w, h, m)
 
 function buildWalls(w, h, m)
 {
+    var cellFree = true;
     var arrayPositions = obtainPositions(w, h);
     arrayPositions = shuffle(arrayPositions);
     arrayPositions.splice(w*h/(w+h));
-    var dir = genRandom(0, 3); //0 = up | 1 = left | 2 = down | 3 = right
     while(arrayPositions.length>0)
     {
         var amountPos = arrayPositions.length - 1;
@@ -129,16 +129,18 @@ function buildWalls(w, h, m)
         arrayPositions.splice(posRandom, 1);
         var posX = parseInt(positions[0]);
         var posY = parseInt(positions[1]); 
+        var dir = genRandom(0, 3); //0 = up | 1 = left | 2 = down | 3 = right
         while(posY > 1 && posY < h-2 && posX > 1 && posX < w-2)
         {
             if(dir == 0)
             {
                 //Found a wall in two cells top
-                if(m[posX-1][posY] == "X")
+                if(m[posX-1][posY] == "X" && cellFree == true)
                 {
                     //Coming from other side?
                     if(m[posX-1][posY-1] == "X" && m[posX-1][posY+1] =="X")
                     {   
+                        cellFree = false;
                         m[posX][posY] = null;
                         if(posX > 3)
                         {
@@ -146,10 +148,14 @@ function buildWalls(w, h, m)
                         }
                         posX-=3;
                     }
-                    else break;
+                    else m[posX-1][posY] == "X"; break;
                 }
                 else
                 {
+                    if(cellFree == false)
+                    {
+                        cellFree= true;
+                    }
                     posX--;
                     m[posX][posY] = "X";
                     posX--;
@@ -159,8 +165,9 @@ function buildWalls(w, h, m)
             {
                 if(m[posX][posY+1] == "X")
                 {
-                    if(m[posX+1][posY+1] == "X" && m[posX-1][posY+1] == "X")
+                    if(m[posX+1][posY+1] == "X" && m[posX-1][posY+1] == "X" && cellFree == true)
                     {   
+                        cellFree= false;
                         m[posX][posY] = null;
                         if(posY < h-3)
                         {
@@ -168,10 +175,14 @@ function buildWalls(w, h, m)
                         }
                         posY+=3;
                     }
-                    else break;
+                    else m[posX][posY+1] == "X"; break;
                 }
                 else
                 {
+                    if(cellFree == false)
+                    {
+                        cellFree= true;
+                    }
                     posY++;
                     m[posX][posY] = "X";
                     posY++;
@@ -181,8 +192,9 @@ function buildWalls(w, h, m)
             {
                 if(m[posX+1][posY] == "X")
                 {
-                    if(m[posX+1][posY+1] == "X" && m[posX+1][posY-1] == "X")
+                    if(m[posX+1][posY+1] == "X" && m[posX+1][posY-1] == "X"  && cellFree == true)
                     {
+                        cellFree= false;
                         m[posX][posY] = null;
                         if(posX < w-3)
                         {
@@ -190,10 +202,14 @@ function buildWalls(w, h, m)
                         }
                         posX+=3;
                     }
-                    else break;
+                    else m[posX+1][posY] == "X"; break;
                 }
                 else
                 {
+                    if(cellFree == false)
+                    {
+                        cellFree= true;
+                    }
                     posX++;
                     m[posX][posY] = "X";
                     posX++;
@@ -203,8 +219,9 @@ function buildWalls(w, h, m)
             {
                 if(m[posX][posY-1] == "X")
                 {
-                    if(m[posX+1][posY-1] == "X" && m[posX-1][posY-1] == "X")
+                    if(m[posX+1][posY-1] == "X" && m[posX-1][posY-1] == "X" && cellFree == true)
                     {
+                        cellFree= false;
                         m[posX][posY] = null;
                         if(posY > 3)
                         {
@@ -212,10 +229,14 @@ function buildWalls(w, h, m)
                         }
                         posY-=3;
                     }
-                    else break;
+                    else m[posX][posY-1] == "X"; break;
                 }
                 else
                 {
+                    if(cellFree == false)
+                    {
+                        cellFree= true;
+                    }
                     posY--;
                     m[posX][posY] = "X";
                     posY--;
