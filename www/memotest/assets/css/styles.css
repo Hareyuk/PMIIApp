@@ -104,11 +104,6 @@ td{
     border-color: rgb(55, 75, 255);
 }
 
-img[alt="back"]
-{
-    width: 10vh;
-}
-
 #character1
 {
     left: 0;
@@ -133,10 +128,6 @@ img[alt="back"]
         width: 100%;
     }
 
-    img[alt="back"]
-    {
-        width: 10vw;
-    }
 }
 
 @media only screen and (max-width: 600px) {

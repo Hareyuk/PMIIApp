@@ -4,13 +4,6 @@
     margin: 0;
 }
 
-img[alt="back"]
-{
-    width: 5vw;
-    position: absolute;
-    top: 0;
-}
-
 #character1
 {
     background-image: url('../img/johan.png');
@@ -40,6 +33,31 @@ header
     margin: 0 auto;
 }
 
+#game div
+{
+    position: relative;
+    height: 500px;
+    width: 500px;
+    overflow: hidden;
+}
+
+table
+{
+    transition: 1s linear;
+    position: relative;
+    height: 2000px;
+    width: 2000px;
+    top: 0px;
+    left: 0px;
+    border-collapse: collapse;
+}
+
+/*td
+{
+    width: 100px;
+    height: 100px;
+}*/
+
 .doNotPass
 {
     background-color: black;
@@ -48,6 +66,23 @@ header
 .passThrough
 {
     background-color: white;
+}
+
+.player
+{
+    background-size: contain;
+    background-color: steelblue;
+}
+
+
+.character
+{
+    position: absolute;
+    z-index: 1;
+    width: 100px;
+    height: 100px;
+    left: 200px;
+    top: 200px;
 }
 
 @media only screen and (min-width: 992px)
@@ -61,45 +96,10 @@ header
         width: 100%;
     }
 
-    #character1, #character2
-    {
-        width:0;
-    }
 
-    #games, #profiles
-    {
-        padding: 1em;
-    }
-    
-
-    #games a
-    {
-        width: 45%;
-    }
-
-    #games a:last-child
-    {
-        margin-top: 1em;
-    }
-
-    img[alt="back"]
-    {
-        width: 5vh;
-    }
 }
 
 @media only screen and (max-height: 600px) and (orientation: landscape) {
-
-    #profiles img
-    {
-        width: 80px;
-    }
-    
-    #games a
-    {
-        font-size: 1em;
-        width: 30%;
-    }
     
     h1
     {

@@ -163,13 +163,6 @@ td
     border-color: brown;
 }
 
-img[alt="back"]
-{
-    width: 10vh;
-    position: absolute;
-    top: 0;
-}
-
 #msgBox h3{
     font-size: 1.5em;
     margin-top: 0;
