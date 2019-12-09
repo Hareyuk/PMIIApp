@@ -8,6 +8,7 @@ var players;
 var playersTimes = [{points: 0, time: 0}, {points: 0, time: 0}];
 var canMove = true;
 var tableGame;
+var canPressKeys = false;
 
 function startGame()
 {
@@ -31,6 +32,7 @@ function startGame()
     generateMazeTable(widthMap, heightMap, mapMatrix);
     moveTable();
     generateCharacter(turn);
+    canPressKeys = true;
 }
 
 function generateCharacter(character)
@@ -108,7 +110,7 @@ function generateMazeTable(w, h, m)
     tableGame = document.getElementById("tableGame");
 }
 
-async function moveTable()
+function moveTable()
 {
     tableGame.style.top = (-posPlayer.x*100+200)+"px";
     tableGame.style.left = (-posPlayer.y*100+200)+"px";
@@ -347,37 +349,17 @@ while (0 !== currentIndex) {
 return array;
 }
 
-
-/* Keyboard events from https://stackoverflow.com/questions/14261062/js-function-when-keyboard-key-is-pressed/14262201 */
-function keyListener(event){ 
-//whatever we want to do goes in this block
-event = event || window.event; //capture the event, and ensure we have an event
-var key = event.key || event.which || event.keyCode; //find the key that was pressed
-//MDN is better at this: https://developer.mozilla.org/en-US/docs/DOM/event.which
-if(key===84){ //this is for 'T'
-    doThing();
-}
+function pressKey(e)
+{
+    alert('Magyu');
 }
 
-
-/* the last example replace this one */
-
-var el = window; //we identify the element we want to target a listener on
-//remember IE can't capture on the window before IE9 on keypress.
-
-var eventName = 'keypress'; //know which one you want, this page helps you figure that out: http://www.quirksmode.org/dom/events/keys.html
-//and here's another good reference page: http://unixpapa.com/js/key.html
-//because you are looking to capture for things that produce a character
-//you want the keypress event.
-
-//we are looking to bind for IE or non-IE, 
-//so we have to test if .addEventListener is supported, 
-//and if not, assume we are on IE. 
-//If neither exists, you're screwed, but we didn't cover that in the else case.
-if (el.addEventListener) {
-el.addEventListener('click', keyListener, false); 
-} else if (el.attachEvent)  {
-el.attachEvent('on'+eventName, keyListener);
+function movePlayer(moveX, moveY)
+{
+    if(canPressKeys)
+    {
+        posPlayer.x += moveX;
+        posPlayer.y += moveY;
+        moveTable();
+    }
 }
-
-//and at this point you're done with registering the function, happy monitoring
