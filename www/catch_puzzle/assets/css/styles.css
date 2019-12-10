@@ -43,7 +43,7 @@ header
 
 table
 {
-    transition: 1s linear;
+    transition: 0.4s ease-in;
     position: relative;
     height: 2000px;
     width: 2000px;
@@ -68,7 +68,7 @@ table
     background-color: white;
 }
 
-.player
+.start_position_player
 {
     background-size: contain;
     background-color: steelblue;

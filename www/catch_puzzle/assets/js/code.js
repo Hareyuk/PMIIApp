@@ -8,7 +8,6 @@ var players;
 var playersTimes = [{points: 0, time: 0}, {points: 0, time: 0}];
 var canMove = true;
 var tableGame;
-var canPressKeys = false;
 
 function startGame()
 {
@@ -32,7 +31,27 @@ function startGame()
     generateMazeTable(widthMap, heightMap, mapMatrix);
     moveTable();
     generateCharacter(turn);
-    canPressKeys = true;
+    document.addEventListener("keydown", pressKey);
+}
+
+function pressKey(event)
+{
+    var arrowKey = event.keyCode || event.which;
+    switch(arrowKey)
+    {
+        case 37://Left
+            movePlayer(0,-1);
+            break;
+        case 38://Up
+            movePlayer(-1,0);
+            break;
+        case 39://Right
+            movePlayer(0,1);
+            break;
+        case 40://Down
+            movePlayer(1,0);
+            break;
+    }
 }
 
 function generateCharacter(character)
@@ -79,6 +98,7 @@ function putPieces(w, h, m)
 
 function generateMazeTable(w, h, m)
 {
+    document.getElementById('game').innerHTML = "";
     var div = document.createElement("div");
     var table = document.createElement("table");
     for(var i=0;i <w;i++)
@@ -98,7 +118,7 @@ function generateMazeTable(w, h, m)
             else if (m[i][j] == "P")
             {
                 //Add turn later
-                td.classList.add("player");
+                td.classList.add("start_position_player");
             }
             tr.appendChild(td);
         }
@@ -334,32 +354,34 @@ function saveData()
 
 //Taken from: http://sedition.com/perl/javascript-fy.html
 function shuffle(array) {
-var currentIndex = array.length, temporaryValue, randomIndex;
+    var currentIndex = array.length, temporaryValue, randomIndex;
 
-while (0 !== currentIndex) {
+    while (0 !== currentIndex) {
 
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
 
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+
+    return array;
 }
 
-return array;
-}
-
-function pressKey(e)
+async function movePlayer(moveX, moveY)
 {
-    alert('Magyu');
-}
-
-function movePlayer(moveX, moveY)
-{
-    if(canPressKeys)
+    if(mapMatrix[posPlayer.x+moveX][posPlayer.y+moveY] != "X" && canMove)
     {
+        canMove = false;
         posPlayer.x += moveX;
         posPlayer.y += moveY;
-        moveTable();
+        moveTable();   
+        mapMatrix[posPlayer.x-moveX][posPlayer.y-moveY] = null;
+        mapMatrix[posPlayer.x-moveX][posPlayer.y-moveY] = "P";
+        setTimeout(function()
+        {
+            canMove = true;
+        }, 350);
     }
 }
