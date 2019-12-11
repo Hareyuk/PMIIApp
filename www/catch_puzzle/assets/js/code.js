@@ -19,6 +19,8 @@ var canMove = true;
 var tableGame;
 var lastDirection = "";
 var imageCharacter;
+var setTimeOuts = [];
+var fps = 8;
 
 function startGame() {
     /*players = localStorage.getItem("players");
@@ -42,6 +44,12 @@ function startGame() {
     moveTable();
     generateCharacter(turn);
     document.addEventListener("keydown", pressKey);
+    document.addEventListener("keyup", keyUp);
+}
+
+function keyUp(event)
+{
+    canMove = true;
 }
 
 function pressKey(event) {
@@ -107,6 +115,7 @@ function putPieces(w, h, m) {
         piece1Y = genRandom(2, w / 2 - 2);
     }
     m[piece1X][piece1Y] = "obj";
+    console.log('pieza 1: ', piece1X, " - ", piece1Y);
 
     var piece2X = genRandom(h / 2 + 2, h - 3);
     var piece2Y = genRandom(2, w / 2 - 2);
@@ -115,6 +124,7 @@ function putPieces(w, h, m) {
         piece2Y = genRandom(2, w / 2 - 2);
     }
     m[piece2X][piece2Y] = "obj";
+    console.log('pieza 1: ', piece2X, " - ", piece2Y);
 
     var piece3X = genRandom(2, h / 2 - 2);
     var piece3Y = genRandom(w / 2 + 2, w - 3);
@@ -123,6 +133,7 @@ function putPieces(w, h, m) {
         piece3Y = genRandom(w / 2 + 2, w - 3);
     }
     m[piece3X][piece3Y] = "obj";
+    console.log('pieza 1: ', piece3X, " - ", piece3Y);
 
     var piece4X = genRandom(2, h - 3);
     var piece4Y = genRandom(2, w - 3);
@@ -131,6 +142,7 @@ function putPieces(w, h, m) {
         piece4Y = genRandom(2, w - 3);
     }
     m[piece4X][piece4Y] = "obj";
+    console.log('pieza 1: ', piece4X, " - ", piece4Y);
     return m;
 }
 
@@ -191,7 +203,7 @@ function markWallsMatrix(w, h, m) {
         m[w - 1][i] = "X";
         m[w - 2][i] = "X";
     }
-    m = buildWalls(w, h, m);
+    m = buildBlocksWalls(w, h, m);
     m = cellsLocked(w, h, m);
     return m;
 }
@@ -211,7 +223,7 @@ function cellsLocked(w, h, m) {
     return m;
 }
 
-function buildWalls(w, h, m) {
+function buildBlocksWalls(w, h, m) {
     var cellFree = true;
     var arrayPositions = obtainPositions(w, h);
     arrayPositions = shuffle(arrayPositions);
@@ -238,8 +250,11 @@ function buildWalls(w, h, m) {
                             m[posX - 3][posY] = null;
                         }
                         posX -= 3;
-                    } else m[posX - 1][posY] == "X";
-                    break;
+                    } else
+                    {
+                        m[posX - 1][posY] == "X";
+                        break;
+                    }
                 } else {
                     if (cellFree == false) {
                         cellFree = true;
@@ -257,8 +272,10 @@ function buildWalls(w, h, m) {
                             m[posX][posY + 3] = null;
                         }
                         posY += 3;
-                    } else m[posX][posY + 1] == "X";
-                    break;
+                    } else{
+                        m[posX][posY + 1] == "X";
+                        break;
+                    }
                 } else {
                     if (cellFree == false) {
                         cellFree = true;
@@ -276,8 +293,10 @@ function buildWalls(w, h, m) {
                             m[posX + 3][posY] = null;
                         }
                         posX += 3;
-                    } else m[posX + 1][posY] == "X";
-                    break;
+                    } else {
+                        m[posX + 1][posY] == "X";
+                        break;
+                    }
                 } else {
                     if (cellFree == false) {
                         cellFree = true;
@@ -295,8 +314,10 @@ function buildWalls(w, h, m) {
                             m[posX][posY - 3] = null;
                         }
                         posY -= 3;
-                    } else m[posX][posY - 1] == "X";
-                    break;
+                    } else {
+                        m[posX][posY - 1] == "X";
+                        break;
+                    }
                 } else {
                     if (cellFree == false) {
                         cellFree = true;
@@ -354,47 +375,59 @@ function shuffle(array) {
 }
 
 async function movePlayer(moveX, moveY, direction) {
-    if (lastDirection != direction) {
-        canMove = true;
-    }
-
-    if (mapMatrix[posPlayer.x + moveX][posPlayer.y + moveY] != "X" && canMove) {
-        canMove = false;
-        posPlayer.x += moveX;
-        posPlayer.y += moveY;
-        mapMatrix[posPlayer.x - moveX][posPlayer.y - moveY] = null;
-        moveTable();
-        mapMatrix[posPlayer.x - moveX][posPlayer.y - moveY] = "P";
-        setTimeout(function() {           
-            lastDirection = direction;
+    if (mapMatrix[posPlayer.x + moveX][posPlayer.y + moveY] != "X") {
+        if (lastDirection != direction) {
             canMove = true;
+            lastDirection = direction;
+            console.log('Changed direction');
+        }
+
+        if(canMove)
+        {
+            clearTimeout(setTimeOuts[0]);
+            console.log('Puede avanzar. TimeOut de movimiento listo.');
+            canMove = false;
+            posPlayer.x += moveX;
+            posPlayer.y += moveY;
+            mapMatrix[posPlayer.x - moveX][posPlayer.y - moveY] = null;
+            moveTable();
+            mapMatrix[posPlayer.x - moveX][posPlayer.y - moveY] = "P";
+            setTimeOuts[0] = setTimeout(function() {           
+                console.log('Ya avanzado. Llamando a removePiece()...');
+                lastDirection = direction;
+                canMove = true;
+            }, 450);
             removePiece();
-        }, 300);
+        }
+        
     }
 }
 
-function removePiece()
+async function removePiece()
 {
-    setTimeout(function()
-    {
+    console.log('En removePiece(), y limpiado setTimeOut...');
+    setTimeout(function(){
+        console.log('¿Es un objeto?');
         if(mapMatrix[posPlayer.x][posPlayer.y] == "obj")
         {
+            console.log('¡Un objeto aquí! Brillo~');
             var tr = tableGame.childNodes[posPlayer.x];
             var td = tr.childNodes[posPlayer.y];
             td.classList.remove('pieces');
             td.classList.add('passThrough');
             grabPiece();
-        }    
-    }, 300);
+        } 
+    }, 200);
 } 
 
-function grabPiece()
+async function grabPiece()
 {
+    clearTimeout(setTimeOuts[2]);
     imageCharacter.classList.add('grabPieces');
-    setTimeout(function()
+    setTimeOuts[2] = setTimeout(function()
     {
         imageCharacter.classList.remove('grabPieces');
-    }, 200);
+    }, 500);
 }
 
 function characterWalking(character, direction) {

@@ -102,6 +102,13 @@ button:hover{
     animation-timing-function: linear;
 }
 
+img[alt="back"]
+{
+    position: absolute;
+    top: 0;
+    width:5vw;
+}
+
 @keyframes movingStars
 {
     0%
@@ -126,6 +133,12 @@ button:hover{
     #character1, #character2
     {
         width:0;
+    }
+
+    img[alt="back"]
+    {
+        left:0;
+        width: 5vh;
     }
 
 }
