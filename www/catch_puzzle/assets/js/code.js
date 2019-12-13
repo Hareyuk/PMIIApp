@@ -15,7 +15,7 @@ var playersTimes = [{
     points: 0,
     time: 0
 }];
-var canMove = true;
+var keepMoving = false;
 var tableGame;
 var lastDirection = "";
 var imageCharacter;
@@ -26,7 +26,7 @@ walkingSteps["down"] = [1,2,1,3];
 walkingSteps["up"] = [4,5,4,6];
 walkingSteps["right"] = [7,8,7,9];
 walkingSteps["left"] = [10,11,10,12]; 
-var stepCounts = 1;
+var stepCounts = 0;
 
 function startGame() {
     /*players = localStorage.getItem("players");
@@ -55,23 +55,23 @@ function startGame() {
 
 function keyUp(event)
 {
-    canMove = true;
+    keepMoving = false;
 }
 
 function pressKey(event) {
     var arrowKey = event.keyCode || event.which;
     switch (arrowKey) {
         case 37: //Left
-            movePlayer(0, -1, "up");
+            movePlayer(0, -1, "left");
             break;
         case 38: //Up
-            movePlayer(-1, 0, "left");
+            movePlayer(-1, 0, "up");
             break;
         case 39: //Right
-            movePlayer(0, 1, "down");
+            movePlayer(0, 1, "right");
             break;
         case 40: //Down
-            movePlayer(1, 0, "right");
+            movePlayer(1, 0, "down");
             break;
     }
 }
@@ -130,7 +130,7 @@ function putPieces(w, h, m) {
         piece2Y = genRandom(2, w / 2 - 2);
     }
     m[piece2X][piece2Y] = "obj";
-    console.log('pieza 1: ', piece2X, " - ", piece2Y);
+    console.log('pieza 2: ', piece2X, " - ", piece2Y);
 
     var piece3X = genRandom(2, h / 2 - 2);
     var piece3Y = genRandom(w / 2 + 2, w - 3);
@@ -139,7 +139,7 @@ function putPieces(w, h, m) {
         piece3Y = genRandom(w / 2 + 2, w - 3);
     }
     m[piece3X][piece3Y] = "obj";
-    console.log('pieza 1: ', piece3X, " - ", piece3Y);
+    console.log('pieza 3: ', piece3X, " - ", piece3Y);
 
     var piece4X = genRandom(2, h - 3);
     var piece4Y = genRandom(2, w - 3);
@@ -148,7 +148,7 @@ function putPieces(w, h, m) {
         piece4Y = genRandom(2, w - 3);
     }
     m[piece4X][piece4Y] = "obj";
-    console.log('pieza 1: ', piece4X, " - ", piece4Y);
+    console.log('pieza 4: ', piece4X, " - ", piece4Y);
     return m;
 }
 
@@ -383,16 +383,15 @@ function shuffle(array) {
 async function movePlayer(moveX, moveY, direction) {
     if (mapMatrix[posPlayer.x + moveX][posPlayer.y + moveY] != "X") {
         if (lastDirection != direction) {
-            canMove = true;
             lastDirection = direction;
             console.log('Changed direction');
+            keepMoving = false;
         }
 
-        if(canMove)
+        if(keepMoving)
         {
             characterWalking(turn, direction);
             console.log('Puede avanzar. TimeOut de movimiento listo.');
-            canMove = false;
             posPlayer.x += moveX;
             posPlayer.y += moveY;
             mapMatrix[posPlayer.x - moveX][posPlayer.y - moveY] = null;
@@ -401,18 +400,31 @@ async function movePlayer(moveX, moveY, direction) {
             
             setTimeOuts.push(setTimeout(function() {           
                 lastDirection = direction;
-                canMove = true;
             }, 450));
-            removePiece();
         }
-        
+        else
+        {
+            characterWalking(turn, direction);
+            console.log('Puede avanzar. TimeOut de movimiento listo.');
+            posPlayer.x += moveX;
+            posPlayer.y += moveY;
+            mapMatrix[posPlayer.x - moveX][posPlayer.y - moveY] = null;
+            moveTable();
+            mapMatrix[posPlayer.x - moveX][posPlayer.y - moveY] = "P";
+            
+            setTimeOuts.push(setTimeout(function() {           
+                lastDirection = direction;
+            }, 450));
+        }
+            
+        removePiece();
     }
 }
 
 async function removePiece()
 {
     console.log('En removePiece(), y limpiado setTimeOut...');
-    setTimeOuts.push(setTimeout(askFindObject(posPlayer.x, posPlayer.y),500));
+    askFindObject(posPlayer.x, posPlayer.y);
 } 
 
 async function askFindObject(x,y)
@@ -429,8 +441,7 @@ async function askFindObject(x,y)
 }
 
 async function grabPiece()
-{
-    clearTimeout(setTimeOuts[2]);
+{   
     imageCharacter.classList.add('grabPieces');
     setTimeOuts[2] = setTimeout(function()
     {
@@ -439,15 +450,20 @@ async function grabPiece()
 }
 
 async function characterWalking(character, direction) {
-    if(stepCounts > walkingSteps[direction].length)
+    if(stepCounts > walkingSteps[direction].length-1)
     {
         stepCounts = 0;
     }
-    setTimeOuts.push(setTimeout(function()
+    console.log('Dirección: ', direction);
+    for(var i=1;i<3;i++)
     {
-        var link = "assets/img/frames_"+character+"/"+walkingSteps[direction][stepCounts]+".png";
-        changeImageCharacter(link)
-    },1000/fps));
+        setTimeOuts.push(setTimeout(function()
+        {
+            var link = "assets/img/frames_"+character+"/"+walkingSteps[direction][stepCounts]+".png";
+            changeImageCharacter(link)
+        },(1000/fps*i)));
+    }
+    
 }
 
 async function changeImageCharacter(link)
