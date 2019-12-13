@@ -22,10 +22,10 @@ var imageCharacter;
 var setTimeOuts = [];
 var fps = 8;
 var walkingSteps = {};
-walkingSteps["down"] = [1,2,1,3];
-walkingSteps["up"] = [4,5,4,6];
-walkingSteps["right"] = [7,8,7,9];
-walkingSteps["left"] = [10,11,10,12]; 
+walkingSteps["down"] = [2,1,3,1];
+walkingSteps["up"] = [5,4,6,4];
+walkingSteps["right"] = [8,7,9,7];
+walkingSteps["left"] = [11,10,12,10]; 
 var stepCounts = 0;
 
 function startGame() {
@@ -56,7 +56,9 @@ function startGame() {
 function keyUp(event)
 {
     keepMoving = false;
+    validateSteps();
 }
+
 
 function pressKey(event) {
     var arrowKey = event.keyCode || event.which;
@@ -388,8 +390,9 @@ async function movePlayer(moveX, moveY, direction) {
             keepMoving = false;
         }
 
-        if(keepMoving)
+        if(!keepMoving)
         {
+            keepMoving = true;
             characterWalking(turn, direction);
             console.log('Puede avanzar. TimeOut de movimiento listo.');
             posPlayer.x += moveX;
@@ -398,25 +401,15 @@ async function movePlayer(moveX, moveY, direction) {
             moveTable();
             mapMatrix[posPlayer.x - moveX][posPlayer.y - moveY] = "P";
             
-            setTimeOuts.push(setTimeout(function() {           
-                lastDirection = direction;
-            }, 450));
+            setTimeOuts.push(setTimeout(function()
+            {
+                
+                setTimeOuts.push(setTimeout(function() {           
+                    lastDirection = direction;
+                }, 450));
+                keepMoving = false;
+            },400));
         }
-        else
-        {
-            characterWalking(turn, direction);
-            console.log('Puede avanzar. TimeOut de movimiento listo.');
-            posPlayer.x += moveX;
-            posPlayer.y += moveY;
-            mapMatrix[posPlayer.x - moveX][posPlayer.y - moveY] = null;
-            moveTable();
-            mapMatrix[posPlayer.x - moveX][posPlayer.y - moveY] = "P";
-            
-            setTimeOuts.push(setTimeout(function() {           
-                lastDirection = direction;
-            }, 450));
-        }
-            
         removePiece();
     }
 }
@@ -450,10 +443,7 @@ async function grabPiece()
 }
 
 async function characterWalking(character, direction) {
-    if(stepCounts > walkingSteps[direction].length-1)
-    {
-        stepCounts = 0;
-    }
+    validateSteps();
     console.log('Dirección: ', direction);
     for(var i=1;i<3;i++)
     {
@@ -470,4 +460,10 @@ async function changeImageCharacter(link)
 {
     stepCounts++;
     imageCharacter.src = link;
+    validateSteps();
+}
+
+async function validateSteps()
+{
+    if(stepCounts>=walkingSteps["up"].length) stepCounts=0;
 }
