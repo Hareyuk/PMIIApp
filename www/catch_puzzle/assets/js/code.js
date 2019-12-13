@@ -21,6 +21,12 @@ var lastDirection = "";
 var imageCharacter;
 var setTimeOuts = [];
 var fps = 8;
+var walkingSteps = {};
+walkingSteps["down"] = [1,2,1,3];
+walkingSteps["up"] = [4,5,4,6];
+walkingSteps["right"] = [7,8,7,9];
+walkingSteps["left"] = [10,11,10,12]; 
+var stepCounts = 1;
 
 function startGame() {
     /*players = localStorage.getItem("players");
@@ -384,7 +390,7 @@ async function movePlayer(moveX, moveY, direction) {
 
         if(canMove)
         {
-            clearTimeout(setTimeOuts[0]);
+            characterWalking(turn, direction);
             console.log('Puede avanzar. TimeOut de movimiento listo.');
             canMove = false;
             posPlayer.x += moveX;
@@ -392,11 +398,11 @@ async function movePlayer(moveX, moveY, direction) {
             mapMatrix[posPlayer.x - moveX][posPlayer.y - moveY] = null;
             moveTable();
             mapMatrix[posPlayer.x - moveX][posPlayer.y - moveY] = "P";
-            setTimeOuts[0] = setTimeout(function() {           
-                console.log('Ya avanzado. Llamando a removePiece()...');
+            
+            setTimeOuts.push(setTimeout(function() {           
                 lastDirection = direction;
                 canMove = true;
-            }, 450);
+            }, 450));
             removePiece();
         }
         
@@ -406,19 +412,21 @@ async function movePlayer(moveX, moveY, direction) {
 async function removePiece()
 {
     console.log('En removePiece(), y limpiado setTimeOut...');
-    setTimeout(function(){
-        console.log('¿Es un objeto?');
-        if(mapMatrix[posPlayer.x][posPlayer.y] == "obj")
-        {
+    setTimeOuts.push(setTimeout(askFindObject(posPlayer.x, posPlayer.y),500));
+} 
+
+async function askFindObject(x,y)
+{
+   if(mapMatrix[x][y] == "obj")         
+   {
             console.log('¡Un objeto aquí! Brillo~');
-            var tr = tableGame.childNodes[posPlayer.x];
-            var td = tr.childNodes[posPlayer.y];
+            var tr = tableGame.childNodes[x];
+            var td = tr.childNodes[y];
             td.classList.remove('pieces');
             td.classList.add('passThrough');
             grabPiece();
         } 
-    }, 200);
-} 
+}
 
 async function grabPiece()
 {
@@ -430,6 +438,20 @@ async function grabPiece()
     }, 500);
 }
 
-function characterWalking(character, direction) {
+async function characterWalking(character, direction) {
+    if(stepCounts > walkingSteps[direction].length)
+    {
+        stepCounts = 0;
+    }
+    setTimeOuts.push(setTimeout(function()
+    {
+        var link = "assets/img/frames_"+character+"/"+walkingSteps[direction][stepCounts]+".png";
+        changeImageCharacter(link)
+    },1000/fps));
+}
 
+async function changeImageCharacter(link)
+{
+    stepCounts++;
+    imageCharacter.src = link;
 }
