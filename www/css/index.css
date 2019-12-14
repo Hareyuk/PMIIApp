@@ -83,7 +83,7 @@ table {
     transform: translate(-100%,0);
 }
 
-.cordova-camera-capture
+.cordova-camera-capture, .cordova-camera-select
 {
     background-color: rgba(255,255,255,0.6);
     padding: 2em;
@@ -243,17 +243,35 @@ h1
     margin: 0.5em 0;
 }
 
+#whichPicture
+{
+    z-index: 5;
+    position: fixed;
+    top: 50%;
+    left:50%;
+    background-color: rgba(0,0,0,0.8);
+    color:white;
+    transform: translate(-50%,-50%);
+}
+
 @media only screen and (min-width: 768px)
 {
     #profiles article
     {
-        font-size: 1.3em;
         padding: 1em 0.3em;
     }
      
     button
     {
         font-size: 1em;     
+    }
+}
+
+@media only screen and (min-width: 1367px)
+{
+    #profiles article
+    {
+        font-size: 1.3em;
     }
 }
 

@@ -124,30 +124,61 @@ function loadInputs()
     document.getElementById("shadowBox").classList.remove('hidden');
     document.getElementById("sendData").disabled = false;
     var btn1 = document.getElementById('takePicture1');
-    btn1.setAttribute("formaction", "javascript:takePicture(1)");
+    btn1.setAttribute("formaction", "javascript:whichPicture(1)");
     document.getElementById("takePicture1").disabled = false;
     document.getElementById("namePlayer1").disabled = false;
     document.getElementById("nickName1").disabled = false;
     var btn2 = document.getElementById('takePicture2');
-    btn2.setAttribute("formaction", "javascript:takePicture(2)");
+    btn2.setAttribute("formaction", "javascript:whichPicture(2)");
     document.getElementById("takePicture2").disabled = false;
     document.getElementById("namePlayer2").disabled = false;
     document.getElementById("nickName2").disabled = false;
 }
 
-function takePicture(num)
+function whichPicture(num)
 {
-    navigator.camera.getPicture(onSuccess, onFail, { 
-        quality: 30,
-        mediaType: Camera.MediaType.PICTURE,
-        destinationType: Camera.DestinationType.DATA_URL,
-        targetHeight: 100,
-        targetWidth: 100,   
-        correctOrientation: true,
-        allowEdit: false,
-        sourceType:Camera.PictureSourceType.PHOTOLIBRARY
-        
-    });
+    var div = document.createElement('div');
+    div.id = "whichPicture";
+    var button = document.createElement('button');
+    button.addEventListener("click", function(){takePicture(num,0)})
+    button.innerHTML= "Sacar foto con cámara";
+    div.appendChild(button);
+    button = document.createElement("button");
+    button.addEventListener("click", function(){takePicture(num,1)})
+    button.innerHTML = "Subir de mi dispositivo";
+    div.appendChild(button);
+    document.body.appendChild(div);
+}
+
+function takePicture(num, option)
+{  
+    document.getElementById('whichPicture').remove();
+    if(option==0)
+    {
+        navigator.camera.getPicture(onSuccess, onFail, { 
+            quality: 30,
+            mediaType: Camera.MediaType.PICTURE,
+            destinationType: Camera.DestinationType.DATA_URL,
+            targetHeight: 100,
+            targetWidth: 100,   
+            correctOrientation: true,
+            allowEdit: false
+        });
+    }
+    else
+    {
+        navigator.camera.getPicture(onSuccess, onFail, { 
+            quality: 30,
+            mediaType: Camera.MediaType.PICTURE,
+            destinationType: Camera.DestinationType.DATA_URL,
+            targetHeight: 100,
+            targetWidth: 100,   
+            correctOrientation: true,
+            allowEdit: true,
+            sourceType:Camera.PictureSourceType.PHOTOLIBRARY
+            
+        });
+    }
     
     function onSuccess(imageData) {
         var image = document.getElementById('myImage' + num);

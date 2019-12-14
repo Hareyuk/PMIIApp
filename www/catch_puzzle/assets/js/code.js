@@ -439,6 +439,10 @@ async function grabPiece()
     setTimeOuts[2] = setTimeout(function()
     {
         imageCharacter.classList.remove('grabPieces');
+        if(!stillSeekingPieces(widthMap, heightMap, mapMatrix))
+        {
+            alert('Ya no quedan más piezas');
+        }
     }, 500);
 }
 
@@ -466,4 +470,19 @@ async function changeImageCharacter(link)
 async function validateSteps()
 {
     if(stepCounts>=walkingSteps["up"].length) stepCounts=0;
+}
+
+function stillSeekingPieces(w,h,m)
+{
+    for(i=0;i<h-1;i++)
+    {
+        for(j=0;j<w-1;j++)
+        {
+            if(m[i][j] == "obj")
+            {
+                return true;
+            }
+        }
+    }
+    return false;
 }
