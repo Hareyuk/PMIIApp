@@ -238,6 +238,11 @@ h1
     filter: brightness(1.5);
 }
 
+#shadowBox img
+{
+    margin: 0.5em 0;
+}
+
 @media only screen and (min-width: 768px)
 {
     #profiles article
@@ -276,6 +281,11 @@ h1
     {
         margin-top: 1em;
     }
+
+    *:hover
+    {
+        transform: scale(1);
+    }
 }
 
 @media only screen and (orientation: landscape) and (max-height: 600px)
@@ -288,6 +298,19 @@ h1
     #character1, #character2
     {
         width:0;
+    }
+
+    #shadowBox
+    {
+        top: 5%;
+        position: absolute;
+        padding: 1em 2em;
+        transform: translate(-50%,0);
+    }
+
+    *:hover
+    {
+        transform: scale(1);
     }
 }
 
