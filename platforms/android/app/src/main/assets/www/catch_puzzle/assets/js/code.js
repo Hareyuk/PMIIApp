@@ -15,11 +15,18 @@ var playersTimes = [{
     points: 0,
     time: 0
 }];
-var canMove = true;
+var keepMoving = false;
 var tableGame;
 var lastDirection = "";
 var imageCharacter;
 var setTimeOuts = [];
+var fps = 8;
+var walkingSteps = {};
+walkingSteps["down"] = [2,1,3,1];
+walkingSteps["up"] = [5,4,6,4];
+walkingSteps["right"] = [8,7,9,7];
+walkingSteps["left"] = [11,10,12,10]; 
+var stepCounts = 0;
 
 function startGame() {
     /*players = localStorage.getItem("players");
@@ -43,22 +50,30 @@ function startGame() {
     moveTable();
     generateCharacter(turn);
     document.addEventListener("keydown", pressKey);
+    document.addEventListener("keyup", keyUp);
 }
+
+function keyUp(event)
+{
+    keepMoving = false;
+    validateSteps();
+}
+
 
 function pressKey(event) {
     var arrowKey = event.keyCode || event.which;
     switch (arrowKey) {
         case 37: //Left
-            movePlayer(0, -1, "up");
+            movePlayer(0, -1, "left");
             break;
         case 38: //Up
-            movePlayer(-1, 0, "left");
+            movePlayer(-1, 0, "up");
             break;
         case 39: //Right
-            movePlayer(0, 1, "down");
+            movePlayer(0, 1, "right");
             break;
         case 40: //Down
-            movePlayer(1, 0, "right");
+            movePlayer(1, 0, "down");
             break;
     }
 }
@@ -108,6 +123,7 @@ function putPieces(w, h, m) {
         piece1Y = genRandom(2, w / 2 - 2);
     }
     m[piece1X][piece1Y] = "obj";
+    console.log('pieza 1: ', piece1X, " - ", piece1Y);
 
     var piece2X = genRandom(h / 2 + 2, h - 3);
     var piece2Y = genRandom(2, w / 2 - 2);
@@ -116,6 +132,7 @@ function putPieces(w, h, m) {
         piece2Y = genRandom(2, w / 2 - 2);
     }
     m[piece2X][piece2Y] = "obj";
+    console.log('pieza 2: ', piece2X, " - ", piece2Y);
 
     var piece3X = genRandom(2, h / 2 - 2);
     var piece3Y = genRandom(w / 2 + 2, w - 3);
@@ -124,6 +141,7 @@ function putPieces(w, h, m) {
         piece3Y = genRandom(w / 2 + 2, w - 3);
     }
     m[piece3X][piece3Y] = "obj";
+    console.log('pieza 3: ', piece3X, " - ", piece3Y);
 
     var piece4X = genRandom(2, h - 3);
     var piece4Y = genRandom(2, w - 3);
@@ -132,6 +150,7 @@ function putPieces(w, h, m) {
         piece4Y = genRandom(2, w - 3);
     }
     m[piece4X][piece4Y] = "obj";
+    console.log('pieza 4: ', piece4X, " - ", piece4Y);
     return m;
 }
 
@@ -192,7 +211,7 @@ function markWallsMatrix(w, h, m) {
         m[w - 1][i] = "X";
         m[w - 2][i] = "X";
     }
-    m = buildWalls(w, h, m);
+    m = buildBlocksWalls(w, h, m);
     m = cellsLocked(w, h, m);
     return m;
 }
@@ -212,11 +231,11 @@ function cellsLocked(w, h, m) {
     return m;
 }
 
-function buildWalls(w, h, m) {
+function buildBlocksWalls(w, h, m) {
     var cellFree = true;
     var arrayPositions = obtainPositions(w, h);
+    arrayPositions = grabSomePositions(arrayPositions);
     arrayPositions = shuffle(arrayPositions);
-    arrayPositions.splice(w * h / (w + h));
     while (arrayPositions.length > 0) {
         var amountPos = arrayPositions.length - 1;
         var posRandom = genRandom(0, amountPos);
@@ -239,8 +258,11 @@ function buildWalls(w, h, m) {
                             m[posX - 3][posY] = null;
                         }
                         posX -= 3;
-                    } else m[posX - 1][posY] == "X";
-                    break;
+                    } else
+                    {
+                        m[posX - 1][posY] == "X";
+                        break;
+                    }
                 } else {
                     if (cellFree == false) {
                         cellFree = true;
@@ -258,8 +280,10 @@ function buildWalls(w, h, m) {
                             m[posX][posY + 3] = null;
                         }
                         posY += 3;
-                    } else m[posX][posY + 1] == "X";
-                    break;
+                    } else{
+                        m[posX][posY + 1] == "X";
+                        break;
+                    }
                 } else {
                     if (cellFree == false) {
                         cellFree = true;
@@ -277,8 +301,10 @@ function buildWalls(w, h, m) {
                             m[posX + 3][posY] = null;
                         }
                         posX += 3;
-                    } else m[posX + 1][posY] == "X";
-                    break;
+                    } else {
+                        m[posX + 1][posY] == "X";
+                        break;
+                    }
                 } else {
                     if (cellFree == false) {
                         cellFree = true;
@@ -296,8 +322,10 @@ function buildWalls(w, h, m) {
                             m[posX][posY - 3] = null;
                         }
                         posY -= 3;
-                    } else m[posX][posY - 1] == "X";
-                    break;
+                    } else {
+                        m[posX][posY - 1] == "X";
+                        break;
+                    }
                 } else {
                     if (cellFree == false) {
                         cellFree = true;
@@ -355,54 +383,106 @@ function shuffle(array) {
 }
 
 async function movePlayer(moveX, moveY, direction) {
-    if (lastDirection != direction) {
-        canMove = true;
-        lastDirection = direction;
-    }
-
-    if (mapMatrix[posPlayer.x + moveX][posPlayer.y + moveY] != "X" && canMove) {
-        clearTimeout(setTimeOuts[0]);
-        canMove = false;
-        posPlayer.x += moveX;
-        posPlayer.y += moveY;
-        mapMatrix[posPlayer.x - moveX][posPlayer.y - moveY] = null;
-        moveTable();
-        mapMatrix[posPlayer.x - moveX][posPlayer.y - moveY] = "P";
-        setTimeOuts[0] = setTimeout(function() {           
+    if (mapMatrix[posPlayer.x + moveX][posPlayer.y + moveY] != "X") {
+        if (lastDirection != direction) {
             lastDirection = direction;
-            canMove = true;
-            removePiece();
-        }, 450);
+            console.log('Changed direction');
+            keepMoving = false;
+        }
+
+        if(!keepMoving)
+        {
+            keepMoving = true;
+            characterWalking(turn, direction);
+            console.log('Puede avanzar. TimeOut de movimiento listo.');
+            posPlayer.x += moveX;
+            posPlayer.y += moveY;
+            mapMatrix[posPlayer.x - moveX][posPlayer.y - moveY] = null;
+            moveTable();
+            mapMatrix[posPlayer.x - moveX][posPlayer.y - moveY] = "P";
+            
+            setTimeOuts.push(setTimeout(function()
+            {
+                
+                setTimeOuts.push(setTimeout(function() {           
+                    lastDirection = direction;
+                }, 450));
+                keepMoving = false;
+            },400));
+        }
+        removePiece();
     }
 }
 
-function removePiece()
+async function removePiece()
 {
-    
-    clearTimeout(setTimeOuts[1]);
-    setTimeOuts[1] = setTimeout(function()
-    {
-        if(mapMatrix[posPlayer.x][posPlayer.y] == "obj")
-        {
-            var tr = tableGame.childNodes[posPlayer.x];
-            var td = tr.childNodes[posPlayer.y];
+    console.log('En removePiece(), y limpiado setTimeOut...');
+    askFindObject(posPlayer.x, posPlayer.y);
+} 
+
+async function askFindObject(x,y)
+{
+   if(mapMatrix[x][y] == "obj")         
+   {
+            console.log('¡Un objeto aquí! Brillo~');
+            var tr = tableGame.childNodes[x];
+            var td = tr.childNodes[y];
             td.classList.remove('pieces');
             td.classList.add('passThrough');
             grabPiece();
-        }    
-    }, 300);
-} 
+        } 
+}
 
-function grabPiece()
-{
-    clearTimeout(setTimeOuts[2]);
+async function grabPiece()
+{   
     imageCharacter.classList.add('grabPieces');
     setTimeOuts[2] = setTimeout(function()
     {
         imageCharacter.classList.remove('grabPieces');
+        if(!stillSeekingPieces(widthMap, heightMap, mapMatrix))
+        {
+            alert('Ya no quedan más piezas');
+        }
     }, 500);
 }
 
-function characterWalking(character, direction) {
+async function characterWalking(character, direction) {
+    validateSteps();
+    console.log('Dirección: ', direction);
+    for(var i=1;i<3;i++)
+    {
+        setTimeOuts.push(setTimeout(function()
+        {
+            var link = "assets/img/frames_"+character+"/"+walkingSteps[direction][stepCounts]+".png";
+            changeImageCharacter(link)
+        },(1000/fps*i)));
+    }
+    
+}
 
+async function changeImageCharacter(link)
+{
+    stepCounts++;
+    imageCharacter.src = link;
+    validateSteps();
+}
+
+async function validateSteps()
+{
+    if(stepCounts>=walkingSteps["up"].length) stepCounts=0;
+}
+
+function stillSeekingPieces(w,h,m)
+{
+    for(i=0;i<h-1;i++)
+    {
+        for(j=0;j<w-1;j++)
+        {
+            if(m[i][j] == "obj")
+            {
+                return true;
+            }
+        }
+    }
+    return false;
 }
