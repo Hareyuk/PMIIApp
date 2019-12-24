@@ -44,11 +44,25 @@ header
 table
 {
     transition: 0.4s ease-in;
-    height: 500px;
-    width: 500px;
+    height: 2000px;
+    width: 2000px;
+    position: absolute;
     top: 0px;
     left: 0px;
     border-collapse: collapse;
+}
+
+#shadow_character
+{
+    border-radius: 100%;
+    width:60px !important;
+    height: 20px !important;
+    position: relative;
+    top: 280px;
+    left: 220px;
+    background-color: black;
+    filter:blur(3px);
+    opacity: 0.8;
 }
 
 .pieces
@@ -118,7 +132,7 @@ table
 
 .start_position_player
 {
-    background-color: steelblue;
+    background-image: url(../img/initial.png);
 }
 
 td, .start_position_player, .pieces

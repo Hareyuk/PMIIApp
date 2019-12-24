@@ -85,6 +85,9 @@ function generateCharacter(character) {
     img.src = "assets/img/frames_" + character + "/1.png";
     img.classList.add("character");
     document.querySelector("#game div").appendChild(img);
+    var div = document.createElement("div");
+    div.id = "shadow_character";
+    document.querySelector("#game div").appendChild(div);
     imageCharacter = document.getElementById('character');
 }
 
@@ -235,7 +238,7 @@ function buildBlocksWalls(w, h, m) {
     var cellFree = true;
     var arrayPositions = obtainPositions(w, h);
     arrayPositions = shuffle(arrayPositions);
-    arrayPositions.splice(w * h / (w + h));
+    //arrayPositions.splice(w * h / (w + h));
     while (arrayPositions.length > 0) {
         var amountPos = arrayPositions.length - 1;
         var posRandom = genRandom(0, amountPos);
@@ -344,13 +347,14 @@ function buildBlocksWalls(w, h, m) {
 
 function obtainPositions(w, h) {
     var array = [];
-    for (var i = 0; i < w; i++) {
+    
+    /*for (var i = 0; i < w; i++) {
         for (var j = 0; j < h; j++) {
             if (i > 2 && i < (w - 3) && j > 2 && j < (h - 3)) {
                 array.push(i + "_" + j);
             }
         }
-    }
+    }*/
     return array;
 }
 
