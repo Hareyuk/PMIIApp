@@ -114,46 +114,54 @@ function putPlayerInMaze(w, h, m) {
     return m;
 }
 
+
+function getAPositionFromMatrix(m, posXI,posXF, posYI, posYF, condition)
+{
+    var posX = genRandom(posXI, posXF);
+    var posY = genRandom(posYI,posYF);
+    if(condition != "none")
+    {
+        while(m[posX][posY] == condition)
+        {
+            posX = genRandom(posXI, posXF);
+            posY = genRandom(posYI,posYF);
+        }
+    }
+    return [posX,posY];
+}
+
 function putPieces(w, h, m) {
-    var posIni = 2;
-    var posFin =  h/2 - 2;
-    var piece1X = genRandom(posIni, posFin);
-    posIni = 2;
-    posFin =  w/2 - 2;
-    var piece1Y = genRandom(posIni, posFin);
-    while (m[piece1X][piece1Y] == "X") {
-        piece1X = genRandom(2, h / 2 - 2);
-        piece1Y = genRandom(2, w / 2 - 2);
-    }
-    m[piece1X][piece1Y] = "obj";
-    console.log('pieza 1: ', piece1X, " - ", piece1Y);
+    //piece 1 top left
+    var posIniX = 2;
+    var posFinX =  h/2 - 2;
+    var posIniY = 2;
+    var posFinY =  w/2 - 2;
+    var pos = getAPositionFromMatrix(m, posIniX,posFinX,posIniY,posFinY, "X");
+    m[pos[0]][pos[1]] = "obj";
 
-    var piece2X = genRandom(h / 2 + 2, h - 3);
-    var piece2Y = genRandom(2, w / 2 - 2);
-    while (m[piece2X][piece2Y] == "X") {
-        piece2X = genRandom(h / 2 + 2, h - 3);
-        piece2Y = genRandom(2, w / 2 - 2);
-    }
-    m[piece2X][piece2Y] = "obj";
-    console.log('pieza 2: ', piece2X, " - ", piece2Y);
+    //piece2 top right
+    posIniX = h / 2 + 2;
+    posFinX = h - 3;
+    posIniY = 2;
+    posFinY = w / 2 - 2;
+    pos = getAPositionFromMatrix(m, posIniX,posFinX,posIniY,posFinY, "X");
+    m[pos[0]][pos[1]] = "obj";
 
-    var piece3X = genRandom(2, h / 2 - 2);
-    var piece3Y = genRandom(w / 2 + 2, w - 3);
-    while (m[piece3X][piece3Y] == "X") {
-        piece3X = genRandom(2, h / 2 - 2);
-        piece3Y = genRandom(w / 2 + 2, w - 3);
-    }
-    m[piece3X][piece3Y] = "obj";
-    console.log('pieza 3: ', piece3X, " - ", piece3Y);
+    //piece 3 bottom left
+    posIniX = 2;
+    posFinX = h / 2 - 2;
+    posIniY = w / 2 + 2;
+    posFinY  = w - 3;
+    pos = getAPositionFromMatrix(m, posIniX,posFinX,posIniY,posFinY, "X");
+    m[pos[0]][pos[1]] = "obj";
 
-    var piece4X = genRandom(2, h - 3);
-    var piece4Y = genRandom(2, w - 3);
-    while (m[piece4X][piece4Y] == "X") {
-        piece4X = genRandom(2, h - 3);
-        piece4Y = genRandom(2, w - 3);
-    }
-    m[piece4X][piece4Y] = "obj";
-    console.log('pieza 4: ', piece4X, " - ", piece4Y);
+    //piece 4 bottom right
+    posIniX = h / 2 + 2;
+    posFinX = h - 3;
+    posFinY = w / 2 + 2;
+    posFinY = w - 3;
+    pos = getAPositionFromMatrix(m, posIniX,posFinX,posIniY,posFinY, "X");
+    m[pos[0]][pos[1]] = "obj";
     return m;
 }
 
@@ -345,9 +353,57 @@ function buildBlocksWalls(w, h, m) {
     return m;
 }
 
+
 function obtainPositions(w, h) {
     var array = [];
+    var amountForZone = (w*h / (w/2+h/2));
+    amountForZone /= 4; // 4 = 4 zones
+    amountForZone /= 2;
+    amountForZone = Math.floor(amountForZone + 1);
+    //top left
+    for(var i = 0; i < amountForZone; i++)
+    {
+        var posIniX = 2;
+        var posFinX =  h/2 - 1;
+        var posIniY = 2;
+        var posFinY =  w/2 - 1;
+        var pos = getAPositionFromMatrix(mapMatrix, posIniX,posFinX,posIniY,posFinY, "none");
+        array.push(pos[0] + "_" + pos[1]);
+    }
+
+    //top right
+    for(var i = 0; i < amountForZone; i++)
+    {
+        posIniX = h / 2 + 1;
+        posFinX = h - 3;
+        posIniY = 2;
+        posFinY = w / 2 - 1;
+        var pos = getAPositionFromMatrix(mapMatrix, posIniX,posFinX,posIniY,posFinY, "none");
+        array.push(pos[0] + "_" + pos[1]);
+    }
+
+    //bottom left
+    for(var i = 0; i < amountForZone; i++)
+    {
+        var posIniX = 2;
+        var posFinX =  h/2 - 1;
+        var posFinY = w / 2 + 1;
+        var posFinY = w - 3;
+        var pos = getAPositionFromMatrix(mapMatrix, posIniX,posFinX,posIniY,posFinY, "none");
+        array.push(pos[0] + "_" + pos[1]);
+    }
     
+    //bottom right
+    for(var i = 0; i < amountForZone; i++)
+    {
+        var posIniX = h / 2 + 1;
+        var posFinX = h - 3;
+        var posFinY = w / 2 + 1;
+        var posFinY = w - 3;
+        var pos = getAPositionFromMatrix(mapMatrix, posIniX,posFinX,posIniY,posFinY, "none");
+        array.push(pos[0] + "_" + pos[1]);
+    }
+
     /*for (var i = 0; i < w; i++) {
         for (var j = 0; j < h; j++) {
             if (i > 2 && i < (w - 3) && j > 2 && j < (h - 3)) {
