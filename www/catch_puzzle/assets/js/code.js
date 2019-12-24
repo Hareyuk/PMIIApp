@@ -358,7 +358,7 @@ function obtainPositions(w, h) {
     var amountForZone = (w*h / (w/2+h/2));
     amountForZone /= 4; // 4 = 4 zones
     amountForZone /= 2;
-    amountForZone = Math.floor(amountForZone + 1);
+    amountForZone = Math.floor(amountForZone);
     //top left
     for(var i = 0; i < amountForZone; i++)
     {
