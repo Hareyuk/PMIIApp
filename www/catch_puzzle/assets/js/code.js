@@ -243,7 +243,7 @@ function cellsLocked(w, h, m) {
 }
 
 function buildBlocksWalls(w, h, m) {
-    var cellFree = true;
+    var cellFree = 0; //When is 3, is free.
     var arrayPositions = obtainPositions(w, h);
     arrayPositions = shuffle(arrayPositions);
     //arrayPositions.splice(w * h / (w + h));
@@ -256,27 +256,27 @@ function buildBlocksWalls(w, h, m) {
         var posX = parseInt(positions[0]);
         var posY = parseInt(positions[1]);
         var dir = genRandom(0, 3); //0 = up | 1 = left | 2 = down | 3 = right
-        while (posY > 1 && posY < h - 2 && posX > 1 && posX < w - 2) {
+        while (posY > 2 && posY < h - 3 && posX > 2 && posX < w - 3) {
             if (dir == 0) {
                 //Found a wall in two cells top
-                if (m[posX - 1][posY] == "X" && cellFree == true) {
+                if (m[posX - 1][posY] == "X" && cellFree == 3) {
 
                     //Coming from other side?
                     if (m[posX - 1][posY - 1] == "X" && m[posX - 1][posY + 1] == "X") {
-                        cellFree = false;
+                        cellFree = 0;
                         m[posX][posY] = null;
-                        if (posX > 3) {
-                            m[posX - 3][posY] = null;
+                        if (posX > 4) {
+                            m[posX - 2][posY] = null;
                         }
-                        posX -= 3;
+                        posX -= 2;
                     } else
                     {
                         m[posX - 1][posY] == "X";
                         break;
                     }
                 } else {
-                    if (cellFree == false) {
-                        cellFree = true;
+                    if (cellFree < 3) {
+                        cellFree++;
                     }
                     posX--;
                     m[posX][posY] = "X";
@@ -284,8 +284,8 @@ function buildBlocksWalls(w, h, m) {
                 }
             } else if (dir == 1) {
                 if (m[posX][posY + 1] == "X") {
-                    if (m[posX + 1][posY + 1] == "X" && m[posX - 1][posY + 1] == "X" && cellFree == true) {
-                        cellFree = false;
+                    if (m[posX + 1][posY + 1] == "X" && m[posX - 1][posY + 1] == "X" && cellFree == 3) {
+                        cellFree = 0;
                         m[posX][posY] = null;
                         if (posY < h - 3) {
                             m[posX][posY + 3] = null;
@@ -296,8 +296,8 @@ function buildBlocksWalls(w, h, m) {
                         break;
                     }
                 } else {
-                    if (cellFree == false) {
-                        cellFree = true;
+                    if (cellFree == 3) {
+                        cellFree++;
                     }
                     posY++;
                     m[posX][posY] = "X";
@@ -305,8 +305,8 @@ function buildBlocksWalls(w, h, m) {
                 }
             } else if (dir == 2) {
                 if (m[posX + 1][posY] == "X") {
-                    if (m[posX + 1][posY + 1] == "X" && m[posX + 1][posY - 1] == "X" && cellFree == true) {
-                        cellFree = false;
+                    if (m[posX + 1][posY + 1] == "X" && m[posX + 1][posY - 1] == "X" && cellFree == 3) {
+                        cellFree = 0;
                         m[posX][posY] = null;
                         if (posX < w - 3) {
                             m[posX + 3][posY] = null;
@@ -317,8 +317,8 @@ function buildBlocksWalls(w, h, m) {
                         break;
                     }
                 } else {
-                    if (cellFree == false) {
-                        cellFree = true;
+                    if (cellFree < 3) {
+                        cellFree++;
                     }
                     posX++;
                     m[posX][posY] = "X";
@@ -326,8 +326,8 @@ function buildBlocksWalls(w, h, m) {
                 }
             } else if (dir == 3) {
                 if (m[posX][posY - 1] == "X") {
-                    if (m[posX + 1][posY - 1] == "X" && m[posX - 1][posY - 1] == "X" && cellFree == true) {
-                        cellFree = false;
+                    if (m[posX + 1][posY - 1] == "X" && m[posX - 1][posY - 1] == "X" && cellFree == 3) {
+                        cellFree = 0;
                         m[posX][posY] = null;
                         if (posY > 3) {
                             m[posX][posY - 3] = null;
@@ -338,8 +338,8 @@ function buildBlocksWalls(w, h, m) {
                         break;
                     }
                 } else {
-                    if (cellFree == false) {
-                        cellFree = true;
+                    if (cellFree < 3) {
+                        cellFree++;
                     }
                     posY--;
                     m[posX][posY] = "X";
@@ -363,10 +363,10 @@ function obtainPositions(w, h) {
     //top left
     for(var i = 0; i < amountForZone; i++)
     {
-        var posIniX = 2;
-        var posFinX =  h/2 - 1;
-        var posIniY = 2;
-        var posFinY =  w/2 - 1;
+        var posIniX = 3;
+        var posFinX =  h/2 - 2;
+        var posIniY = 3;
+        var posFinY =  w/2 - 2;
         var pos = getAPositionFromMatrix(mapMatrix, posIniX,posFinX,posIniY,posFinY, "none");
         array.push(pos[0] + "_" + pos[1]);
     }
@@ -374,10 +374,10 @@ function obtainPositions(w, h) {
     //top right
     for(var i = 0; i < amountForZone; i++)
     {
-        posIniX = h / 2 + 1;
-        posFinX = h - 3;
-        posIniY = 2;
-        posFinY = w / 2 - 1;
+        posIniX = h / 2 + 2;
+        posFinX = h - 4;
+        posIniY = 3;
+        posFinY = w / 2 - 2;
         var pos = getAPositionFromMatrix(mapMatrix, posIniX,posFinX,posIniY,posFinY, "none");
         array.push(pos[0] + "_" + pos[1]);
     }
@@ -385,10 +385,10 @@ function obtainPositions(w, h) {
     //bottom left
     for(var i = 0; i < amountForZone; i++)
     {
-        var posIniX = 2;
-        var posFinX =  h/2 - 1;
-        var posFinY = w / 2 + 1;
-        var posFinY = w - 3;
+        var posIniX = 3;
+        var posFinX =  h/2 - 2;
+        var posFinY = w / 2 + 2;
+        var posFinY = w - 4;
         var pos = getAPositionFromMatrix(mapMatrix, posIniX,posFinX,posIniY,posFinY, "none");
         array.push(pos[0] + "_" + pos[1]);
     }
@@ -396,10 +396,10 @@ function obtainPositions(w, h) {
     //bottom right
     for(var i = 0; i < amountForZone; i++)
     {
-        var posIniX = h / 2 + 1;
-        var posFinX = h - 3;
-        var posFinY = w / 2 + 1;
-        var posFinY = w - 3;
+        var posIniX = h / 2 + 2;
+        var posFinX = h - 4;
+        var posFinY = w / 2 + 2;
+        var posFinY = w - 4;
         var pos = getAPositionFromMatrix(mapMatrix, posIniX,posFinX,posIniY,posFinY, "none");
         array.push(pos[0] + "_" + pos[1]);
     }
