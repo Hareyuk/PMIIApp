@@ -46,6 +46,11 @@ table
     transition: 0.4s ease-in;
     height: 500px;
     width: 500px;
+    /*
+    height: 2000px;
+    width: 2000px;
+    position: absolute;
+    */
     top: 0px;
     left: 0px;
     border-collapse: collapse;
