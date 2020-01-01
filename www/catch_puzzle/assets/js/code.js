@@ -173,16 +173,24 @@ function generateMazeTable(w, h, m) {
         var tr = document.createElement("tr");
         for (var j = 0; j < h; j++) {
             var td = document.createElement("td");
-            if (m[i][j] == null) {
-                td.classList.add("passThrough");
-            } else if (m[i][j] == "X") {
+            if (m[i][j] == "X") 
+            {
                 td.classList.add("doNotPass");
-            } else if (m[i][j] == "P") {
+            }
+            
+            else if (m[i][j] == "P") 
+            {
                 //Add turn later
                 td.classList.add("start_position_player");
-            } else if (m[i][j] == "obj") {
+            } 
+            else if (m[i][j] == "obj") 
+            {
                 td.classList.add("pieces");
             }
+            else //if (m[i][j] == null) 
+            {
+                td.classList.add("passThrough");
+            } 
             tr.appendChild(td);
         }
         table.appendChild(tr);
@@ -194,6 +202,7 @@ function generateMazeTable(w, h, m) {
 }
 
 function moveTable() {
+    //var x = window.matchMedia("(max-width: 700px)");
     tableGame.style.top = (-posPlayer.x * 100 + 200) + "px";
     tableGame.style.left = (-posPlayer.y * 100 + 200) + "px";
 }
@@ -247,8 +256,7 @@ function createWall(m, posX, posY,w, h, dirX, dirY, otherSideX1,otherSideY1,othe
     var cellFree = 0;
     while (posY > 2 && posY < h - 3 && posX > 2 && posX < w - 3)
         {
-        if (m[posX + dirX][posY + dirY] == "X" && cellFree == 3) {
-
+        if (m[posX + dirX][posY + dirY] == "X" && cellFree == 4) {
             //Coming from other side?
             if (m[posX + otherSideX1][posY + otherSideY1] == "X" && m[posX + otherSideX2][posY + otherSideY2] == "X") {
                 cellFree = 0;
@@ -256,14 +264,14 @@ function createWall(m, posX, posY,w, h, dirX, dirY, otherSideX1,otherSideY1,othe
                 if(dirX != 0)
                 {
                     if (posX > 4 || posX < w-5) {
-                        m[posX + directionNullX][posY] = null;
+                        m[posX + directionNullX][posY] = "n";
                     }
                 }
                 else if(dirY != 0)
                 {
                     if(posY < h - 5 || posY > 4)
                     {
-                        m[posX][posY + directionNullY] = null;
+                        m[posX][posY + directionNullY] = "n";
                     }
                 }
                 posX += directionNullX;
@@ -277,7 +285,7 @@ function createWall(m, posX, posY,w, h, dirX, dirY, otherSideX1,otherSideY1,othe
         } 
         else 
         {
-            if (cellFree < 10) {
+            if (cellFree < 999) {
                 cellFree++;
             }
             if(dirX != 0)
