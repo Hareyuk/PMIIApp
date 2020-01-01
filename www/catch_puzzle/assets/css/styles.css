@@ -44,13 +44,9 @@ header
 table
 {
     transition: 0.4s ease-in;
-    height: 500px;
-    width: 500px;
-    /*
     height: 2000px;
     width: 2000px;
     position: absolute;
-    */
     top: 0px;
     left: 0px;
     border-collapse: collapse;
@@ -153,6 +149,31 @@ td, .start_position_player, .pieces
     height: 100px;
     left: 200px;
     top: 200px;
+}
+
+@media only screen and (max-width: 420px)
+{
+
+}
+
+@media only screen and (max-width: 768px)
+{
+
+}
+
+@media only screen and (max-width: 992px)
+{
+    
+}
+
+@media only screen and (max-width: 1200px)
+{
+    
+}
+
+@media only screen and (min-width: 1201px)
+{
+    
 }
 
 @media only screen and (min-width: 992px)

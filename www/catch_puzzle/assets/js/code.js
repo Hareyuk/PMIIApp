@@ -202,9 +202,30 @@ function generateMazeTable(w, h, m) {
 }
 
 function moveTable() {
-    //var x = window.matchMedia("(max-width: 700px)");
-    tableGame.style.top = (-posPlayer.x * 100 + 200) + "px";
-    tableGame.style.left = (-posPlayer.y * 100 + 200) + "px";
+    var px = 200;
+    /*var x = window.matchMedia("(max-width: 420px)");
+    if(x.matches)
+    {
+    }
+    x = window.matchMedia("(max-width: 768px)");
+    if(x.matches)
+    {
+    }
+    x = window.matchMedia("(max-width: 992px)");
+    if(x.matches)
+    {
+    }
+    x = window.matchMedia("(max-width: 1200px)");
+    if(x.matches)
+    {
+    }
+    x = window.matchMedia("(min-width: 1201px)");
+    if(x.matches)
+    {
+    }*/
+
+    tableGame.style.top = (-posPlayer.x * 100 + px) + "px";
+    tableGame.style.left = (-posPlayer.y * 100 + px) + "px";
 }
 
 function genRandom(min, max) {
