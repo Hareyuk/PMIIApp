@@ -204,7 +204,12 @@ function generateMazeTable(w, h, m) {
 function moveTable() {
     var px; 
     var plusPos;
-    var x = window.matchMedia("(max-width: 420px)");
+    var x = window.matchMedia("(max-width: 375px)");
+    if(x.matches)
+    {
+        px = 60;
+    }
+    x = window.matchMedia("(min-width: 376px)");
     if(x.matches)
     {
         px = 75;
@@ -218,14 +223,6 @@ function moveTable() {
     if(x.matches)
     {
         px=150;
-    }
-    x = window.matchMedia("(min-width: 993px)");
-    if(x.matches)
-    {
-    }
-    x = window.matchMedia("(min-width: 1201px)");
-    if(x.matches)
-    {
     }
 
     tableGame.style.top = (-posPlayer.x * px+(px*2)) + "px";
@@ -334,7 +331,6 @@ function createWall(m, posX, posY,w, h, dirX, dirY, otherSideX1,otherSideY1,othe
 function buildBlocksWalls(w, h, m) {
     var arrayPositions = obtainPositions(w, h);
     arrayPositions = shuffle(arrayPositions);
-    //arrayPositions.splice(w * h / (w + h));
     var dir = genRandom(0, 3); //0 = up | 1 = left | 2 = down | 3 = right
     while (arrayPositions.length > 0) {
         var amountPos = arrayPositions.length - 1;
@@ -361,99 +357,6 @@ function buildBlocksWalls(w, h, m) {
            m = createWall(m, posX, posY, w, h,0,-1,1,-1,-1,-1,0,-2);
         }
         (dir < 3) ? dir++ : dir = 0;
-/*
-        while (posY > 2 && posY < h - 3 && posX > 2 && posX < w - 3) {
-            if (dir == 0) {
-                break;
-                //Found a wall in two cells top
-                if (m[posX - 1][posY] == "X" && cellFree == 3) {
-
-                    //Coming from other side?
-                    if (m[posX - 1][posY - 1] == "X" && m[posX - 1][posY + 1] == "X") {
-                        cellFree = 0;
-                        m[posX][posY] = null;
-                        if (posX > 4) {
-                            m[posX - 2][posY] = null;
-                        }
-                        posX -= 2;
-                    } else
-                    {
-                        m[posX - 1][posY] == "X";
-                        break;
-                    }
-                } else {
-                    if (cellFree < 3) {
-                        cellFree++;
-                    }
-                    posX--;
-                    m[posX][posY] = "X";
-                    posX--;
-                }
-            } else if (dir == 1) {
-                if (m[posX][posY + 1] == "X") {
-                    if (m[posX + 1][posY + 1] == "X" && m[posX - 1][posY + 1] == "X" && cellFree == 3) {
-                        cellFree = 0;
-                        m[posX][posY] = null;
-                        if (posY < h - 5) {
-                            m[posX][posY + 3] = null;
-                        }
-                        posY += 2;
-                    } else{
-                        m[posX][posY + 1] == "X";
-                        break;
-                    }
-                } else {
-                    if (cellFree == 3) {
-                        cellFree++;
-                    }
-                    posY++;
-                    m[posX][posY] = "X";
-                    posY++;
-                }
-            } else if (dir == 2) {
-                if (m[posX + 1][posY] == "X") {
-                    if (m[posX + 1][posY + 1] == "X" && m[posX + 1][posY - 1] == "X" && cellFree == 3) {
-                        cellFree = 0;
-                        m[posX][posY] = null;
-                        if (posX < w - 5) {
-                            m[posX + 3][posY] = null;
-                        }
-                        posX += 2;
-                    } else {
-                        m[posX + 1][posY] == "X";
-                        break;
-                    }
-                } else {
-                    if (cellFree < 3) {
-                        cellFree++;
-                    }
-                    posX++;
-                    m[posX][posY] = "X";
-                    posX++;
-                }
-            } else if (dir == 3) {
-                if (m[posX][posY - 1] == "X") {
-                    if (m[posX + 1][posY - 1] == "X" && m[posX - 1][posY - 1] == "X" && cellFree == 3) {
-                        cellFree = 0;
-                        m[posX][posY] = null;
-                        if (posY > 4) {
-                            m[posX][posY - 3] = null;
-                        }
-                        posY -= 2;
-                    } else {
-                        m[posX][posY - 1] == "X";
-                        break;
-                    }
-                } else {
-                    if (cellFree < 3) {
-                        cellFree++;
-                    }
-                    posY--;
-                    m[posX][posY] = "X";
-                    posY--;
-                }
-            }
-        }*/
     }
     return m;
 }
@@ -560,10 +463,10 @@ async function movePlayer(moveX, moveY, direction) {
             characterWalking(turn, direction);
             posPlayer.x += moveX;
             posPlayer.y += moveY;
+            askFindObject(posPlayer.x,posPlayer.y); 
             mapMatrix[posPlayer.x - moveX][posPlayer.y - moveY] = null;
             moveTable();
-            mapMatrix[posPlayer.x - moveX][posPlayer.y - moveY] = "P";
-            
+            mapMatrix[posPlayer.x][posPlayer.y] = "P";
             setTimeOuts.push(setTimeout(function()
             {
                 
@@ -573,27 +476,22 @@ async function movePlayer(moveX, moveY, direction) {
                 keepMoving = false;
             },400));
         }
-        removePiece();
     }
 }
-
-async function removePiece()
-{
-    console.log('En removePiece(), y limpiado setTimeOut...');
-    askFindObject(posPlayer.x, posPlayer.y);
-} 
 
 async function askFindObject(x,y)
 {
    if(mapMatrix[x][y] == "obj")         
    {
-            console.log('¡Un objeto aquí! Brillo~');
+       setTimeout(function(){
             var tr = tableGame.childNodes[x];
             var td = tr.childNodes[y];
             td.classList.remove('pieces');
             td.classList.add('passThrough');
             grabPiece();
-        } 
+       }, 200);
+            
+    } 
 }
 
 async function grabPiece()

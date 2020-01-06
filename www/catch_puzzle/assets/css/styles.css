@@ -59,7 +59,7 @@ table
     border-radius: 100%;
     position: relative;
     background-color: black;
-    filter:blur(3px);
+    filter:blur(3px) !important;
     opacity: 0.8;
 }
 
@@ -132,11 +132,47 @@ td, .start_position_player, .pieces
     background-size: contain;
 }
 
-@media only screen and (max-width: 420px)
+@media only screen and (max-width: 375px)
 {
     #game div 
     {
         
+        height: 300px;
+        width: 300px;
+    }
+
+    table
+    {
+        height: 1200px;
+        width: 1200px;
+    }
+
+    .character
+    {
+        width: 60px;
+        height: 60px;
+        left: 120px;
+        top: 120px;
+    }
+
+    #shadow_character
+    {
+        width:30px !important;
+        height: 15px !important;
+        top: 170px;
+        left: 135px;
+    }
+
+    #game div
+    {
+        filter: brightness(1.2);
+    }
+}
+
+@media only screen and (min-width: 376px)
+{
+    #game div 
+    {
         height: 375px;
         width: 375px;
     }
@@ -196,7 +232,7 @@ td, .start_position_player, .pieces
     }
 }
 
-@media only screen and (min-width: 769px)
+@media only screen and (min-width: 769px) and (orientation: landscape)
 {
     #game div
     {
@@ -215,29 +251,6 @@ td, .start_position_player, .pieces
         height: 150px;
         left: 300px;
         top: 300px;
-    }
-}
-
-@media only screen and (min-width: 993px)
-{
-    
-}
-
-@media only screen and (min-width: 1201px)
-{
-      
-}
-
-@media only screen and (max-width: 1200px)
-{
-    #character1, #character2
-    {
-        display:none;
-    } 
-
-    .app, header
-    {
-        width: 100%;
     }
 }
 
