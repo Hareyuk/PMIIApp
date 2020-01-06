@@ -202,30 +202,34 @@ function generateMazeTable(w, h, m) {
 }
 
 function moveTable() {
-    var px = 200;
-    /*var x = window.matchMedia("(max-width: 420px)");
+    var px; 
+    var plusPos;
+    var x = window.matchMedia("(max-width: 420px)");
     if(x.matches)
     {
+        px = 75;
     }
-    x = window.matchMedia("(max-width: 768px)");
+    x = window.matchMedia("(min-width: 421px)");
     if(x.matches)
     {
+        px = 84;
     }
-    x = window.matchMedia("(max-width: 992px)");
+    x = window.matchMedia("(min-width: 769px)");
     if(x.matches)
     {
+        px=150;
     }
-    x = window.matchMedia("(max-width: 1200px)");
+    x = window.matchMedia("(min-width: 993px)");
     if(x.matches)
     {
     }
     x = window.matchMedia("(min-width: 1201px)");
     if(x.matches)
     {
-    }*/
+    }
 
-    tableGame.style.top = (-posPlayer.x * 100 + px) + "px";
-    tableGame.style.left = (-posPlayer.y * 100 + px) + "px";
+    tableGame.style.top = (-posPlayer.x * px+(px*2)) + "px";
+    tableGame.style.left = (-posPlayer.y * px+(px*2)) + "px";
 }
 
 function genRandom(min, max) {
@@ -547,7 +551,6 @@ async function movePlayer(moveX, moveY, direction) {
     if (mapMatrix[posPlayer.x + moveX][posPlayer.y + moveY] != "X") {
         if (lastDirection != direction) {
             lastDirection = direction;
-            console.log('Changed direction');
             keepMoving = false;
         }
 
@@ -555,7 +558,6 @@ async function movePlayer(moveX, moveY, direction) {
         {
             keepMoving = true;
             characterWalking(turn, direction);
-            console.log('Puede avanzar. TimeOut de movimiento listo.');
             posPlayer.x += moveX;
             posPlayer.y += moveY;
             mapMatrix[posPlayer.x - moveX][posPlayer.y - moveY] = null;

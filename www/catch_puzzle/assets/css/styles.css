@@ -36,30 +36,28 @@ header
 #game div
 {
     position: relative;
-    height: 500px;
-    width: 500px;
     overflow: hidden;
 }
 
 table
 {
     transition: 0.4s ease-in;
-    height: 2000px;
-    width: 2000px;
     position: absolute;
     top: 0px;
     left: 0px;
     border-collapse: collapse;
 }
 
+.character
+{
+    position: absolute;
+    z-index: 1;
+}
+
 #shadow_character
 {
     border-radius: 100%;
-    width:60px !important;
-    height: 20px !important;
     position: relative;
-    top: 280px;
-    left: 220px;
     background-color: black;
     filter:blur(3px);
     opacity: 0.8;
@@ -114,12 +112,6 @@ table
     }
 }
 
-/*td
-{
-    width: 100px;
-    height: 100px;
-}*/
-
 .doNotPass
 {
     background-image: url(../img/dontpass.png);
@@ -140,45 +132,113 @@ td, .start_position_player, .pieces
     background-size: contain;
 }
 
-
-.character
-{
-    position: absolute;
-    z-index: 1;
-    width: 100px;
-    height: 100px;
-    left: 200px;
-    top: 200px;
-}
-
 @media only screen and (max-width: 420px)
 {
+    #game div 
+    {
+        
+        height: 375px;
+        width: 375px;
+    }
+
+    table
+    {
+        height: 1500px;
+        width: 1500px;
+    }
+
+    .character
+    {
+        width: 75px;
+        height: 75px;
+        left: 150px;
+        top: 150px;
+    }
+
+    #shadow_character
+    {
+        width:60px !important;
+        height: 20px !important;
+        top: 280px;
+        left: 220px;
+    }
 
 }
 
-@media only screen and (max-width: 768px)
+@media only screen and (min-width: 421px)
 {
+    #game div
+    {
+        width: 420px;
+        height: 420px;
+    }
 
+    table
+    {
+        height: 1680px;
+        width: 1680px;
+    }
+
+    .character
+    {
+        width: 84px;
+        height: 84px;
+        left: 168px;
+        top: 168px;
+    }
+
+    #shadow_character
+    {
+        width:60px !important;
+        height: 20px !important;
+        top: 280px;
+        left: 220px;
+    }
 }
 
-@media only screen and (max-width: 992px)
+@media only screen and (min-width: 769px)
 {
-    
+    #game div
+    {
+        width: 750px;
+        height: 750px;
+    }
+    table
+    {
+        width:3000px;
+        height: 3000px;
+    }
+
+    .character
+    {
+        width: 150px;
+        height: 150px;
+        left: 300px;
+        top: 300px;
+    }
 }
 
-@media only screen and (max-width: 1200px)
+@media only screen and (min-width: 993px)
 {
     
 }
 
 @media only screen and (min-width: 1201px)
 {
-    
+      
 }
 
-@media only screen and (min-width: 992px)
+@media only screen and (max-width: 1200px)
 {
+    #character1, #character2
+    {
+        display:none;
+    } 
 
+    .app, header
+    {
+        width: 100%;
+    }
 }
 
 @media only screen and (orientation: portrait)
