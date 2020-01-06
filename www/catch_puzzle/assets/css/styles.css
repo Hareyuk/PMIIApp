@@ -201,7 +201,7 @@ td, .start_position_player, .pieces
 
 }
 
-@media only screen and (min-width: 421px)
+@media only screen and (min-width: 421px) and (min-height: 421px)
 {
     #game div
     {
@@ -232,7 +232,30 @@ td, .start_position_player, .pieces
     }
 }
 
-@media only screen and (min-width: 769px) and (orientation: landscape)
+@media only screen and (min-width: 630px) and (min-height: 630px)
+{
+    #game div
+    {
+        width: 620px;
+        height: 620px;
+    }
+
+    table
+    {
+        width: 2480px;
+        height: 2480px;
+    }
+
+    .character
+    {
+        width: 124px;
+        height: 124px;
+        left: 248px;
+        top: 248px;
+    }
+}
+
+@media only screen and (min-width: 769px) and (min-height: 769px)
 {
     #game div
     {
@@ -260,11 +283,40 @@ td, .start_position_player, .pieces
         width: 100%;
     }
 
-
+    .buttonTap
+    {
+        display: block;
+    }
 }
 
-@media only screen and (max-height: 600px) and (orientation: landscape) {
-    
+@media only screen and (orientation: landscape) and (max-width: 1023px)
+{
+    #character1, #character2
+    {
+        display: none;
+    }
+
+    .app, header
+    {
+        width: 100%;
+    }
+}
+
+@media only screen and (orientation: landscape) and (max-width: 1076px)
+{
+    .buttonTap
+    {
+        display: block;
+    }
+}
+
+@media only screen and (max-height: 600px) and (orientation: landscape) 
+{
+    .buttonTap
+    {
+        display: block;
+    }
+
     h1
     {
         font-size: 1.35em;

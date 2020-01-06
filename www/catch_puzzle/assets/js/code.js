@@ -205,24 +205,30 @@ function moveTable() {
     var px; 
     var plusPos;
     var x = window.matchMedia("(max-width: 375px)");
-    if(x.matches)
-    {
-        px = 60;
-    }
+    if(x.matches) px = 60;
     x = window.matchMedia("(min-width: 376px)");
     if(x.matches)
     {
-        px = 75;
+        x=window.matchMedia("(min-height: 376px)");
+        if(x.matches) px = 75;
     }
     x = window.matchMedia("(min-width: 421px)");
     if(x.matches)
     {
-        px = 84;
+        x=window.matchMedia("(min-height: 421px)");
+        if(x.matches) px = 84;
+    }
+    x = window.matchMedia("(min-width: 630px)");
+    if(x.matches)
+    {
+        x=window.matchMedia("(min-height: 630px)");
+        if(x.matches) px=124;
     }
     x = window.matchMedia("(min-width: 769px)");
     if(x.matches)
     {
-        px=150;
+        x=window.matchMedia("(min-height: 769px)");
+        if(x.matches) px=150;
     }
 
     tableGame.style.top = (-posPlayer.x * px+(px*2)) + "px";
