@@ -29,19 +29,19 @@ walkingSteps["left"] = [11,10,12,10];
 var stepCounts = 0;
 
 function startGame() {
-    /*players = localStorage.getItem("players");
+    players = localStorage.getItem("players");
     players = JSON.parse(players);
     gameData = localStorage.getItem('dataCP');
     gameData = JSON.parse(gameData);
+    gameData = {dataSaved: false}; //DELETE LATER
     if(gameData.dataSaved)
     {
-        getData();
-
+        //getData();
     }
     else
     {
 
-    }*/
+    }
     mapMatrix = generateMatrix(widthMap, heightMap, mapMatrix);
     mapMatrix = markWallsMatrix(widthMap, heightMap, mapMatrix);
     mapMatrix = putPieces(widthMap, heightMap, mapMatrix);
@@ -49,8 +49,17 @@ function startGame() {
     generateMazeTable(widthMap, heightMap, mapMatrix);
     moveTable();
     generateCharacter(turn);
+    //showNames();
     document.addEventListener("keydown", pressKey);
     document.addEventListener("keyup", keyUp);
+}
+
+function showNames()
+{
+    var div = document.getElementById("names");
+    var p = document.createElement("p");
+    p.innerHTML = players[0].nick;
+    div.appendChild(p);
 }
 
 function keyUp(event)
@@ -336,7 +345,6 @@ function createWall(m, posX, posY,w, h, dirX, dirY, otherSideX1,otherSideY1,othe
 
 function buildBlocksWalls(w, h, m) {
     var arrayPositions = obtainPositions(w, h);
-    arrayPositions = shuffle(arrayPositions);
     var dir = genRandom(0, 3); //0 = up | 1 = left | 2 = down | 3 = right
     while (arrayPositions.length > 0) {
         var amountPos = arrayPositions.length - 1;
@@ -438,24 +446,6 @@ function saveData() {
 
 }
 
-//Taken from: http://sedition.com/perl/javascript-fy.html
-function shuffle(array) {
-    var currentIndex = array.length,
-        temporaryValue, randomIndex;
-
-    while (0 !== currentIndex) {
-
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
-
-    return array;
-}
-
 async function movePlayer(moveX, moveY, direction) {
     if (mapMatrix[posPlayer.x + moveX][posPlayer.y + moveY] != "X") {
         if (lastDirection != direction) {
@@ -515,7 +505,6 @@ async function grabPiece()
 
 async function characterWalking(character, direction) {
     validateSteps();
-    console.log('Dirección: ', direction);
     for(var i=1;i<3;i++)
     {
         setTimeOuts.push(setTimeout(function()

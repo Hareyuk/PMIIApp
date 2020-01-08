@@ -72,7 +72,9 @@ var dataCP =
     mapMatrix: [],
     posPlayer: {},
     times: [],
-    turn: 0,
+    turn: "johan",
+    dataPuzzle: false,
+    puzzleMatrix: []
 }
 
 
