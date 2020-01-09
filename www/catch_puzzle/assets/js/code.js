@@ -498,7 +498,7 @@ async function grabPiece()
         imageCharacter.classList.remove('grabPieces');
         if(!stillSeekingPieces(widthMap, heightMap, mapMatrix))
         {
-            alert('Ya no quedan más piezas');
+            startJigsaw();
         }
     }, 500);
 }
@@ -541,4 +541,24 @@ function stillSeekingPieces(w,h,m)
         }
     }
     return false;
+}
+
+function startJigsaw()
+{
+    blackScreen();
+    
+}
+
+function blackScreen()
+{
+    var div = document.createElement('div');
+    div.classList.add('blackScreen');
+    div.style.opacity = '0';
+    document.getElementById('game').appendChild(div);
+    setTimeout(() => {
+        div.style.opacity = '1';
+    }, 100);
+    setTimeout(() => {
+        document.querySelector("#game div:first-child").remove();
+    },1200);
 }

@@ -33,6 +33,11 @@ header
     margin: 0 auto;
 }
 
+#game
+{
+    position: relative;
+}
+
 #game div
 {
     position: relative;
@@ -337,4 +342,15 @@ td, .start_position_player, .pieces
     {
         display: block;
     }
+}
+
+.blackScreen
+{
+    transition: 1s;
+    background-color: black;
+    z-index: 10;
+    position: absolute !important;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
 }
