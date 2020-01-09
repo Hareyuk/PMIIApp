@@ -354,3 +354,9 @@ td, .start_position_player, .pieces
     left: 50%;
     transform: translateX(-50%);
 }
+
+
+#texture
+{
+    background-image: url(../img/texture.gif);
+}
