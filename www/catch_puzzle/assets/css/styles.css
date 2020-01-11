@@ -391,3 +391,8 @@ td, .start_position_player, .pieces
 {
     background-image: url(../img/texture.gif);
 }
+
+img[alt="back"]
+{
+    z-index: 1;
+}

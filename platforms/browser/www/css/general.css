@@ -31,7 +31,8 @@
 
 #character1
 {
-    transform: rotateY(180deg)
+    transform: rotateY(180deg);
+    left: 0;
 }
 
 .app
@@ -88,7 +89,6 @@ button:hover{
 
 #texture
 {
-    background-image: url("../img/texture.gif");
     position: fixed;
     height: 100vh;
     width: 100vw;
