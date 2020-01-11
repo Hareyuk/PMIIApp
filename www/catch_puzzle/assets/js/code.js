@@ -8,13 +8,6 @@ var gameData;
 var widthMap = 20;
 var heightMap = 20;
 var players;
-var playersTimes = [{
-    points: 0,
-    time: 0
-}, {
-    points: 0,
-    time: 0
-}];
 var keepMoving = false;
 var tableGame;
 var lastDirection = "";
@@ -27,28 +20,42 @@ walkingSteps["up"] = [5,4,6,4];
 walkingSteps["right"] = [8,7,9,7];
 walkingSteps["left"] = [11,10,12,10]; 
 var stepCounts = 0;
+var piece1Selected=null;
+var numberImage;
+var arrayPieces=[];
+var puzzleMatrix=[];
 
 function startGame() {
     players = localStorage.getItem("players");
     players = JSON.parse(players);
     gameData = localStorage.getItem('dataCP');
     gameData = JSON.parse(gameData);
-    gameData = {dataSaved: false}; //DELETE LATER
+    gameData = {dataSaved: true,dataPuzzle:true}; //DELETE LATER
     if(gameData.dataSaved)
     {
         //getData();
+        if(gameData.dataPuzzle)
+        {
+            buildTableJigsaw();
+        }
+        else
+        {
+
+            generateMazeTable(widthMap, heightMap, mapMatrix);
+            moveTable();
+            generateCharacter(turn);
+        }
     }
     else
     {
-
+        mapMatrix = generateMatrix(widthMap, heightMap, mapMatrix);
+        mapMatrix = markWallsMatrix(widthMap, heightMap, mapMatrix);
+        mapMatrix = putPieces(widthMap, heightMap, mapMatrix);
+        mapMatrix = putPlayerInMaze(widthMap, heightMap, mapMatrix);
+        generateMazeTable(widthMap, heightMap, mapMatrix);
+        moveTable();
+        generateCharacter(turn);
     }
-    mapMatrix = generateMatrix(widthMap, heightMap, mapMatrix);
-    mapMatrix = markWallsMatrix(widthMap, heightMap, mapMatrix);
-    mapMatrix = putPieces(widthMap, heightMap, mapMatrix);
-    mapMatrix = putPlayerInMaze(widthMap, heightMap, mapMatrix);
-    generateMazeTable(widthMap, heightMap, mapMatrix);
-    moveTable();
-    generateCharacter(turn);
     //showNames();
     document.addEventListener("keydown", pressKey);
     document.addEventListener("keyup", keyUp);
@@ -212,7 +219,6 @@ function generateMazeTable(w, h, m) {
 
 function moveTable() {
     var px; 
-    var plusPos;
     var x = window.matchMedia("(max-width: 375px)");
     if(x.matches) px = 60;
     x = window.matchMedia("(min-width: 376px)");
@@ -439,12 +445,16 @@ function obtainPositions(w, h) {
 function getData() {
     turn = gameData.turn;
     mapMatrix = gameData.mapMatrix;
-    posPlayer = gameData.mapMatrix;
+    posPlayer = gameData.posPlayer;
 }
 
 function saveData() {
-
+    gameData.turn = turn;
+    gameData.mapMatrix = mapMatrix;
+    gameData.posPlayer = posPlayer;
+    gameData.numberImage = numberImage;
 }
+
 
 async function movePlayer(moveX, moveY, direction) {
     if (mapMatrix[posPlayer.x + moveX][posPlayer.y + moveY] != "X") {
@@ -498,6 +508,7 @@ async function grabPiece()
         imageCharacter.classList.remove('grabPieces');
         if(!stillSeekingPieces(widthMap, heightMap, mapMatrix))
         {
+            blackScreen();
             startJigsaw();
         }
     }, 500);
@@ -545,8 +556,32 @@ function stillSeekingPieces(w,h,m)
 
 function startJigsaw()
 {
-    blackScreen();
-    
+    numberImage = genRandom(0,1);
+    buildTableJigsaw();
+}
+
+function buildTableJigsaw()
+{
+    var table = document.createElement('table');
+    table.style.backgroundImage ="url('assets/img/'"+numberImage+"'/full.png')";
+    table.id = "jigsaw";
+    for(var i = 0; i < 5;i++)
+    {
+        var tr = document.createElement('tr');
+        for(var j = 0; j < 5; j++)
+        {
+            var td = document.createElement('td');
+            td.classList.add('piece');
+            var img = document.createElement('img');
+            img.src="assets/img/cellJigsaw.png";
+            img.style.top=-(120*i)+'px';
+            img.style.left=-(120*j)+'px';
+            td.appendChild(img);
+            tr.appendChild(td);
+        }
+        table.appendChild(tr);
+    }
+    document.getElementById('game').appendChild(table);
 }
 
 function blackScreen()

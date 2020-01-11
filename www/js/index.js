@@ -67,14 +67,15 @@ var dataMT =
 var dataCP =
 {
     dataSaved: false,
-    player1Points: 0,
-    player2Points: 1,
+    player1ID: 0,
+    player2ID: 1,
     mapMatrix: [],
     posPlayer: {},
-    times: [],
     turn: "johan",
     dataPuzzle: false,
-    puzzleMatrix: []
+    puzzleMatrix: [],
+    arrayPieces: [],
+    numberImage: 0
 }
 
 

@@ -45,6 +45,16 @@ header
     margin: 0 auto;
 }
 
+#jigsaw
+{
+    background-color: black;
+    margin: 0 auto;
+    position: initial;
+    width: 600px;
+    height: 600px;
+}
+
+
 table
 {
     transition: 0.4s ease-in;
@@ -73,6 +83,26 @@ table
 .pieces
 {
     background-image: url(../img/piece.png);
+}
+
+.piece
+{
+    border: rgba(180,0,0,0.5) 5px groove;
+    position: relative;
+    width: 120px;
+    height: 120px;
+    overflow: hidden;
+}
+
+
+
+.piece img
+{
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    top: 0;
+    left: 0;
 }
 
 .grabPieces
@@ -141,7 +171,7 @@ td, .start_position_player, .pieces
 
 @media only screen and (max-width: 375px), screen and (max-height: 375px) and (orientation: landscape)
 {
-    #game div 
+    #game div
     {
         
         height: 300px;
@@ -189,7 +219,7 @@ td, .start_position_player, .pieces
 
 @media only screen and (min-width: 376px) and (min-height: 376px)
 {
-    #game div 
+    #game div
     {
         height: 375px;
         width: 375px;
@@ -288,6 +318,7 @@ td, .start_position_player, .pieces
         width: 750px;
         height: 750px;
     }
+
     table
     {
         width:3000px;
