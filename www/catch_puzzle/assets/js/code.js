@@ -36,9 +36,7 @@ function startGame() {
         //getData();
         if(gameData.dataPuzzle)
         {
-            buildTableJigsaw();
-            buildSelectorPieces();
-            buildButtonsJigsaw();
+            startJigsaw(0);
         }
         else
         {
@@ -512,7 +510,7 @@ async function grabPiece()
         if(!stillSeekingPieces(widthMap, heightMap, mapMatrix))
         {
             blackScreen();
-            startJigsaw();
+            startJigsaw(1);
         }
     }, 500);
 }
@@ -557,12 +555,35 @@ function stillSeekingPieces(w,h,m)
     return false;
 }
 
-function startJigsaw()
+function startJigsaw(newJigsaw)
 {
     numberImage = genRandom(0,1);
+    if(newJigsaw == 1)
+    {
+        //Just to know if is new game or is there save
+        puzzleMatrix = buildMatrixJigsaw(numberImage);
+        arrayPieces = generateArrayPieces(numberImage);
+    }
+    //Show
     buildTableJigsaw();
     buildSelectorPieces();
     buildButtonsJigsaw();
+}
+
+function buildMatrixJigsaw()
+{
+    var m = [];
+    var rowPieces = 5;
+    var colPieces = 5;
+    for(var i = 0; i < rowPieces; i++)
+    {
+        m.push([]);
+        for(var j = 0; j < colPieces; j++)
+        {
+            m[i][j] = {top:-(120*i)+"px",left: (-120*j)+"px"};
+        }
+    }
+    return m;
 }
 
 function buildTableJigsaw()
@@ -587,6 +608,22 @@ function buildTableJigsaw()
         table.appendChild(tr);
     }
     document.getElementById('game').appendChild(table);
+}
+
+function generateArrayPieces(num)
+{
+    var array = [];
+    var amountPiecesX = 5;
+    var amountPiecesY = 5;
+    for(var i = 0; i < amountPiecesX;i++)
+    {
+
+        for(var j = 0; j < amountPiecesY;j++)
+        {
+
+        } 
+    }
+    return array;
 }
 
 function blackScreen()
@@ -616,7 +653,7 @@ function buildSelectorPieces()
 
     for(var i = 0; i < 5; i++)
     {
-        
+
     }
 
     var button2 = document.createElement("button");
