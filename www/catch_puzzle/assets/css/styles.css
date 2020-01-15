@@ -38,7 +38,7 @@ header
     position: relative;
 }
 
-#game div
+#maze
 {
     position: relative;
     overflow: hidden;
@@ -171,7 +171,7 @@ td, .start_position_player, .pieces
 
 @media only screen and (max-width: 375px), screen and (max-height: 375px) and (orientation: landscape)
 {
-    #game div
+    #maze
     {
         
         height: 300px;
@@ -200,7 +200,7 @@ td, .start_position_player, .pieces
         left: 135px;
     }
 
-    #game div
+    #maze
     {
         filter: brightness(1.2);
     }
@@ -219,7 +219,7 @@ td, .start_position_player, .pieces
 
 @media only screen and (min-width: 376px) and (min-height: 376px)
 {
-    #game div
+    #maze
     {
         height: 375px;
         width: 375px;
@@ -251,7 +251,7 @@ td, .start_position_player, .pieces
 
 @media only screen and (min-width: 421px) and (min-height: 421px)
 {
-    #game div
+    #maze
     {
         width: 420px;
         height: 420px;
@@ -282,7 +282,7 @@ td, .start_position_player, .pieces
 
 @media only screen and (min-width: 630px) and (min-height: 630px)
 {
-    #game div
+    #maze
     {
         width: 620px;
         height: 620px;
@@ -313,7 +313,7 @@ td, .start_position_player, .pieces
 
 @media only screen and (min-width: 769px) and (min-height: 769px)
 {
-    #game div
+    #maze
     {
         width: 750px;
         height: 750px;
@@ -395,4 +395,20 @@ td, .start_position_player, .pieces
 img[alt="back"]
 {
     z-index: 1;
+}
+
+.buttonJigsaw
+{
+    background-color: rgba(0,0,0,0.5);
+    color: white;
+    border: none;
+    border-radius: 0;
+    font-size: 1.2em;
+    padding: 1.5em;
+}
+
+.buttonJigsaw:hover
+{
+    transform: none;
+    background-color: rgba(0,0,0,0.8);
 }

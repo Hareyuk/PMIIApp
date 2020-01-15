@@ -37,6 +37,8 @@ function startGame() {
         if(gameData.dataPuzzle)
         {
             buildTableJigsaw();
+            buildSelectorPieces();
+            buildButtonsJigsaw();
         }
         else
         {
@@ -100,10 +102,10 @@ function generateCharacter(character) {
     img.alt = character;
     img.src = "assets/img/frames_" + character + "/1.png";
     img.classList.add("character");
-    document.querySelector("#game div").appendChild(img);
+    document.querySelector("#maze").appendChild(img);
     var div = document.createElement("div");
     div.id = "shadow_character";
-    document.querySelector("#game div").appendChild(div);
+    document.querySelector("#maze").appendChild(div);
     imageCharacter = document.getElementById('character');
 }
 
@@ -184,6 +186,7 @@ function putPieces(w, h, m) {
 function generateMazeTable(w, h, m) {
     document.getElementById('game').innerHTML = "";
     var div = document.createElement("div");
+    div.id = "maze";
     var table = document.createElement("table");
     for (var i = 0; i < w; i++) {
         var tr = document.createElement("tr");
@@ -558,6 +561,8 @@ function startJigsaw()
 {
     numberImage = genRandom(0,1);
     buildTableJigsaw();
+    buildSelectorPieces();
+    buildButtonsJigsaw();
 }
 
 function buildTableJigsaw()
@@ -594,6 +599,41 @@ function blackScreen()
         div.style.opacity = '1';
     }, 100);
     setTimeout(() => {
-        document.querySelector("#game div:first-child").remove();
+        document.querySelector("#maze").remove();
     },1200);
+}
+
+function buildSelectorPieces()
+{
+    var content = document.createElement("div");
+    content.id = "contentPieces";
+    
+    var button = document.createElement("button");
+    button.onclick = "changePieces(-1);";
+    button.innerHTML = "<";
+    button.classList.add("buttonJigsaw");
+    content.appendChild(button);
+
+    for(var i = 0; i < 5; i++)
+    {
+        
+    }
+
+    var button2 = document.createElement("button");
+    button2.onclick = "changePieces(1);";
+    button2.innerHTML =">";
+    button2.classList.add("buttonJigsaw");
+    content.appendChild(button2);
+
+    document.getElementById("game").appendChild(content);
+}
+
+function changePieces(num)
+{
+
+}
+
+function buildButtonsJigsaw()
+{
+
 }
