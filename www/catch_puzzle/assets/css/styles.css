@@ -169,6 +169,11 @@ td, .start_position_player, .pieces
     background-size: contain;
 }
 
+#contentPieces .piece
+{
+    display: inline-block;
+}
+
 @media only screen and (max-width: 375px), screen and (max-height: 375px) and (orientation: landscape)
 {
     #maze

@@ -24,13 +24,15 @@ var piece1Selected=null;
 var numberImage;
 var arrayPieces=[];
 var puzzleMatrix=[];
+//For pieces' selector
+var selectorPieces = [0,1,2,3,4];
 
 function startGame() {
     players = localStorage.getItem("players");
     players = JSON.parse(players);
     gameData = localStorage.getItem('dataCP');
     gameData = JSON.parse(gameData);
-    gameData = {dataSaved: true,dataPuzzle:true}; //DELETE LATER
+    gameData = {dataSaved: true,dataPuzzle:false}; //DELETE LATER
     if(gameData.dataSaved)
     {
         //getData();
@@ -40,10 +42,8 @@ function startGame() {
         }
         else
         {
-
-            generateMazeTable(widthMap, heightMap, mapMatrix);
-            moveTable();
-            generateCharacter(turn);
+            
+            startJigsaw(1);
         }
     }
     else
@@ -610,21 +610,41 @@ function buildTableJigsaw()
     document.getElementById('game').appendChild(table);
 }
 
-function generateArrayPieces(num)
+function generateArrayPieces()
 {
     var array = [];
     var amountPiecesX = 5;
     var amountPiecesY = 5;
     for(var i = 0; i < amountPiecesX;i++)
     {
-
         for(var j = 0; j < amountPiecesY;j++)
         {
-
+            array.push({top:-(120*i)+"px",left: (-120*j)+"px"});
         } 
     }
+    array = shuffle(array);
     return array;
 }
+
+ //Taken from https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+function shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+  
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+  
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+  
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+  
+    return array;
+  }
 
 function blackScreen()
 {
@@ -646,18 +666,26 @@ function buildSelectorPieces()
     content.id = "contentPieces";
     
     var button = document.createElement("button");
-    button.onclick = "changePieces(-1);";
+    button.addEventListener("click", function() {  changePieces(-1); });
     button.innerHTML = "<";
     button.classList.add("buttonJigsaw");
     content.appendChild(button);
 
     for(var i = 0; i < 5; i++)
     {
-
+        var div = document.createElement('div');
+        div.classList.add("piece");
+        var img = document.createElement("img");
+        img.src = "assets/img/"+numberImage+"/full.png";
+        img.style.top = arrayPieces[i].top;
+        img.style.left= arrayPieces[i].left;
+        img.id = "eligible"+i;
+        div.appendChild(img);
+        content.appendChild(div);
     }
 
     var button2 = document.createElement("button");
-    button2.onclick = "changePieces(1);";
+    button2.addEventListener("click", function() { changePieces(1); });
     button2.innerHTML =">";
     button2.classList.add("buttonJigsaw");
     content.appendChild(button2);
@@ -667,7 +695,23 @@ function buildSelectorPieces()
 
 function changePieces(num)
 {
+    for(var i =0;i < 5; i++)
+    {
+        selectorPieces[i] += num;
+        if(selectorPieces[i] < 0)
+        {
+            selectorPieces[i] = arrayPieces.length-1;
+        }
+        if(selectorPieces[i] > arrayPieces.length-1)
+        {
+            selectorPieces[i] = 0;
+        }
 
+        var img = document.getElementById("eligible"+i);
+        var pieceSelected = selectorPieces[i];
+        img.style.top = arrayPieces[pieceSelected].top;
+        img.style.left = arrayPieces[pieceSelected].left;
+    }
 }
 
 function buildButtonsJigsaw()
