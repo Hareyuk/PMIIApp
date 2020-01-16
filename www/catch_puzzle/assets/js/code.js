@@ -718,3 +718,23 @@ function buildButtonsJigsaw()
 {
 
 }
+
+function validatePuzzle(mapGame, mapOriginal)
+{
+    var won = true;
+    for(var i = 0; i < mapGame.length; i++)
+    {
+        for(var j = 0; j < mapGame[i].length; j++)
+        {
+            var topPlayer = mapGame[i][j].top;
+            var topWin = mapOriginal[i][j].top;
+            var leftPlayer = mapGame[i][j].left;
+            var leftWin = mapOriginal[i][j].left;
+            if(topPlayer != topWin || leftPlayer != leftWin)
+            {
+                return false;
+            }
+        }
+    }
+    return won;
+}

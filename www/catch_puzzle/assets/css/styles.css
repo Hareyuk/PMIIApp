@@ -98,6 +98,7 @@ table
 
 .piece img
 {
+    pointer-events: none;
     position: absolute;
     width: 600px;
     height: 600px;
@@ -173,6 +174,7 @@ td, .start_position_player, .pieces
 {
     display: inline-block;
 }
+
 
 @media only screen and (max-width: 375px), screen and (max-height: 375px) and (orientation: landscape)
 {
