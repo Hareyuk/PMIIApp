@@ -48,6 +48,7 @@ header
 #jigsaw
 {
     background-color: black;
+    background-size: cover;
     margin: 0 auto;
     position: initial;
     width: 600px;
@@ -94,17 +95,21 @@ table
     overflow: hidden;
 }
 
-
+.selected
+{
+    filter: drop-shadow(0 0 1em yellow);
+}
 
 .piece img
 {
-    pointer-events: none;
     position: absolute;
     width: 600px;
     height: 600px;
     top: 0;
     left: 0;
 }
+
+
 
 .grabPieces
 {

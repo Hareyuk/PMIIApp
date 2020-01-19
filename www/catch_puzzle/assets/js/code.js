@@ -20,7 +20,7 @@ walkingSteps["up"] = [5,4,6,4];
 walkingSteps["right"] = [8,7,9,7];
 walkingSteps["left"] = [11,10,12,10]; 
 var stepCounts = 0;
-var piece1Selected=null;
+var img1Selected=null;
 var numberImage;
 var arrayPieces=[];
 var puzzleMatrix=[];
@@ -565,8 +565,8 @@ function startJigsaw(newJigsaw)
         arrayPieces = generateArrayPieces(numberImage);
     }
     //Show
-    buildTableJigsaw();
-    buildSelectorPieces();
+    buildTableJigsaw(puzzleMatrix);
+    buildMenuPieces();
     buildButtonsJigsaw();
 }
 
@@ -580,16 +580,16 @@ function buildMatrixJigsaw()
         m.push([]);
         for(var j = 0; j < colPieces; j++)
         {
-            m[i][j] = {top:-(120*i)+"px",left: (-120*j)+"px"};
+            m[i][j] = {top:-(120*i)+"px",left: (-120*j)+"px", src: "cellJigsaw.png", alt: "empty"};
         }
     }
     return m;
 }
 
-function buildTableJigsaw()
+function buildTableJigsaw(m)
 {
     var table = document.createElement('table');
-    table.style.backgroundImage ="url('assets/img/'"+numberImage+"'/full.png')";
+    table.style.backgroundImage = "url('assets/img/"+numberImage+"/full.png')";
     table.id = "jigsaw";
     for(var i = 0; i < 5;i++)
     {
@@ -599,9 +599,15 @@ function buildTableJigsaw()
             var td = document.createElement('td');
             td.classList.add('piece');
             var img = document.createElement('img');
-            img.src="assets/img/cellJigsaw.png";
-            img.style.top=-(120*i)+'px';
-            img.style.left=-(120*j)+'px';
+            img.addEventListener("click", function()
+            {
+                selectPiece(this);
+            });
+            img.src= "assets/img/" + m[i][j].src;
+            img.alt = m[i][j].alt;
+            img.style.top=m[i][j].top;
+            img.style.left=m[i][j].left;
+            img.draggable = false;
             td.appendChild(img);
             tr.appendChild(td);
         }
@@ -619,7 +625,7 @@ function generateArrayPieces()
     {
         for(var j = 0; j < amountPiecesY;j++)
         {
-            array.push({top:-(120*i)+"px",left: (-120*j)+"px"});
+            array.push({top:-(120*i)+"px",left: (-120*j)+"px", id: i+"_"+j, alt: "piece"});
         } 
     }
     array = shuffle(array);
@@ -660,7 +666,7 @@ function blackScreen()
     },1200);
 }
 
-function buildSelectorPieces()
+function buildMenuPieces()
 {
     var content = document.createElement("div");
     content.id = "contentPieces";
@@ -679,7 +685,11 @@ function buildSelectorPieces()
         img.src = "assets/img/"+numberImage+"/full.png";
         img.style.top = arrayPieces[i].top;
         img.style.left= arrayPieces[i].left;
+        img.alt = arrayPieces[i].alt;
+        img.value = arrayPieces[i].id;
         img.id = "eligible"+i;
+        img.draggable = false;
+        img.addEventListener("click", function(){ selectPiece(this); });
         div.appendChild(img);
         content.appendChild(div);
     }
@@ -691,6 +701,78 @@ function buildSelectorPieces()
     content.appendChild(button2);
 
     document.getElementById("game").appendChild(content);
+}
+
+function selectPiece(img)
+{
+    //Is a piece or empty cell?
+    
+    if(img1Selected == null)
+    {
+        //Not chosen piece
+        var div = img.parentNode;
+        div.classList.add("selected");
+        img1Selected = img;
+    }
+    else if (img1Selected != img && img.alt != "empty" || img1Selected.alt != "empty" && img1Selected.alt != img.alt)
+    {
+        var div = img1Selected.parentNode; //For remove the class CSS "selected"
+        if(img1Selected.alt == "empty")
+        {
+            var aux = img;
+            img = img1Selected;
+            img1Selected = aux;
+            div = img.parentNode;
+        }
+
+        var aux = {top: img.style.top, left: img.style.left, src: img.src};
+        img.style.top = img1Selected.style.top;
+        img.style.left = img1Selected.style.left;
+        
+        if(img.alt != "empty")
+        { 
+           
+            img1Selected.style.top = aux.top;
+            img1Selected.style.left = aux.left;
+            img1Selected.src = aux.src;   
+        }
+        else if(img.alt == "empty")
+        {
+            var id = img1Selected.id;
+             //Is from the menu?
+             img.src = img1Selected.src;
+             img.alt = img1Selected.alt;
+             if(isFromMenu(id))
+             {
+                id = id.substring(8,9);
+                id = parseInt(id);
+                arrayPieces.splice(selectorPieces[id],1);
+                changePieces(0);
+             }
+             else
+             {
+                img1Selected.src = aux.src;
+                img1Selected.style.top = aux.top;
+                img1Selected.style.left = aux.left; 
+             }
+            
+        }
+        div.classList.remove("selected");
+        //To default
+        img1Selected=null;
+    }
+}
+
+function isFromMenu(id)
+{
+    for(var i = 0; i < 5; i++)
+    {
+        if(id == "eligible"+i)
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 function changePieces(num)
@@ -706,11 +788,11 @@ function changePieces(num)
         {
             selectorPieces[i] = 0;
         }
-
         var img = document.getElementById("eligible"+i);
         var pieceSelected = selectorPieces[i];
         img.style.top = arrayPieces[pieceSelected].top;
         img.style.left = arrayPieces[pieceSelected].left;
+        img.value = arrayPieces[pieceSelected].id;
     }
 }
 
