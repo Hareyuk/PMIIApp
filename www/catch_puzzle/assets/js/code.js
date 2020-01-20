@@ -589,7 +589,6 @@ function buildMatrixJigsaw()
 function buildTableJigsaw(m)
 {
     var table = document.createElement('table');
-    table.style.backgroundImage = "url('assets/img/"+numberImage+"/full.png')";
     table.id = "jigsaw";
     for(var i = 0; i < 5;i++)
     {
@@ -614,6 +613,11 @@ function buildTableJigsaw(m)
         table.appendChild(tr);
     }
     document.getElementById('game').appendChild(table);
+    var img = document.createElement("img");
+    img.src = 'assets/img/'+numberImage+'/full.png';
+    img.draggable = false;
+    img.classList.add("guide_img");
+    document.getElementById('game').appendChild(img);
 }
 
 function generateArrayPieces()
@@ -625,7 +629,7 @@ function generateArrayPieces()
     {
         for(var j = 0; j < amountPiecesY;j++)
         {
-            array.push({top:-(120*i)+"px",left: (-120*j)+"px", id: i+"_"+j, alt: "piece"});
+            array.push({top:-(120*i)+"px",left: (-120*j)+"px", alt: "piece"});
         } 
     }
     array = shuffle(array);
@@ -725,20 +729,25 @@ function selectPiece(img)
             div = img.parentNode;
         }
 
-        var aux = {top: img.style.top, left: img.style.left, src: img.src};
+        var aux = {top: img.style.top, left: img.style.left, src: img.src, alt: img.alt};
         img.style.top = img1Selected.style.top;
         img.style.left = img1Selected.style.left;
-        
+        var id = img1Selected.id; //Obtain id
         if(img.alt != "empty")
         { 
-           
-            img1Selected.style.top = aux.top;
-            img1Selected.style.left = aux.left;
-            img1Selected.src = aux.src;   
+            if(!isFromMenu(id))
+            {
+                img1Selected.style.top = aux.top;
+                img1Selected.style.left = aux.left;
+                img1Selected.src = aux.src;   
+                //Restore the array with the piece returned in menu
+                id = id.substring(8,9);
+                id = parseInt(id);
+                arrayPieces.splice(id,0,{top: img.style.top, left: img.style.left, alt: img.alt});
+            }
         }
         else if(img.alt == "empty")
         {
-            var id = img1Selected.id;
              //Is from the menu?
              img.src = img1Selected.src;
              img.alt = img1Selected.alt;
@@ -752,14 +761,22 @@ function selectPiece(img)
              else
              {
                 img1Selected.src = aux.src;
+                img1Selected.alt = aux.alt;
                 img1Selected.style.top = aux.top;
                 img1Selected.style.left = aux.left; 
              }
             
         }
-        div.classList.remove("selected");
         //To default
         img1Selected=null;
+        div.classList.remove("selected");
+    }
+    else if(img == img1Selected)
+    {
+        //To default
+        var div = img1Selected.parentNode; //For remove the class CSS "selected"
+        img1Selected=null;
+        div.classList.remove("selected");
     }
 }
 
@@ -779,20 +796,39 @@ function changePieces(num)
 {
     for(var i =0;i < 5; i++)
     {
-        selectorPieces[i] += num;
-        if(selectorPieces[i] < 0)
-        {
-            selectorPieces[i] = arrayPieces.length-1;
-        }
-        if(selectorPieces[i] > arrayPieces.length-1)
-        {
-            selectorPieces[i] = 0;
-        }
         var img = document.getElementById("eligible"+i);
-        var pieceSelected = selectorPieces[i];
-        img.style.top = arrayPieces[pieceSelected].top;
-        img.style.left = arrayPieces[pieceSelected].left;
-        img.value = arrayPieces[pieceSelected].id;
+        if(arrayPieces.length > 0)
+        {
+            selectorPieces[i] += num;
+            if(selectorPieces[i] < 0)
+            {
+                selectorPieces[i] = arrayPieces.length-1;
+            }
+            if(selectorPieces[i] > arrayPieces.length-1)
+            {
+                selectorPieces[i] = 0;
+            }
+            var pieceSelected = selectorPieces[i];
+            img.style.top = arrayPieces[pieceSelected].top;
+            img.style.left = arrayPieces[pieceSelected].left;
+            if(arrayPieces.length-1 < 5 && i > arrayPieces.length - 1)
+            {
+                img.alt = "empty";
+                img.src = "assets/img/cellJigsaw.png";
+            }
+            else
+            {
+                img.alt = arrayPieces[pieceSelected].alt;
+            }
+        }
+        else
+        {
+            //all cels empty
+            img.style.top = 0+"px";
+            img.style.left = (i*-120)+"px";
+            img.alt = "empty";
+            img.src = "assets/img/cellJigsaw.png";
+        }
     }
 }
 
