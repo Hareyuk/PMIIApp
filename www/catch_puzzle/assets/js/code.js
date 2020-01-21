@@ -707,33 +707,33 @@ function buildMenuPieces()
     document.getElementById("game").appendChild(content);
 }
 
-function selectPiece(img)
+function selectPiece(img2Selected)
 {
     //Is a piece or empty cell?
     
     if(img1Selected == null)
     {
         //Not chosen piece
-        var div = img.parentNode;
+        var div = img2Selected.parentNode;
         div.classList.add("selected");
-        img1Selected = img;
+        img1Selected = img2Selected;
     }
-    else if (img1Selected != img && img.alt != "empty" || img1Selected.alt != "empty" && img1Selected.alt != img.alt)
+    else if (img1Selected != img2Selected && img2Selected.alt != "empty" || img1Selected.alt != "empty" && img1Selected.alt != img2Selected.alt)
     {
-        var div = img1Selected.parentNode; //For remove the class CSS "selected"
+        var div = img1Selected.parentNode; //For remove class CSS "selected"
         if(img1Selected.alt == "empty")
         {
-            var aux = img;
-            img = img1Selected;
+            var aux = img2Selected;
+            img2Selected = img1Selected;
             img1Selected = aux;
-            div = img.parentNode;
+            div = img2Selected.parentNode;
         }
 
-        var aux = {top: img.style.top, left: img.style.left, src: img.src, alt: img.alt};
-        img.style.top = img1Selected.style.top;
-        img.style.left = img1Selected.style.left;
+        var aux = {top: img2Selected.style.top, left: img2Selected.style.left, src: img2Selected.src, alt: img2Selected.alt};
+        img2Selected.style.top = img1Selected.style.top;
+        img2Selected.style.left = img1Selected.style.left;
         var id = img1Selected.id; //Obtain id
-        if(img.alt != "empty")
+        if(img2Selected.alt != "empty")
         { 
             if(!isFromMenu(id))
             {
@@ -743,16 +743,23 @@ function selectPiece(img)
                 //Restore the array with the piece returned in menu
                 id = id.substring(8,9);
                 id = parseInt(id);
-                arrayPieces.splice(id,0,{top: img.style.top, left: img.style.left, alt: img.alt});
+                arrayPieces.splice(id,0,{top: img2Selected.style.top, left: img2Selected.style.left, alt: img2Selected.alt});
+            }
+            else
+            {
+                //restore. So here didn't happen nothing
+                img2Selected.style.top = aux.top;
+                img2Selected.style.left = aux.left;
             }
         }
-        else if(img.alt == "empty")
+        else if(img2Selected.alt == "empty")
         {
              //Is from the menu?
-             img.src = img1Selected.src;
-             img.alt = img1Selected.alt;
+             img2Selected.src = img1Selected.src;
+             img2Selected.alt = img1Selected.alt;
              if(isFromMenu(id))
              {
+                 var id2 = img2Selected.id;
                 id = id.substring(8,9);
                 id = parseInt(id);
                 arrayPieces.splice(selectorPieces[id],1);
@@ -771,7 +778,7 @@ function selectPiece(img)
         img1Selected=null;
         div.classList.remove("selected");
     }
-    else if(img == img1Selected)
+    else if(img2Selected == img1Selected)
     {
         //To default
         var div = img1Selected.parentNode; //For remove the class CSS "selected"
