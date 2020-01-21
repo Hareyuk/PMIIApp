@@ -676,7 +676,7 @@ function buildMenuPieces()
     content.id = "contentPieces";
     
     var button = document.createElement("button");
-    button.addEventListener("click", function() {  changePieces(-1); });
+    button.addEventListener("click", function() {  changeMenuPieces(-1); });
     button.innerHTML = "<";
     button.classList.add("buttonJigsaw");
     content.appendChild(button);
@@ -699,7 +699,7 @@ function buildMenuPieces()
     }
 
     var button2 = document.createElement("button");
-    button2.addEventListener("click", function() { changePieces(1); });
+    button2.addEventListener("click", function() { changeMenuPieces(1); });
     button2.innerHTML =">";
     button2.classList.add("buttonJigsaw");
     content.appendChild(button2);
@@ -709,8 +709,7 @@ function buildMenuPieces()
 
 function selectPiece(img2Selected)
 {
-    //Is a piece or empty cell?
-    
+    //Is a piece or empty cell?   
     if(img1Selected == null)
     {
         //Not chosen piece
@@ -721,8 +720,9 @@ function selectPiece(img2Selected)
     else if (img1Selected != img2Selected && img2Selected.alt != "empty" || img1Selected.alt != "empty" && img1Selected.alt != img2Selected.alt)
     {
         var div = img1Selected.parentNode; //For remove class CSS "selected"
-        if(img1Selected.alt == "empty")
+        if(img1Selected.alt == "empty" )
         {
+            //Change places between piece 1 and 2 so piece 2 is empty
             var aux = img2Selected;
             img2Selected = img1Selected;
             img1Selected = aux;
@@ -747,9 +747,19 @@ function selectPiece(img2Selected)
             }
             else
             {
-                //restore. So here didn't happen nothing
-                img2Selected.style.top = aux.top;
-                img2Selected.style.left = aux.left;
+                //piece1 is from Menu's pieces
+                if(isFromMenu(img2Selected.id))
+                {
+                    //piece 2 is from menu too, then restore. So here didn't happen nothing
+                    img2Selected.style.top = aux.top;
+                    img2Selected.style.left = aux.left;
+                }
+                else
+                {
+                    //Change piece 1 from menu and piece 2 from jigsaw
+                    img1Selected.style.top = aux.top;
+                    img1Selected.style.left = aux.left;
+                }
             }
         }
         else if(img2Selected.alt == "empty")
@@ -759,11 +769,10 @@ function selectPiece(img2Selected)
              img2Selected.alt = img1Selected.alt;
              if(isFromMenu(id))
              {
-                 var id2 = img2Selected.id;
                 id = id.substring(8,9);
                 id = parseInt(id);
                 arrayPieces.splice(selectorPieces[id],1);
-                changePieces(0);
+                changeMenuPieces(0);
              }
              else
              {
@@ -799,7 +808,7 @@ function isFromMenu(id)
     return false;
 }
 
-function changePieces(num)
+function changeMenuPieces(num)
 {
     for(var i =0;i < 5; i++)
     {
