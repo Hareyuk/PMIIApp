@@ -608,6 +608,7 @@ function buildTableJigsaw(m)
             img.style.left=m[i][j].left;
             img.draggable = false;
             td.appendChild(img);
+            td.id = i + "_" + j;
             tr.appendChild(td);
         }
         table.appendChild(tr);
@@ -759,16 +760,19 @@ function selectPiece(img2Selected)
             }
             else
             {
+                var id2 = img2Selected.id;
                 img1Selected.style.top = aux.top;
                 img1Selected.style.left = aux.left;
                 img1Selected.src = aux.src;   
-                //Restore the array with the piece returned in menu.
-                //Using id2 because piece 2 is from menu which has id
-                var id2 = img2Selected.id;
-                id2 = id2.substring(8,9);
-                id2 = parseInt(id2);
-                var pieceSelected = selectorPieces[id2];
-                arrayPieces.splice(pieceSelected,1,{top: img2Selected.style.top, left: img2Selected.style.left, alt: img2Selected.alt});
+                if(isFromMenu(id2))
+                {
+                    //Restore the array with the piece returned in menu.
+                    //Using id2 because piece 2 is from menu which has id
+                    id2 = id2.substring(8,9);
+                    id2 = parseInt(id2);
+                    var pieceSelected = selectorPieces[id2];
+                    arrayPieces.splice(pieceSelected,1,{top: img2Selected.style.top, left: img2Selected.style.left, alt: img2Selected.alt});
+                }
             }
         }
         else if(img2Selected.alt == "empty")
@@ -862,6 +866,17 @@ function changeMenuPieces(num)
     }
 }
 
+function obtainPositionJigsaw(id)
+{
+    var array = id;
+    array = array.split("_");
+    for(var i=0;i<array.length;i++)
+    {
+        array[i] = Number(array[i]);
+    }
+    return array;
+}
+
 function buildButtonsJigsaw()
 {
 
@@ -869,8 +884,6 @@ function buildButtonsJigsaw()
 
 function validatePuzzle(mapGame)
 {
-    var won = true;
-
     for(var i = 0; i < mapGame.length; i++)
     {
         for(var j = 0; j < mapGame[i].length; j++)
@@ -879,11 +892,12 @@ function validatePuzzle(mapGame)
             var topWin = (-i*120)+"px";
             var leftPlayer = mapGame[i][j].left;
             var leftWin = (-j*120)+"px";
-            if(topPlayer != topWin || leftPlayer != leftWin)
+            var altPlayer = mapGame[i][j].alt;
+            if(altPlayer == "empty" || topPlayer != topWin || leftPlayer != leftWin)
             {
                 return false;
             }
         }
     }
-    return won;
+    return true;
 }
