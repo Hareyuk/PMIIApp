@@ -722,7 +722,7 @@ function selectPiece(img2Selected)
         var div = img1Selected.parentNode; //For remove class CSS "selected"
         if(img1Selected.alt == "empty" )
         {
-            //Change places between piece 1 and 2 so piece 2 is empty
+            //Change places between piece 1 and 2 so piece 2 is empty and it'll be easier to code
             var aux = img2Selected;
             img2Selected = img1Selected;
             img1Selected = aux;
@@ -735,20 +735,12 @@ function selectPiece(img2Selected)
         var id = img1Selected.id; //Obtain id
         if(img2Selected.alt != "empty")
         { 
-            if(!isFromMenu(id))
-            {
-                img1Selected.style.top = aux.top;
-                img1Selected.style.left = aux.left;
-                img1Selected.src = aux.src;   
-                //Restore the array with the piece returned in menu
-                id = id.substring(8,9);
-                id = parseInt(id);
-                arrayPieces.splice(id,0,{top: img2Selected.style.top, left: img2Selected.style.left, alt: img2Selected.alt});
-            }
-            else
+            //Piece 2 isn't empty
+            if(isFromMenu(id))
             {
                 //piece1 is from Menu's pieces
-                if(isFromMenu(img2Selected.id))
+                var id2 = img2Selected.id;
+                if(isFromMenu(id2))
                 {
                     //piece 2 is from menu too, then restore. So here didn't happen nothing
                     img2Selected.style.top = aux.top;
@@ -759,7 +751,25 @@ function selectPiece(img2Selected)
                     //Change piece 1 from menu and piece 2 from jigsaw
                     img1Selected.style.top = aux.top;
                     img1Selected.style.left = aux.left;
+                    id = id.substring(8,9);
+                    id = parseInt(id);
+                    var pieceSelected = selectorPieces[id];
+                    arrayPieces.splice(pieceSelected,1,{top: aux.top, left: aux.left, alt: aux.alt});
                 }
+            }
+            else
+            {
+                img1Selected.style.top = aux.top;
+                img1Selected.style.left = aux.left;
+                img1Selected.src = aux.src;   
+                //Restore the array with the piece returned in menu.
+                //Using id2 because piece 2 is from menu which has id
+                var id2 = img2Selected.id;
+                id2 = id2.substring(8,9);
+                id2 = parseInt(id2);
+                var pieceSelected = selectorPieces[id2];
+                arrayPieces.splice(pieceSelected,1,{top: img2Selected.style.top, left: img2Selected.style.left, alt: img2Selected.alt});
+                changeMenuPieces(0);
             }
         }
         else if(img2Selected.alt == "empty")
