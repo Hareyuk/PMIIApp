@@ -742,7 +742,7 @@ function selectPiece(img2Selected)
                 var id2 = img2Selected.id;
                 if(isFromMenu(id2))
                 {
-                    //piece 2 is from menu too, then restore. So here didn't happen nothing
+                    //piece 2 is from menu too. Restore the pieces, didn't happen something here
                     img2Selected.style.top = aux.top;
                     img2Selected.style.left = aux.left;
                 }
@@ -769,33 +769,37 @@ function selectPiece(img2Selected)
                 id2 = parseInt(id2);
                 var pieceSelected = selectorPieces[id2];
                 arrayPieces.splice(pieceSelected,1,{top: img2Selected.style.top, left: img2Selected.style.left, alt: img2Selected.alt});
-                changeMenuPieces(0);
             }
         }
         else if(img2Selected.alt == "empty")
         {
-             //Is from the menu?
              img2Selected.src = img1Selected.src;
              img2Selected.alt = img1Selected.alt;
-             if(isFromMenu(id))
+             if(isFromMenu(id)) //Is from the menu?
              {
                 id = id.substring(8,9);
                 id = parseInt(id);
-                arrayPieces.splice(selectorPieces[id],1);
-                changeMenuPieces(0);
+                var pieceSelected = selectorPieces[id];
+                arrayPieces.splice(pieceSelected,1);
              }
              else
              {
+                //two pieces from table changed, nothing more
                 img1Selected.src = aux.src;
                 img1Selected.alt = aux.alt;
                 img1Selected.style.top = aux.top;
-                img1Selected.style.left = aux.left; 
+                img1Selected.style.left = aux.left;
              }
             
         }
         //To default
+        changeMenuPieces(0);
         img1Selected=null;
         div.classList.remove("selected");
+        if(validatePuzzle(puzzleMatrix))
+        {
+            alert('Won!');
+        }
     }
     else if(img2Selected == img1Selected)
     {
@@ -863,17 +867,18 @@ function buildButtonsJigsaw()
 
 }
 
-function validatePuzzle(mapGame, mapOriginal)
+function validatePuzzle(mapGame)
 {
     var won = true;
+
     for(var i = 0; i < mapGame.length; i++)
     {
         for(var j = 0; j < mapGame[i].length; j++)
         {
             var topPlayer = mapGame[i][j].top;
-            var topWin = mapOriginal[i][j].top;
+            var topWin = (-i*120)+"px";
             var leftPlayer = mapGame[i][j].left;
-            var leftWin = mapOriginal[i][j].left;
+            var leftWin = (-j*120)+"px";
             if(topPlayer != topWin || leftPlayer != leftWin)
             {
                 return false;
