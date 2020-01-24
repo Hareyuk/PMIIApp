@@ -7,6 +7,10 @@ p, #turnos{
     height: 1.5rem;
 }
 
+#texture
+{
+    background-image: url(../images/texture.gif);
+}
 
 #game
 {

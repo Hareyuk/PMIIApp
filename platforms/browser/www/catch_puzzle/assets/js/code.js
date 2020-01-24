@@ -20,30 +20,30 @@ walkingSteps["up"] = [5,4,6,4];
 walkingSteps["right"] = [8,7,9,7];
 walkingSteps["left"] = [11,10,12,10]; 
 var stepCounts = 0;
-var piece1Selected=null;
+var img1Selected=null;
 var numberImage;
 var arrayPieces=[];
 var puzzleMatrix=[];
+//For pieces' selector
+var selectorPieces = [0,1,2,3,4];
 
 function startGame() {
     players = localStorage.getItem("players");
     players = JSON.parse(players);
     gameData = localStorage.getItem('dataCP');
     gameData = JSON.parse(gameData);
-    gameData = {dataSaved: true,dataPuzzle:true}; //DELETE LATER
+    gameData = {dataSaved: true,dataPuzzle:false}; //DELETE LATER
     if(gameData.dataSaved)
     {
         //getData();
         if(gameData.dataPuzzle)
         {
-            buildTableJigsaw();
+            startJigsaw(0);
         }
         else
         {
-
-            generateMazeTable(widthMap, heightMap, mapMatrix);
-            moveTable();
-            generateCharacter(turn);
+            
+            startJigsaw(1);
         }
     }
     else
@@ -100,10 +100,10 @@ function generateCharacter(character) {
     img.alt = character;
     img.src = "assets/img/frames_" + character + "/1.png";
     img.classList.add("character");
-    document.querySelector("#game div").appendChild(img);
+    document.querySelector("#maze").appendChild(img);
     var div = document.createElement("div");
     div.id = "shadow_character";
-    document.querySelector("#game div").appendChild(div);
+    document.querySelector("#maze").appendChild(div);
     imageCharacter = document.getElementById('character');
 }
 
@@ -184,6 +184,7 @@ function putPieces(w, h, m) {
 function generateMazeTable(w, h, m) {
     document.getElementById('game').innerHTML = "";
     var div = document.createElement("div");
+    div.id = "maze";
     var table = document.createElement("table");
     for (var i = 0; i < w; i++) {
         var tr = document.createElement("tr");
@@ -509,7 +510,7 @@ async function grabPiece()
         if(!stillSeekingPieces(widthMap, heightMap, mapMatrix))
         {
             blackScreen();
-            startJigsaw();
+            startJigsaw(1);
         }
     }, 500);
 }
@@ -554,16 +555,40 @@ function stillSeekingPieces(w,h,m)
     return false;
 }
 
-function startJigsaw()
+function startJigsaw(newJigsaw)
 {
     numberImage = genRandom(0,1);
-    buildTableJigsaw();
+    if(newJigsaw == 1)
+    {
+        //Just to know if is new game or is there save
+        puzzleMatrix = buildMatrixJigsaw(numberImage);
+        arrayPieces = generateArrayPieces(numberImage);
+    }
+    //Show
+    buildTableJigsaw(puzzleMatrix);
+    buildMenuPieces();
+    buildButtonsJigsaw();
 }
 
-function buildTableJigsaw()
+function buildMatrixJigsaw()
+{
+    var m = [];
+    var rowPieces = 5;
+    var colPieces = 5;
+    for(var i = 0; i < rowPieces; i++)
+    {
+        m.push([]);
+        for(var j = 0; j < colPieces; j++)
+        {
+            m[i][j] = {top:-(120*i)+"px",left: (-120*j)+"px", src: "cellJigsaw.png", alt: "empty"};
+        }
+    }
+    return m;
+}
+
+function buildTableJigsaw(m)
 {
     var table = document.createElement('table');
-    table.style.backgroundImage ="url('assets/img/'"+numberImage+"'/full.png')";
     table.id = "jigsaw";
     for(var i = 0; i < 5;i++)
     {
@@ -573,16 +598,64 @@ function buildTableJigsaw()
             var td = document.createElement('td');
             td.classList.add('piece');
             var img = document.createElement('img');
-            img.src="assets/img/cellJigsaw.png";
-            img.style.top=-(120*i)+'px';
-            img.style.left=-(120*j)+'px';
+            img.addEventListener("click", function()
+            {
+                selectPiece(this);
+            });
+            img.src= "assets/img/" + m[i][j].src;
+            img.alt = m[i][j].alt;
+            img.style.top=m[i][j].top;
+            img.style.left=m[i][j].left;
+            img.draggable = false;
             td.appendChild(img);
+            td.id = i + "_" + j;
             tr.appendChild(td);
         }
         table.appendChild(tr);
     }
     document.getElementById('game').appendChild(table);
+    var img = document.createElement("img");
+    img.src = 'assets/img/'+numberImage+'/full.png';
+    img.draggable = false;
+    img.classList.add("guide_img");
+    document.getElementById('game').appendChild(img);
 }
+
+function generateArrayPieces()
+{
+    var array = [];
+    var amountPiecesX = 5;
+    var amountPiecesY = 5;
+    for(var i = 0; i < amountPiecesX;i++)
+    {
+        for(var j = 0; j < amountPiecesY;j++)
+        {
+            array.push({top:-(120*i)+"px",left: (-120*j)+"px", alt: "piece"});
+        } 
+    }
+    array = shuffle(array);
+    return array;
+}
+
+ //Taken from https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+function shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+  
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+  
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+  
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+  
+    return array;
+  }
 
 function blackScreen()
 {
@@ -594,6 +667,274 @@ function blackScreen()
         div.style.opacity = '1';
     }, 100);
     setTimeout(() => {
-        document.querySelector("#game div:first-child").remove();
+        document.querySelector("#maze").remove();
     },1200);
+}
+
+function buildMenuPieces()
+{
+    var content = document.createElement("div");
+    content.id = "contentPieces";
+    
+    var button = document.createElement("button");
+    button.addEventListener("click", function() {  changeMenuPieces(-1); });
+    button.innerHTML = "<";
+    button.classList.add("buttonJigsaw");
+    content.appendChild(button);
+
+    for(var i = 0; i < 5; i++)
+    {
+        var div = document.createElement('div');
+        div.classList.add("piece");
+        var img = document.createElement("img");
+        img.src = "assets/img/"+numberImage+"/full.png";
+        img.style.top = arrayPieces[i].top;
+        img.style.left= arrayPieces[i].left;
+        img.alt = arrayPieces[i].alt;
+        img.value = arrayPieces[i].id;
+        img.id = "eligible"+i;
+        img.draggable = false;
+        img.addEventListener("click", function(){ selectPiece(this); });
+        div.appendChild(img);
+        content.appendChild(div);
+    }
+
+    var button2 = document.createElement("button");
+    button2.addEventListener("click", function() { changeMenuPieces(1); });
+    button2.innerHTML =">";
+    button2.classList.add("buttonJigsaw");
+    content.appendChild(button2);
+
+    document.getElementById("game").appendChild(content);
+}
+
+function selectPiece(img2Selected)
+{
+    //Is a piece or empty cell?   
+    if(img1Selected == null)
+    {
+        //Not chosen piece
+        var div = img2Selected.parentNode;
+        div.classList.add("selected");
+        img1Selected = img2Selected;
+    }
+    else if (img1Selected != img2Selected && img2Selected.alt != "empty" || img1Selected.alt != "empty" && img1Selected.alt != img2Selected.alt)
+    {
+        var div = img1Selected.parentNode; //For remove class CSS "selected"
+        if(img1Selected.alt == "empty" )
+        {
+            //Change places between piece 1 and 2 so piece 2 is empty and it'll be easier to process
+            var aux = img2Selected;
+            img2Selected = img1Selected;
+            img1Selected = aux;
+            div = img2Selected.parentNode;
+        }
+
+        var aux = {top: img2Selected.style.top, left: img2Selected.style.left, src: img2Selected.getAttribute("src"), alt: img2Selected.alt};
+        img2Selected.style.top = img1Selected.style.top;
+        img2Selected.style.left = img1Selected.style.left;
+        var id = img1Selected.id; //Obtain id
+        if(img2Selected.alt != "empty")
+        { 
+            //Piece 2 isn't empty
+            if(isFromMenu(id))
+            {
+                //piece1 is from Menu's pieces
+                var id2 = img2Selected.id;
+                if(isFromMenu(id2))
+                {
+                    //piece 2 is from menu too. Restore the pieces, didn't happen something here
+                    img2Selected.style.top = aux.top;
+                    img2Selected.style.left = aux.left;
+                    console.log("no pasó nada, ambas piezas son del menú");
+                }
+                else
+                {
+                    //Change piece 1 from menu and piece 2 from jigsaw
+                    img1Selected.style.top = aux.top;
+                    img1Selected.style.left = aux.left;
+                    id = id.substring(8,9);
+                    id = parseInt(id);
+                    var pieceSelected = selectorPieces[id];
+                    arrayPieces.splice(pieceSelected,1,{top: aux.top, left: aux.left, alt: aux.alt});
+                    updatePuzzleMatrix(img2Selected, img2Selected);
+                    console.log("Cambiamos pieza 1 de menú y pieza 2 de tablero");
+                }
+            }
+            else
+            {
+                //piece1 is from table
+                var id2 = img2Selected.id;
+                img1Selected.style.top = aux.top;
+                img1Selected.style.left = aux.left;
+                img1Selected.src = aux.src;
+                if(isFromMenu(id2)) //Piece2 is from menu?
+                {
+                    //Restore the array with the piece (1) returned in menu.
+                    id2 = id2.substring(8,9);
+                    id2 = parseInt(id2);
+                    var pieceSelected = selectorPieces[id2];
+                    arrayPieces.splice(pieceSelected,1,{top: img2Selected.style.top, left: img2Selected.style.left, alt: img2Selected.alt});
+                    updatePuzzleMatrix(img1Selected, img1Selected);
+                    console.log("Devolvimos la pieza 1 al menú y el 2° del menú pasó al tablero");
+                }
+                else
+                {
+                    //two pieces from table changed, nothing more
+                    img1Selected.src = aux.src;
+                    img1Selected.alt = aux.alt;
+                    img1Selected.style.top = aux.top;
+                    img1Selected.style.left = aux.left;
+                    updatePuzzleMatrix(img1Selected, img1Selected);
+                    updatePuzzleMatrix(img2Selected, img2Selected);
+                    console.log("Dos piezas del tablero cambiaron");
+                }
+            }
+        }
+        else if(img2Selected.alt == "empty")
+        {
+             img2Selected.src = img1Selected.getAttribute("src");
+             img2Selected.alt = img1Selected.alt;
+             if(isFromMenu(id)) //Is piece 1 from the menu?
+             {
+                id = id.substring(8,9);
+                id = parseInt(id);
+                var pieceSelected = selectorPieces[id];
+                arrayPieces.splice(pieceSelected,1);
+                updatePuzzleMatrix(img2Selected, img1Selected);
+                console.log("Pusimos una pieza del menú en una casilla vacía de la tabla");
+             }
+             else
+             {
+                //two pieces from table changed, nothing more
+                img1Selected.src = aux.src;
+                img1Selected.alt = aux.alt;
+                img1Selected.style.top = aux.top;
+                img1Selected.style.left = aux.left;
+                updatePuzzleMatrix(img1Selected, img2Selected);
+                updatePuzzleMatrix(img2Selected, img1Selected);
+                console.log("Dos piezas del tablero cambiaron. el 2° era 'empty'");
+             }
+            
+        }
+        //To default
+        changeMenuPieces(0);
+        img1Selected=null;
+        div.classList.remove("selected");
+        if(validatePuzzle(puzzleMatrix))
+        {
+            alert('Won!');
+        }
+    }
+    else if(img2Selected == img1Selected)
+    {
+        //To default
+        var div = img1Selected.parentNode; //For remove the class CSS "selected"
+        img1Selected=null;
+        div.classList.remove("selected");
+    }
+}
+
+function isFromMenu(id)
+{
+    for(var i = 0; i < 5; i++)
+    {
+        if(id == "eligible"+i)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+function changeMenuPieces(num)
+{
+    for(var i =0;i < 5; i++)
+    {
+        var img = document.getElementById("eligible"+i);
+        if(arrayPieces.length > 0)
+        {
+            selectorPieces[i] += num;
+            if(selectorPieces[i] < 0)
+            {
+                selectorPieces[i] = arrayPieces.length-1;
+            }
+            if(selectorPieces[i] > arrayPieces.length-1)
+            {
+                selectorPieces[i] = 0;
+            }
+            var pieceSelected = selectorPieces[i];
+            img.style.top = arrayPieces[pieceSelected].top;
+            img.style.left = arrayPieces[pieceSelected].left;
+            if(arrayPieces.length-1 < 5 && i > arrayPieces.length - 1)
+            {
+                img.alt = "empty";
+                img.src = "assets/img/cellJigsaw.png";
+            }
+            else
+            {
+                img.alt = arrayPieces[pieceSelected].alt;
+            }
+        }
+        else
+        {
+            //all cels empty
+            img.style.top = 0+"px";
+            img.style.left = (i*-120)+"px";
+            img.alt = "empty";
+            img.src = "assets/img/cellJigsaw.png";
+        }
+    }
+}
+
+function obtainPositionJigsaw(id)
+{
+    var array = id;
+    array = array.split("_");
+    for(var i=0;i<array.length;i++)
+    {
+        array[i] = Number(array[i]);
+    }
+    return array;
+}
+
+function buildButtonsJigsaw()
+{
+
+}
+
+function validatePuzzle(mapGame)
+{
+    for(var i = 0; i < mapGame.length; i++)
+    {
+        for(var j = 0; j < mapGame[i].length; j++)
+        {
+            var topPlayer = mapGame[i][j].top;
+            var topWin = (-i*120)+"px";
+            var leftPlayer = mapGame[i][j].left;
+            var leftWin = (-j*120)+"px";
+            var altPlayer = mapGame[i][j].alt;
+            if(altPlayer == "empty" || topPlayer != topWin || leftPlayer != leftWin)
+            {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+function updatePuzzleMatrix(idSelected, imgSelected)
+{
+    var parent =idSelected.parentNode;
+    var idParent = parent.id;
+    var position = obtainPositionJigsaw(idParent);
+    var pieceX = position[0];
+    var pieceY = position[1];
+    var saveTop = imgSelected.style.top;
+    var saveLeft = imgSelected.style.left;
+    var saveSrc = imgSelected.getAttribute("src");
+    var saveAlt = imgSelected.alt;
+    var obj = {top: saveTop, left: saveLeft, src: saveSrc, alt: saveAlt};
+    puzzleMatrix[pieceX][pieceY] = obj;
+    console.log('ID recibido: ' + position);
 }
