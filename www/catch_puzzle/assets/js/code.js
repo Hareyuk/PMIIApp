@@ -723,14 +723,14 @@ function selectPiece(img2Selected)
         var div = img1Selected.parentNode; //For remove class CSS "selected"
         if(img1Selected.alt == "empty" )
         {
-            //Change places between piece 1 and 2 so piece 2 is empty and it'll be easier to code
+            //Change places between piece 1 and 2 so piece 2 is empty and it'll be easier to process
             var aux = img2Selected;
             img2Selected = img1Selected;
             img1Selected = aux;
             div = img2Selected.parentNode;
         }
 
-        var aux = {top: img2Selected.style.top, left: img2Selected.style.left, src: img2Selected.src, alt: img2Selected.alt};
+        var aux = {top: img2Selected.style.top, left: img2Selected.style.left, src: img2Selected.getAttribute("src"), alt: img2Selected.alt};
         img2Selected.style.top = img1Selected.style.top;
         img2Selected.style.left = img1Selected.style.left;
         var id = img1Selected.id; //Obtain id
@@ -756,35 +756,63 @@ function selectPiece(img2Selected)
                     id = parseInt(id);
                     var pieceSelected = selectorPieces[id];
                     arrayPieces.splice(pieceSelected,1,{top: aux.top, left: aux.left, alt: aux.alt});
+                    var idParent = img2Selected.parentNode.id;
+                    var position = obtainPositionJigsaw(idParent);
+                    var pieceX = position[0];
+                    var pieceY = position[1];
+                    var saveTop = img1Selected.style.top;
+                    var saveLeft = img1Selected.style.left;
+                    var saveSrc = img1Selected.getAttribute("src");
+                    var saveAlt = img1Selected.alt;
+                    puzzleMatrix[pieceX][pieceY] = {top:saveTop, left: saveLeft,src:saveSrc,alt:saveAlt};
+
                 }
             }
             else
             {
+                //piece1 is from table
                 var id2 = img2Selected.id;
                 img1Selected.style.top = aux.top;
                 img1Selected.style.left = aux.left;
-                img1Selected.src = aux.src;   
-                if(isFromMenu(id2))
+                img1Selected.src = aux.src;
+                if(isFromMenu(id2)) //Piece2 is from menu?
                 {
                     //Restore the array with the piece returned in menu.
-                    //Using id2 because piece 2 is from menu which has id
                     id2 = id2.substring(8,9);
                     id2 = parseInt(id2);
                     var pieceSelected = selectorPieces[id2];
                     arrayPieces.splice(pieceSelected,1,{top: img2Selected.style.top, left: img2Selected.style.left, alt: img2Selected.alt});
+                    var idParent = img1Selected.parentNode.id;
+                    var position = obtainPositionJigsaw(idParent);
+                    var pieceX = position[0];
+                    var pieceY = position[1];
+                    var saveTop = img2Selected.style.top;
+                    var saveLeft = img2Selected.style.left;
+                    var saveSrc = img2Selected.getAttribute("src");;
+                    var saveAlt = img2Selected.alt;
+                    puzzleMatrix[pieceX][pieceY] = {top:saveTop, left: saveLeft,src:saveSrc,alt:saveAlt};
                 }
             }
         }
         else if(img2Selected.alt == "empty")
         {
-             img2Selected.src = img1Selected.src;
+             img2Selected.src = img1Selected.getAttribute("src");;
              img2Selected.alt = img1Selected.alt;
-             if(isFromMenu(id)) //Is from the menu?
+             if(isFromMenu(id)) //Is piece 1 from the menu?
              {
                 id = id.substring(8,9);
                 id = parseInt(id);
                 var pieceSelected = selectorPieces[id];
                 arrayPieces.splice(pieceSelected,1);
+                var idParent = img1Selected.parentNode.id;
+                var position = obtainPositionJigsaw(idParent);
+                var pieceX = position[0];
+                var pieceY = position[1];
+                var saveTop = img1Selected.style.top;
+                var saveLeft = img1Selected.style.left;
+                var saveSrc = img1Selected.getAttribute("src");;
+                var saveAlt = img1Selected.alt;
+                puzzleMatrix[pieceX][pieceY] = {top:saveTop, left: saveLeft,src:saveSrc,alt:saveAlt};
              }
              else
              {
@@ -793,6 +821,24 @@ function selectPiece(img2Selected)
                 img1Selected.alt = aux.alt;
                 img1Selected.style.top = aux.top;
                 img1Selected.style.left = aux.left;
+                var idParent = img1Selected.parentNode.id;
+                var idParent2 = img2Selected.parentNode.id;
+                var position = obtainPositionJigsaw(idParent);
+                var position2 = obtainPositionJigsaw(idParent2);
+                var pieceX = position[0];
+                var pieceY = position[1];
+                var pieceX2 = position2[0];
+                var pieceY2 = position[1];
+                var saveTop = img1Selected.style.top;
+                var saveLeft = img1Selected.style.left;
+                var saveSrc = img1Selected.getAttribute("src");;
+                var saveAlt = img1Selected.alt;
+                var saveTop2 = img2Selected.style.left;
+                var saveLeft2 = img2Selected.style.left;
+                var saveSrc2 = img2Selected.getAttribute("src");;
+                var saveAlt2 = img2Selected.alt;
+                puzzleMatrix[pieceX][pieceY] = {top:saveTop, left: saveLeft,src:saveSrc,alt:saveAlt};
+                puzzleMatrix[pieceX2][pieceY2] = {top:saveTop2, left: saveLeft2,src:saveSrc2,alt:saveAlt2};
              }
             
         }
