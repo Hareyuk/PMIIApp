@@ -746,6 +746,7 @@ function selectPiece(img2Selected)
                     //piece 2 is from menu too. Restore the pieces, didn't happen something here
                     img2Selected.style.top = aux.top;
                     img2Selected.style.left = aux.left;
+                    console.log("no pasó nada, ambas piezas son del menú");
                 }
                 else
                 {
@@ -756,16 +757,8 @@ function selectPiece(img2Selected)
                     id = parseInt(id);
                     var pieceSelected = selectorPieces[id];
                     arrayPieces.splice(pieceSelected,1,{top: aux.top, left: aux.left, alt: aux.alt});
-                    var idParent = img2Selected.parentNode.id;
-                    var position = obtainPositionJigsaw(idParent);
-                    var pieceX = position[0];
-                    var pieceY = position[1];
-                    var saveTop = img1Selected.style.top;
-                    var saveLeft = img1Selected.style.left;
-                    var saveSrc = img1Selected.getAttribute("src");
-                    var saveAlt = img1Selected.alt;
-                    puzzleMatrix[pieceX][pieceY] = {top:saveTop, left: saveLeft,src:saveSrc,alt:saveAlt};
-
+                    updatePuzzleMatrix(img2Selected, img2Selected);
+                    console.log("Cambiamos pieza 1 de menú y pieza 2 de tablero");
                 }
             }
             else
@@ -777,26 +770,30 @@ function selectPiece(img2Selected)
                 img1Selected.src = aux.src;
                 if(isFromMenu(id2)) //Piece2 is from menu?
                 {
-                    //Restore the array with the piece returned in menu.
+                    //Restore the array with the piece (1) returned in menu.
                     id2 = id2.substring(8,9);
                     id2 = parseInt(id2);
                     var pieceSelected = selectorPieces[id2];
                     arrayPieces.splice(pieceSelected,1,{top: img2Selected.style.top, left: img2Selected.style.left, alt: img2Selected.alt});
-                    var idParent = img1Selected.parentNode.id;
-                    var position = obtainPositionJigsaw(idParent);
-                    var pieceX = position[0];
-                    var pieceY = position[1];
-                    var saveTop = img2Selected.style.top;
-                    var saveLeft = img2Selected.style.left;
-                    var saveSrc = img2Selected.getAttribute("src");;
-                    var saveAlt = img2Selected.alt;
-                    puzzleMatrix[pieceX][pieceY] = {top:saveTop, left: saveLeft,src:saveSrc,alt:saveAlt};
+                    updatePuzzleMatrix(img1Selected, img1Selected);
+                    console.log("Devolvimos la pieza 1 al menú y el 2° del menú pasó al tablero");
+                }
+                else
+                {
+                    //two pieces from table changed, nothing more
+                    img1Selected.src = aux.src;
+                    img1Selected.alt = aux.alt;
+                    img1Selected.style.top = aux.top;
+                    img1Selected.style.left = aux.left;
+                    updatePuzzleMatrix(img1Selected, img1Selected);
+                    updatePuzzleMatrix(img2Selected, img2Selected);
+                    console.log("Dos piezas del tablero cambiaron");
                 }
             }
         }
         else if(img2Selected.alt == "empty")
         {
-             img2Selected.src = img1Selected.getAttribute("src");;
+             img2Selected.src = img1Selected.getAttribute("src");
              img2Selected.alt = img1Selected.alt;
              if(isFromMenu(id)) //Is piece 1 from the menu?
              {
@@ -804,15 +801,8 @@ function selectPiece(img2Selected)
                 id = parseInt(id);
                 var pieceSelected = selectorPieces[id];
                 arrayPieces.splice(pieceSelected,1);
-                var idParent = img1Selected.parentNode.id;
-                var position = obtainPositionJigsaw(idParent);
-                var pieceX = position[0];
-                var pieceY = position[1];
-                var saveTop = img1Selected.style.top;
-                var saveLeft = img1Selected.style.left;
-                var saveSrc = img1Selected.getAttribute("src");;
-                var saveAlt = img1Selected.alt;
-                puzzleMatrix[pieceX][pieceY] = {top:saveTop, left: saveLeft,src:saveSrc,alt:saveAlt};
+                updatePuzzleMatrix(img2Selected, img1Selected);
+                console.log("Pusimos una pieza del menú en una casilla vacía de la tabla");
              }
              else
              {
@@ -821,24 +811,9 @@ function selectPiece(img2Selected)
                 img1Selected.alt = aux.alt;
                 img1Selected.style.top = aux.top;
                 img1Selected.style.left = aux.left;
-                var idParent = img1Selected.parentNode.id;
-                var idParent2 = img2Selected.parentNode.id;
-                var position = obtainPositionJigsaw(idParent);
-                var position2 = obtainPositionJigsaw(idParent2);
-                var pieceX = position[0];
-                var pieceY = position[1];
-                var pieceX2 = position2[0];
-                var pieceY2 = position[1];
-                var saveTop = img1Selected.style.top;
-                var saveLeft = img1Selected.style.left;
-                var saveSrc = img1Selected.getAttribute("src");;
-                var saveAlt = img1Selected.alt;
-                var saveTop2 = img2Selected.style.left;
-                var saveLeft2 = img2Selected.style.left;
-                var saveSrc2 = img2Selected.getAttribute("src");;
-                var saveAlt2 = img2Selected.alt;
-                puzzleMatrix[pieceX][pieceY] = {top:saveTop, left: saveLeft,src:saveSrc,alt:saveAlt};
-                puzzleMatrix[pieceX2][pieceY2] = {top:saveTop2, left: saveLeft2,src:saveSrc2,alt:saveAlt2};
+                updatePuzzleMatrix(img1Selected, img2Selected);
+                updatePuzzleMatrix(img2Selected, img1Selected);
+                console.log("Dos piezas del tablero cambiaron. el 2° era 'empty'");
              }
             
         }
@@ -946,4 +921,20 @@ function validatePuzzle(mapGame)
         }
     }
     return true;
+}
+
+function updatePuzzleMatrix(idSelected, imgSelected)
+{
+    var parent =idSelected.parentNode;
+    var idParent = parent.id;
+    var position = obtainPositionJigsaw(idParent);
+    var pieceX = position[0];
+    var pieceY = position[1];
+    var saveTop = imgSelected.style.top;
+    var saveLeft = imgSelected.style.left;
+    var saveSrc = imgSelected.getAttribute("src");
+    var saveAlt = imgSelected.alt;
+    var obj = {top: saveTop, left: saveLeft, src: saveSrc, alt: saveAlt};
+    puzzleMatrix[pieceX][pieceY] = obj;
+    console.log('ID recibido: ' + position);
 }
