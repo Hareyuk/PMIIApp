@@ -80,6 +80,10 @@ main
     text-align: center;
 }
 
+#texture
+{
+    background-image: url(../images/texture.gif);
+}
 
 #msgBox button
 {
