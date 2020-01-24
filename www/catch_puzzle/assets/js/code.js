@@ -811,8 +811,8 @@ function selectPiece(img2Selected)
                 img1Selected.alt = aux.alt;
                 img1Selected.style.top = aux.top;
                 img1Selected.style.left = aux.left;
-                updatePuzzleMatrix(img1Selected, img2Selected);
-                updatePuzzleMatrix(img2Selected, img1Selected);
+                updatePuzzleMatrix(img1Selected, img1Selected);
+                updatePuzzleMatrix(img2Selected, img2Selected);
                 console.log("Dos piezas del tablero cambiaron. el 2° era 'empty'");
              }
             
