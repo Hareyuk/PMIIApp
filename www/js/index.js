@@ -75,7 +75,9 @@ var dataCP =
     dataPuzzle: false,
     puzzleMatrix: [],
     arrayPieces: [],
-    numberImage: 0
+    numberImage: null,
+    lastImage: null,
+    time: null
 }
 
 

@@ -21,9 +21,11 @@ walkingSteps["right"] = [8,7,9,7];
 walkingSteps["left"] = [11,10,12,10]; 
 var stepCounts = 0;
 var img1Selected=null;
-var numberImage;
+var lastImage = null;
+var numberImage = null;
 var arrayPieces=[];
 var puzzleMatrix=[];
+var timer = null;
 //For pieces' selector
 var selectorPieces = [0,1,2,3,4];
 
@@ -510,7 +512,6 @@ async function grabPiece()
         if(!stillSeekingPieces(widthMap, heightMap, mapMatrix))
         {
             blackScreen();
-            startJigsaw(1);
         }
     }, 500);
 }
@@ -557,9 +558,13 @@ function stillSeekingPieces(w,h,m)
 
 function startJigsaw(newJigsaw)
 {
-    numberImage = genRandom(0,1);
+    
     if(newJigsaw == 1)
     {
+        do 
+        {
+            numberImage = genRandom(0,7);
+        } while (numberImage == lastImage)
         //Just to know if is new game or is there save
         puzzleMatrix = buildMatrixJigsaw(numberImage);
         arrayPieces = generateArrayPieces(numberImage);
@@ -668,6 +673,8 @@ function blackScreen()
     }, 100);
     setTimeout(() => {
         document.querySelector("#maze").remove();
+        div.remove();
+        startJigsaw(1);
     },1200);
 }
 
@@ -805,15 +812,25 @@ function selectPiece(img2Selected)
                 console.log("Pusimos una pieza del menú en una casilla vacía de la tabla");
              }
              else
-             {
-                //two pieces from table changed, nothing more
-                img1Selected.src = aux.src;
-                img1Selected.alt = aux.alt;
-                img1Selected.style.top = aux.top;
-                img1Selected.style.left = aux.left;
-                updatePuzzleMatrix(img1Selected, img1Selected);
-                updatePuzzleMatrix(img2Selected, img2Selected);
-                console.log("Dos piezas del tablero cambiaron. el 2° era 'empty'");
+             { 
+                var id2 = img2Selected.id;
+                if(isFromMenu(id2))
+                {
+                    //Restore the array with the piece (1) returned in menu.
+                    arrayPieces.splice(0,0,{top: img1Selected.style.top, left: img1Selected.style.left, alt: img1Selected.alt});
+                    updatePuzzleMatrix(img1Selected, img2Selected);
+                }
+                else
+                {
+                    //two pieces from table changed, nothing more
+                    img1Selected.src = aux.src;
+                    img1Selected.alt = aux.alt;
+                    img1Selected.style.top = aux.top;
+                    img1Selected.style.left = aux.left;
+                    updatePuzzleMatrix(img1Selected, img1Selected);
+                    updatePuzzleMatrix(img2Selected, img2Selected);
+                    console.log("Dos piezas del tablero cambiaron. el 2° era 'empty'");
+                }
              }
             
         }
