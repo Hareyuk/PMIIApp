@@ -408,6 +408,8 @@ td, .start_position_player, .pieces
     top: 0;
     left: 50%;
     transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
 }
 
 

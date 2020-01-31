@@ -79,6 +79,7 @@ var dataCP =
     lastImage: null,
     time: null
 }
+var audio = false;
 
 
 var app = {
@@ -99,6 +100,17 @@ var app = {
     receivedEvent: function(id) {
         console.log('Received Event: ' + id);
         //My code starts here
+        document.addEventListener("click",function()
+        {
+            if(audio)
+            {
+                document.getElementById("audio").play();
+            }
+            else
+            {
+                audio = true;
+            }
+        })
         if(localStorage.length > 0)
         {
             loadData();
@@ -115,6 +127,7 @@ var app = {
     }
 };
 
+
 app.initialize();
 
 function showGames()
@@ -129,61 +142,29 @@ function loadInputs()
     document.getElementById("shadowBox").classList.remove('hidden');
     document.getElementById("sendData").disabled = false;
     var btn1 = document.getElementById('takePicture1');
-    btn1.setAttribute("formaction", "javascript:whichPicture(1)");
+    btn1.setAttribute("formaction", "javascript:takePicture(1)");
     document.getElementById("takePicture1").disabled = false;
     document.getElementById("namePlayer1").disabled = false;
     document.getElementById("nickName1").disabled = false;
     var btn2 = document.getElementById('takePicture2');
-    btn2.setAttribute("formaction", "javascript:whichPicture(2)");
+    btn2.setAttribute("formaction", "javascript:takePicture(2)");
     document.getElementById("takePicture2").disabled = false;
     document.getElementById("namePlayer2").disabled = false;
     document.getElementById("nickName2").disabled = false;
 }
 
-function whichPicture(num)
-{
-    var div = document.createElement('div');
-    div.id = "whichPicture";
-    var button = document.createElement('button');
-    button.addEventListener("click", function(){takePicture(num,0)})
-    button.innerHTML= "Sacar foto con cámara";
-    div.appendChild(button);
-    button = document.createElement("button");
-    button.addEventListener("click", function(){takePicture(num,1)})
-    button.innerHTML = "Subir de mi dispositivo";
-    div.appendChild(button);
-    document.body.appendChild(div);
-}
-
-function takePicture(num, option)
+function takePicture(num)
 {  
-    document.getElementById('whichPicture').remove();
-    if(option==0)
-    {
-        navigator.camera.getPicture(onSuccess, onFail, { 
-            quality: 30,
-            mediaType: Camera.MediaType.PICTURE,
-            destinationType: Camera.DestinationType.DATA_URL,
-            targetHeight: 100,
-            targetWidth: 100,   
-            correctOrientation: true,
-            allowEdit: false
-        });
-    }
-    else
-    {
-        navigator.camera.getPicture(onSuccess, onFail, { 
-            quality: 30,
-            mediaType: Camera.MediaType.PICTURE,
-            destinationType: Camera.DestinationType.DATA_URL,
-            targetHeight: 100,
-            targetWidth: 100,   
-            correctOrientation: true,
-            allowEdit: true,
-            sourceType:Camera.PictureSourceType.PHOTOLIBRARY
-            
-        });
-    }
+
+    navigator.camera.getPicture(onSuccess, onFail, { 
+        quality: 30,
+        mediaType: Camera.MediaType.PICTURE,
+        destinationType: Camera.DestinationType.DATA_URL,
+        targetHeight: 100,
+        targetWidth: 100,   
+        correctOrientation: true,
+        allowEdit: false
+    });
     
     function onSuccess(imageData) {
         var image = document.getElementById('myImage' + num);
@@ -331,8 +312,8 @@ function showInfo()
         pPl.innerHTML += "<br>Puntaje de tateti: "+players[(i-1)].pointTTT; 
         pPl.innerHTML += " <br>Puntaje de memotest: " + players[(i-1)].pointMT;
         pPl.innerHTML += "<br>Puntaje de Atrapa puzzles: " + players[(i-1)].pointCP;
-
     }
+    document.querySelector('buttonCredits').classList.remove('hidden');
 }
 
 function hideInfo()
