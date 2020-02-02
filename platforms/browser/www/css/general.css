@@ -37,7 +37,10 @@
 
 .app
 {
+    width: 70%;
     background-color: rgba(255,255,255,0.6);
+    margin: 0 auto;
+    height: 95vh;
 }
 
 body
@@ -63,7 +66,7 @@ input:not([type="submit"])
     padding: 0.2em;
 }
 
-button, input[type="submit"]{
+button, select, input[type="submit"]{
     border-width: 5px;
     border-style: groove;
     border-color: brown;
@@ -158,9 +161,20 @@ img[alt="back"]
 
 @media only screen and (max-height: 600px) and (orientation: landscape) {
 
-    button
+    button, select
     {
         padding: 0.5em 2em;
     }
 
+    *:hover
+    {
+        transform: none;
+    }
+
+}
+
+button:disabled, select:disabled
+{
+        background-color: gray;
+        border-color: #767676;
 }

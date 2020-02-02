@@ -34,7 +34,7 @@ function startGame() {
     players = JSON.parse(players);
     gameData = localStorage.getItem('dataCP');
     gameData = JSON.parse(gameData);
-    gameData = {dataSaved: true,dataPuzzle:false}; //DELETE LATER
+    gameData = {dataSaved: false,dataPuzzle:false}; //DELETE LATER
     if(gameData.dataSaved)
     {
         //getData();
@@ -673,9 +673,12 @@ function blackScreen()
     }, 100);
     setTimeout(() => {
         document.querySelector("#maze").remove();
-        div.remove();
         startJigsaw(1);
-    },1200);
+        div.style.opacity = '0';
+    }, 1100);
+    setTimeout(() => {
+        div.remove();
+    },2200);
 }
 
 function buildMenuPieces()

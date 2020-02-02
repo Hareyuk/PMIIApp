@@ -17,19 +17,22 @@
         <div id="character1">
         </div>
         <div id="character2"></div>
-            <div id="game">
-            <a href="../index.html"><a href="../index.html"><img src="../img/back.svg" alt="back"></a></a>
-            <select id='rowsAndCols' onchange='selectTable()'>
-                <option value="none" selected disabled hidden>Seleccionar</option>
-                <option value="4">4x4</option>
-                <option value="5">5x5</option>
-                <option value="6">6x6</option>
-            </select>
-            <div id="turnos"></div>
-            <p id="point1"></p>
-            <p id="point2"></p>
-            <button onclick="restart()">Reiniciar</button>
-            <table>
+            <div class="app">
+                <a href="../index.html"><img src="../img/back.svg" alt="back"></a></a>
+                
+                    <div id="info" class="info">
+                    <div id="turnos"></div>
+                    <p id="point1"></p>
+                    <p id="point2"></p>
+                </div>
+                <table>
+                <select id='rowsAndCols' onchange='selectTable()'>
+                    <option value="none" selected disabled hidden>Seleccionar</option>
+                    <option value="4">4x4</option>
+                    <option value="5">5x5</option>
+                    <option value="6">6x6</option>
+                </select>
+                <button id="restart" onclick="restart()">Reiniciar</button>
                 <tbody id='memo'></tbody>
                 <!--JS-->
             </table>

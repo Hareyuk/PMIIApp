@@ -26,13 +26,6 @@ header
     background-color: rgba(255,255,255,0.6);
 }
 
-.app
-{
-    width: 70%;
-    height: 95vh;
-    margin: 0 auto;
-}
-
 #game
 {
     position: relative;
@@ -404,12 +397,12 @@ td, .start_position_player, .pieces
     transition: 1s;
     background-color: black;
     z-index: 10;
-    position: absolute !important;
+    position: fixed;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 600px;
-    height: 600px;
+    width: 70%;
+    height: 100%;
 }
 
 

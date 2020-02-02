@@ -158,6 +158,7 @@ function saveData()
 }
 
 function showPoints(){
+    document.getElementById("info").classList.remove("hidden");
     document.getElementById("turnos").innerHTML = "Es el turno del jugador " + players[(turn-1)].nick;
     document.getElementById("point1").innerHTML = players[0].nick + ": " + players[0].pointMT;
     document.getElementById("point2").innerHTML = players[1].nick + ": " + players[1].pointMT;
@@ -432,7 +433,15 @@ function fillArrayTwice(cant, list){
 
 function restart()
 {
+    document.getElementById("restart").disabled = true;
     var select = document.getElementById('rowsAndCols');
     select.disabled = false;
+    select.value = "none";
     table.innerHTML = "";
+    hideInfo();
+}
+
+function hideInfo()
+{
+    document.getElementById("info").classList.add("hidden");
 }

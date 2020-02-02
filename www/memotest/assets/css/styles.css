@@ -22,6 +22,20 @@ p, #turnos{
     left: 15%;
 }
 
+header
+{
+    height: 5vh;
+    text-align: center;
+    width: 70%;
+    background-color: rgba(255,255,255,0.6);
+    position: relative;
+    left: 15%;
+}
+
+select
+{
+    margin-top: 5em;
+}
 
 table{
     border-collapse: collapse;
@@ -48,17 +62,19 @@ td{
     width: 100px;
 }
 
+.theCard:hover
+{
+    transform: scale(1.2);
+}
+
 .theCard{
     overflow: visible;
-    border-radius: 0.5em;
-    border: 0.2em black solid;
     width: 70px;
     height: 110px;
     transform-style: preserve-3d;
     -webkit-transition: all 0.7s ease-in-out;
     -webkit-transform-style: preserve-3d;    /* Safari 4-8 */
     transition: all 0.7s ease-in-out;
-    box-shadow: rgba(12, 12, 12, 0.13) 3px 3px 3px;
 }
     
 .theFront, .theBack{
@@ -70,6 +86,20 @@ td{
     background-image:url(../images/reverse.png);
     background-size: contain;
     backface-visibility: hidden;
+}
+
+.find1 .theBack
+{
+    -webkit-box-shadow: 0px 0px 42px 1px rgba(42,26,66,0.83);
+    -moz-box-shadow: 0px 0px 42px 1px rgba(42,26,66,0.83);
+    box-shadow: 0px 0px 42px 1px rgba(42,26,66,0.83);
+}
+
+.find2 .theBack
+{
+    -webkit-box-shadow: 0px 0px 42px 1px rgba(21,138,81,1);
+    -moz-box-shadow: 0px 0px 42px 1px rgba(21,138,81,1);
+    box-shadow: 0px 0px 42px 1px rgba(21,138,81,1);
 }
 
 .theBack{
@@ -87,7 +117,7 @@ td{
 }
 
 .theBack img{
-    max-width: 90%;
+    max-width: 100%;
 }
 
 /*td img[alt="reverse"]:hover
@@ -98,14 +128,12 @@ td{
 
 .find1
 {
-    /* filter: invert(1); */
-    border-color: rgb(255, 78, 101);
+    
 }
 
 .find2
 {
-    /* filter: sepia(1); */
-    border-color: rgb(55, 75, 255);
+    
 }
 
 #character1
@@ -129,6 +157,12 @@ td{
     }
 
     .app{
+        width: 100%;
+    }
+
+    header
+    {
+        left: 0;
         width: 100%;
     }
 
