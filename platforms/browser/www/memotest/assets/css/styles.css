@@ -58,13 +58,12 @@ td{
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
     width: 100px;
 }
 
 .theCard:hover
 {
-    transform: scale(1.2);
+    transform: scale(1.1);
 }
 
 .theCard{
@@ -137,6 +136,12 @@ td{
     left: 100%;
     transform: translate(-100%,0);
     background-image: url('../images/freya.png');
+}
+
+.app
+{
+    height: auto;
+    min-height: 95vh;
 }
 
 @media only screen and (orientation: portrait)

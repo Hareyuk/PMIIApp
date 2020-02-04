@@ -209,6 +209,7 @@ function buildMatrix(arrayElements)
 
 function buildTable()
 {
+    document.getElementById("restart").disabled = false;
     turn = setPlayer();
     table.innerHTML = "";
     for(i=0;i<size;i++)

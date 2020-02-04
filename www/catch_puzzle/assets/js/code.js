@@ -34,7 +34,7 @@ function startGame() {
     players = JSON.parse(players);
     gameData = localStorage.getItem('dataCP');
     gameData = JSON.parse(gameData);
-    gameData = {dataSaved: false,dataPuzzle:false}; //DELETE LATER
+    gameData = {dataSaved: true,dataPuzzle:false}; //DELETE LATER
     if(gameData.dataSaved)
     {
         //getData();
@@ -563,7 +563,7 @@ function startJigsaw(newJigsaw)
     {
         do 
         {
-            numberImage = genRandom(0,7);
+            numberImage = genRandom(0,8);
         } while (numberImage == lastImage)
         //Just to know if is new game or is there save
         puzzleMatrix = buildMatrixJigsaw(numberImage);
@@ -741,8 +741,6 @@ function selectPiece(img2Selected)
         }
 
         var aux = {top: img2Selected.style.top, left: img2Selected.style.left, src: img2Selected.getAttribute("src"), alt: img2Selected.alt};
-        img2Selected.style.top = img1Selected.style.top;
-        img2Selected.style.left = img1Selected.style.left;
         var id = img1Selected.id; //Obtain id
         if(img2Selected.alt != "empty")
         { 
@@ -753,14 +751,13 @@ function selectPiece(img2Selected)
                 var id2 = img2Selected.id;
                 if(isFromMenu(id2))
                 {
-                    //piece 2 is from menu too. Restore the pieces, didn't happen something here
-                    img2Selected.style.top = aux.top;
-                    img2Selected.style.left = aux.left;
                     console.log("no pasó nada, ambas piezas son del menú");
                 }
                 else
                 {
                     //Change piece 1 from menu and piece 2 from jigsaw
+                    img2Selected.style.top = img1Selected.style.top;
+                    img2Selected.style.left = img1Selected.style.left;
                     img1Selected.style.top = aux.top;
                     img1Selected.style.left = aux.left;
                     id = id.substring(8,9);
@@ -775,6 +772,8 @@ function selectPiece(img2Selected)
             {
                 //piece1 is from table
                 var id2 = img2Selected.id;
+                img2Selected.style.top = img1Selected.style.top;
+                img2Selected.style.left = img1Selected.style.left;
                 img1Selected.style.top = aux.top;
                 img1Selected.style.left = aux.left;
                 img1Selected.src = aux.src;
@@ -803,39 +802,50 @@ function selectPiece(img2Selected)
         }
         else if(img2Selected.alt == "empty")
         {
-             img2Selected.src = img1Selected.getAttribute("src");
-             img2Selected.alt = img1Selected.alt;
-             if(isFromMenu(id)) //Is piece 1 from the menu?
-             {
+            if(isFromMenu(id)) //Is piece 1 from the menu?
+            {
+                img2Selected.style.top = img1Selected.style.top;
+                img2Selected.style.left = img1Selected.style.left;
+                img2Selected.src = img1Selected.getAttribute("src");
+                img2Selected.alt = img1Selected.alt;
                 id = id.substring(8,9);
                 id = parseInt(id);
                 var pieceSelected = selectorPieces[id];
                 arrayPieces.splice(pieceSelected,1);
                 updatePuzzleMatrix(img2Selected, img1Selected);
                 console.log("Pusimos una pieza del menú en una casilla vacía de la tabla");
-             }
-             else
-             { 
-                var id2 = img2Selected.id;
-                if(isFromMenu(id2))
-                {
-                    //Restore the array with the piece (1) returned in menu.
-                    arrayPieces.splice(0,0,{top: img1Selected.style.top, left: img1Selected.style.left, alt: img1Selected.alt});
+            }
+            else
+            { 
+               var id2 = img2Selected.id;
+               if(isFromMenu(id2))
+               {
+                    var obj = {top: img1Selected.style.top, left: img1Selected.style.left, alt: img1Selected.alt};
+                    img1Selected.style.top = img2Selected.style.top;
+                    img1Selected.style.left = img2Selected.style.left;
+                    img1Selected.src = img2Selected.src;
+                    img1Selected.alt = img2Selected.alt;
+                    arrayPieces.push(obj);
                     updatePuzzleMatrix(img1Selected, img2Selected);
-                }
-                else
-                {
-                    //two pieces from table changed, nothing more
-                    img1Selected.src = aux.src;
-                    img1Selected.alt = aux.alt;
-                    img1Selected.style.top = aux.top;
-                    img1Selected.style.left = aux.left;
-                    updatePuzzleMatrix(img1Selected, img1Selected);
-                    updatePuzzleMatrix(img2Selected, img2Selected);
-                    console.log("Dos piezas del tablero cambiaron. el 2° era 'empty'");
-                }
-             }
-            
+                    var lastPosition = arrayPieces.length-1;
+                    selectorPieces[lastPosition]=lastPosition;
+                    console.log("La pieza 1 del tablero volvió al menu");
+               }
+               else
+               {
+                   img2Selected.style.top = img1Selected.style.top;
+                   img2Selected.style.left = img1Selected.style.left;
+                   img2Selected.src = img1Selected.getAttribute("src");
+                   img2Selected.alt = img1Selected.alt;
+                   img1Selected.src = aux.src;
+                   img1Selected.alt = aux.alt;
+                   img1Selected.style.top = aux.top;
+                   img1Selected.style.left = aux.left;
+                   updatePuzzleMatrix(img1Selected, img1Selected);
+                   updatePuzzleMatrix(img2Selected, img2Selected);
+                   console.log("Dos piezas del tablero cambiaron. el 2° era 'empty'");
+               }
+            }    
         }
         //To default
         changeMenuPieces(0);
@@ -894,6 +904,7 @@ function changeMenuPieces(num)
             else
             {
                 img.alt = arrayPieces[pieceSelected].alt;
+                img.src = 'assets/img/'+numberImage+'/full.png';
             }
         }
         else
