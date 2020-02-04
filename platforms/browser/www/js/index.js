@@ -44,8 +44,6 @@ var dataTTT =
 {
     dataSaved: false,
     board: [],
-    player1ID: 0,
-    player2ID: 1,
     turnPlayer: 0,
     canClick: true,
     gameClean: false,
@@ -58,8 +56,6 @@ var dataMT =
     dataSaved: false,
     size: 0,
     matrix: [],
-    player1ID: 0,
-    player2ID: 1,
     pairsFound: 0,
     turnPlayer: 0,
 }
@@ -67,8 +63,7 @@ var dataMT =
 var dataCP =
 {
     dataSaved: false,
-    player1ID: 0,
-    player2ID: 1,
+    finishedSearch: false,
     mapMatrix: [],
     posPlayer: {},
     turn: "johan",
@@ -76,8 +71,7 @@ var dataCP =
     puzzleMatrix: [],
     arrayPieces: [],
     numberImage: null,
-    lastImage: null,
-    time: null
+    lastImage: null
 }
 var audio = false;
 

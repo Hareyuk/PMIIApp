@@ -5,6 +5,7 @@ var posPlayer = {
     y: 0
 };
 var gameData;
+var finishedSearch;
 var widthMap = 20;
 var heightMap = 20;
 var players;
@@ -25,19 +26,16 @@ var lastImage = null;
 var numberImage = null;
 var arrayPieces=[];
 var puzzleMatrix=[];
-var timer = null;
+var times = {};
+var turnNumber = 0;
 //For pieces' selector
 var selectorPieces = [0,1,2,3,4];
+var players;
 
 function startGame() {
-    players = localStorage.getItem("players");
-    players = JSON.parse(players);
-    gameData = localStorage.getItem('dataCP');
-    gameData = JSON.parse(gameData);
-    gameData = {dataSaved: false,dataPuzzle:false}; //DELETE LATER
-    if(gameData.dataSaved)
+    getData();
+    if(finishedSearch)
     {
-        //getData();
         if(gameData.dataPuzzle)
         {
             startJigsaw(0);
@@ -50,15 +48,18 @@ function startGame() {
     }
     else
     {
-        mapMatrix = generateMatrix(widthMap, heightMap, mapMatrix);
-        mapMatrix = markWallsMatrix(widthMap, heightMap, mapMatrix);
-        mapMatrix = putPieces(widthMap, heightMap, mapMatrix);
-        mapMatrix = putPlayerInMaze(widthMap, heightMap, mapMatrix);
+        if(!gameData.dataSaved)
+        {
+            mapMatrix = generateMatrix(widthMap, heightMap, mapMatrix);
+            mapMatrix = markWallsMatrix(widthMap, heightMap, mapMatrix);
+            mapMatrix = putPieces(widthMap, heightMap, mapMatrix);
+            mapMatrix = putPlayerInMaze(widthMap, heightMap, mapMatrix);
+        }
         generateMazeTable(widthMap, heightMap, mapMatrix);
         moveTable();
         generateCharacter(turn);
     }
-    //showNames();
+    showNames();
     document.addEventListener("keydown", pressKey);
     document.addEventListener("keyup", keyUp);
 }
@@ -446,7 +447,19 @@ function obtainPositions(w, h) {
 }
 
 function getData() {
+    players = localStorage.getItem("players");
+    players = JSON.parse(players);
+    gameData = localStorage.getItem("dataCP");
+    gameData = JSON.parse(gameData);
     turn = gameData.turn;
+    if(turn == "johan")
+    {
+        turnNumber = 0;
+    }
+    else
+    {
+        turnNumber = 1;
+    }
     mapMatrix = gameData.mapMatrix;
     posPlayer = gameData.posPlayer;
 }
@@ -456,11 +469,16 @@ function saveData() {
     gameData.mapMatrix = mapMatrix;
     gameData.posPlayer = posPlayer;
     gameData.numberImage = numberImage;
+    gameData.puzzleMatrix = puzzleMatrix;
+    gameData.arrayPieces = arrayPieces;
+    gameData.lastImage = lastImage;
+    localStorage.setItem("dataCP", JSON.stringify(gameData));
 }
 
 
 async function movePlayer(moveX, moveY, direction) {
-    if (mapMatrix[posPlayer.x + moveX][posPlayer.y + moveY] != "X") {
+    if (mapMatrix[posPlayer.x + moveX][posPlayer.y + moveY] != "X") 
+    {
         if (lastDirection != direction) {
             lastDirection = direction;
             keepMoving = false;
@@ -476,6 +494,7 @@ async function movePlayer(moveX, moveY, direction) {
             mapMatrix[posPlayer.x - moveX][posPlayer.y - moveY] = null;
             moveTable();
             mapMatrix[posPlayer.x][posPlayer.y] = "P";
+            saveData();
             setTimeOuts.push(setTimeout(function()
             {
                 
@@ -485,6 +504,8 @@ async function movePlayer(moveX, moveY, direction) {
                 keepMoving = false;
             },400));
         }
+        gameData.dataSaved = true;
+        saveData();
     }
 }
 
@@ -558,12 +579,12 @@ function stillSeekingPieces(w,h,m)
 
 function startJigsaw(newJigsaw)
 {
-    
+    gameData.dataPuzzle = true;
     if(newJigsaw == 1)
     {
         do 
         {
-            numberImage = genRandom(0,7);
+            numberImage = genRandom(0,8);
         } while (numberImage == lastImage)
         //Just to know if is new game or is there save
         puzzleMatrix = buildMatrixJigsaw(numberImage);
@@ -675,6 +696,8 @@ function blackScreen()
         document.querySelector("#maze").remove();
         startJigsaw(1);
         div.style.opacity = '0';
+        gameData.finishedSearch = true;
+        saveData();
     }, 1100);
     setTimeout(() => {
         div.remove();
@@ -741,8 +764,6 @@ function selectPiece(img2Selected)
         }
 
         var aux = {top: img2Selected.style.top, left: img2Selected.style.left, src: img2Selected.getAttribute("src"), alt: img2Selected.alt};
-        img2Selected.style.top = img1Selected.style.top;
-        img2Selected.style.left = img1Selected.style.left;
         var id = img1Selected.id; //Obtain id
         if(img2Selected.alt != "empty")
         { 
@@ -753,14 +774,13 @@ function selectPiece(img2Selected)
                 var id2 = img2Selected.id;
                 if(isFromMenu(id2))
                 {
-                    //piece 2 is from menu too. Restore the pieces, didn't happen something here
-                    img2Selected.style.top = aux.top;
-                    img2Selected.style.left = aux.left;
                     console.log("no pasó nada, ambas piezas son del menú");
                 }
                 else
                 {
                     //Change piece 1 from menu and piece 2 from jigsaw
+                    img2Selected.style.top = img1Selected.style.top;
+                    img2Selected.style.left = img1Selected.style.left;
                     img1Selected.style.top = aux.top;
                     img1Selected.style.left = aux.left;
                     id = id.substring(8,9);
@@ -775,6 +795,8 @@ function selectPiece(img2Selected)
             {
                 //piece1 is from table
                 var id2 = img2Selected.id;
+                img2Selected.style.top = img1Selected.style.top;
+                img2Selected.style.left = img1Selected.style.left;
                 img1Selected.style.top = aux.top;
                 img1Selected.style.left = aux.left;
                 img1Selected.src = aux.src;
@@ -803,39 +825,50 @@ function selectPiece(img2Selected)
         }
         else if(img2Selected.alt == "empty")
         {
-             img2Selected.src = img1Selected.getAttribute("src");
-             img2Selected.alt = img1Selected.alt;
-             if(isFromMenu(id)) //Is piece 1 from the menu?
-             {
+            if(isFromMenu(id)) //Is piece 1 from the menu?
+            {
+                img2Selected.style.top = img1Selected.style.top;
+                img2Selected.style.left = img1Selected.style.left;
+                img2Selected.src = img1Selected.getAttribute("src");
+                img2Selected.alt = img1Selected.alt;
                 id = id.substring(8,9);
                 id = parseInt(id);
                 var pieceSelected = selectorPieces[id];
                 arrayPieces.splice(pieceSelected,1);
                 updatePuzzleMatrix(img2Selected, img1Selected);
                 console.log("Pusimos una pieza del menú en una casilla vacía de la tabla");
-             }
-             else
-             { 
-                var id2 = img2Selected.id;
-                if(isFromMenu(id2))
-                {
-                    //Restore the array with the piece (1) returned in menu.
-                    arrayPieces.splice(0,0,{top: img1Selected.style.top, left: img1Selected.style.left, alt: img1Selected.alt});
+            }
+            else
+            { 
+               var id2 = img2Selected.id;
+               if(isFromMenu(id2))
+               {
+                    var obj = {top: img1Selected.style.top, left: img1Selected.style.left, alt: img1Selected.alt};
+                    img1Selected.style.top = img2Selected.style.top;
+                    img1Selected.style.left = img2Selected.style.left;
+                    img1Selected.src = img2Selected.src;
+                    img1Selected.alt = img2Selected.alt;
+                    arrayPieces.push(obj);
                     updatePuzzleMatrix(img1Selected, img2Selected);
-                }
-                else
-                {
-                    //two pieces from table changed, nothing more
-                    img1Selected.src = aux.src;
-                    img1Selected.alt = aux.alt;
-                    img1Selected.style.top = aux.top;
-                    img1Selected.style.left = aux.left;
-                    updatePuzzleMatrix(img1Selected, img1Selected);
-                    updatePuzzleMatrix(img2Selected, img2Selected);
-                    console.log("Dos piezas del tablero cambiaron. el 2° era 'empty'");
-                }
-             }
-            
+                    var lastPosition = arrayPieces.length-1;
+                    selectorPieces[lastPosition]=lastPosition;
+                    console.log("La pieza 1 del tablero volvió al menu");
+               }
+               else
+               {
+                   img2Selected.style.top = img1Selected.style.top;
+                   img2Selected.style.left = img1Selected.style.left;
+                   img2Selected.src = img1Selected.getAttribute("src");
+                   img2Selected.alt = img1Selected.alt;
+                   img1Selected.src = aux.src;
+                   img1Selected.alt = aux.alt;
+                   img1Selected.style.top = aux.top;
+                   img1Selected.style.left = aux.left;
+                   updatePuzzleMatrix(img1Selected, img1Selected);
+                   updatePuzzleMatrix(img2Selected, img2Selected);
+                   console.log("Dos piezas del tablero cambiaron. el 2° era 'empty'");
+               }
+            }    
         }
         //To default
         changeMenuPieces(0);
@@ -844,6 +877,27 @@ function selectPiece(img2Selected)
         if(validatePuzzle(puzzleMatrix))
         {
             alert('Won!');
+            if(turn == "johan")
+            {
+                turn = lefara;
+            }
+            {
+                //Código de victorias
+                if(players[0].pointCP < players[1].pointCP)
+                {
+                    alert(players[0].nick + " ha ganado!");
+                }
+                else if(players[0].pointCP > players[1].pointCP)
+                {
+                    alert(players[1].nick + " ha ganado!");
+                }
+                else
+                {
+                    alert("Tie!");
+                }
+            }
+            gameData.dataPuzzle = false;
+            gameData.dataSaved = false;
         }
     }
     else if(img2Selected == img1Selected)
@@ -894,6 +948,7 @@ function changeMenuPieces(num)
             else
             {
                 img.alt = arrayPieces[pieceSelected].alt;
+                img.src = 'assets/img/'+numberImage+'/full.png';
             }
         }
         else

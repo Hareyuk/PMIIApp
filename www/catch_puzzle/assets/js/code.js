@@ -5,6 +5,7 @@ var posPlayer = {
     y: 0
 };
 var gameData;
+var finishedSearch;
 var widthMap = 20;
 var heightMap = 20;
 var players;
@@ -25,19 +26,16 @@ var lastImage = null;
 var numberImage = null;
 var arrayPieces=[];
 var puzzleMatrix=[];
-var timer = null;
+var times = {};
+var turnNumber = 0;
 //For pieces' selector
 var selectorPieces = [0,1,2,3,4];
+var players;
 
 function startGame() {
-    players = localStorage.getItem("players");
-    players = JSON.parse(players);
-    gameData = localStorage.getItem('dataCP');
-    gameData = JSON.parse(gameData);
-    gameData = {dataSaved: true,dataPuzzle:false}; //DELETE LATER
-    if(gameData.dataSaved)
+    getData();
+    if(finishedSearch)
     {
-        //getData();
         if(gameData.dataPuzzle)
         {
             startJigsaw(0);
@@ -50,15 +48,18 @@ function startGame() {
     }
     else
     {
-        mapMatrix = generateMatrix(widthMap, heightMap, mapMatrix);
-        mapMatrix = markWallsMatrix(widthMap, heightMap, mapMatrix);
-        mapMatrix = putPieces(widthMap, heightMap, mapMatrix);
-        mapMatrix = putPlayerInMaze(widthMap, heightMap, mapMatrix);
+        if(!gameData.dataSaved)
+        {
+            mapMatrix = generateMatrix(widthMap, heightMap, mapMatrix);
+            mapMatrix = markWallsMatrix(widthMap, heightMap, mapMatrix);
+            mapMatrix = putPieces(widthMap, heightMap, mapMatrix);
+            mapMatrix = putPlayerInMaze(widthMap, heightMap, mapMatrix);
+        }
         generateMazeTable(widthMap, heightMap, mapMatrix);
         moveTable();
         generateCharacter(turn);
     }
-    //showNames();
+    showNames();
     document.addEventListener("keydown", pressKey);
     document.addEventListener("keyup", keyUp);
 }
@@ -446,7 +447,19 @@ function obtainPositions(w, h) {
 }
 
 function getData() {
+    players = localStorage.getItem("players");
+    players = JSON.parse(players);
+    gameData = localStorage.getItem("dataCP");
+    gameData = JSON.parse(gameData);
     turn = gameData.turn;
+    if(turn == "johan")
+    {
+        turnNumber = 0;
+    }
+    else
+    {
+        turnNumber = 1;
+    }
     mapMatrix = gameData.mapMatrix;
     posPlayer = gameData.posPlayer;
 }
@@ -456,11 +469,16 @@ function saveData() {
     gameData.mapMatrix = mapMatrix;
     gameData.posPlayer = posPlayer;
     gameData.numberImage = numberImage;
+    gameData.puzzleMatrix = puzzleMatrix;
+    gameData.arrayPieces = arrayPieces;
+    gameData.lastImage = lastImage;
+    localStorage.setItem("dataCP", JSON.stringify(gameData));
 }
 
 
 async function movePlayer(moveX, moveY, direction) {
-    if (mapMatrix[posPlayer.x + moveX][posPlayer.y + moveY] != "X") {
+    if (mapMatrix[posPlayer.x + moveX][posPlayer.y + moveY] != "X") 
+    {
         if (lastDirection != direction) {
             lastDirection = direction;
             keepMoving = false;
@@ -476,6 +494,7 @@ async function movePlayer(moveX, moveY, direction) {
             mapMatrix[posPlayer.x - moveX][posPlayer.y - moveY] = null;
             moveTable();
             mapMatrix[posPlayer.x][posPlayer.y] = "P";
+            saveData();
             setTimeOuts.push(setTimeout(function()
             {
                 
@@ -485,6 +504,8 @@ async function movePlayer(moveX, moveY, direction) {
                 keepMoving = false;
             },400));
         }
+        gameData.dataSaved = true;
+        saveData();
     }
 }
 
@@ -558,7 +579,7 @@ function stillSeekingPieces(w,h,m)
 
 function startJigsaw(newJigsaw)
 {
-    
+    gameData.dataPuzzle = true;
     if(newJigsaw == 1)
     {
         do 
@@ -675,6 +696,8 @@ function blackScreen()
         document.querySelector("#maze").remove();
         startJigsaw(1);
         div.style.opacity = '0';
+        gameData.finishedSearch = true;
+        saveData();
     }, 1100);
     setTimeout(() => {
         div.remove();
@@ -854,6 +877,27 @@ function selectPiece(img2Selected)
         if(validatePuzzle(puzzleMatrix))
         {
             alert('Won!');
+            if(turn == "johan")
+            {
+                turn = lefara;
+            }
+            {
+                //Código de victorias
+                if(players[0].pointCP < players[1].pointCP)
+                {
+                    alert(players[0].nick + " ha ganado!");
+                }
+                else if(players[0].pointCP > players[1].pointCP)
+                {
+                    alert(players[1].nick + " ha ganado!");
+                }
+                else
+                {
+                    alert("Tie!");
+                }
+            }
+            gameData.dataPuzzle = false;
+            gameData.dataSaved = false;
         }
     }
     else if(img2Selected == img1Selected)
