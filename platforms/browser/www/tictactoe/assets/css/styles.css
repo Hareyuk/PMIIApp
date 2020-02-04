@@ -91,6 +91,7 @@ main
 }
 
 #winner div{
+    background-position: center;
     width: 50%;
     height: 50%;
     color: white;
@@ -310,14 +311,6 @@ span{
     font-weight: bold;
 }
 
-@media only screen and (orientation: landscape) and (max-height: 800px)
-{
-    #winner div
-    {
-        background-position: center;
-    }
-}
-
 @media only screen and (orientation: portrait)
 {
     table, #displayInfo
@@ -364,6 +357,24 @@ span{
         font-size: 1em;
     }
 
+}
+
+@media only screen and (max-height: 800px) and (orientation: landscape)
+{
+    #ttt
+    {
+        margin: 0 auto;
+    }
+
+    #displayInfo
+    {
+        width: 100%;
+    }
+
+    .app
+    {
+        height: 90vh !important;
+    }
 }
 
 @media only screen and (max-height: 600px) and (orientation: landscape) {

@@ -160,8 +160,6 @@ function takePicture(num)
         quality: 30,
         mediaType: Camera.MediaType.PICTURE,
         destinationType: Camera.DestinationType.DATA_URL,
-        targetHeight: 100,
-        targetWidth: 100,   
         correctOrientation: true,
         allowEdit: false
     });
@@ -174,7 +172,10 @@ function takePicture(num)
     }
     
     function onFail(message) {
-        alert('Failed because: ' + message);
+        //alert('Failed because: ' + message);
+        alert('Ha habido algún problema con la cámara, código de error: ' + message + '\nSe utilizará una imagen provisional.');
+        var image = document.getElementById('myImage' + num);
+        image.src = "img/profile"+num+".png";
     }
 }
 
