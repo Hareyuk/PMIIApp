@@ -90,16 +90,16 @@ td{
 
 .find1 .theBack
 {
-    -webkit-box-shadow: 0px 0px 42px 1px rgba(42,26,66,0.83);
-    -moz-box-shadow: 0px 0px 42px 1px rgba(42,26,66,0.83);
-    box-shadow: 0px 0px 42px 1px rgba(42,26,66,0.83);
+    -webkit-box-shadow: 0px 0px 1px rgba(68, 0, 102, 0.83);
+    -moz-box-shadow: 0px 0px 1px rgba(68, 0, 102, 0.83);
+    box-shadow: 0px 0px 9px 1px rgba(68, 0, 102, 0.83);
 }
 
 .find2 .theBack
 {
-    -webkit-box-shadow: 0px 0px 42px 1px rgba(21,138,81,1);
-    -moz-box-shadow: 0px 0px 42px 1px rgba(21,138,81,1);
-    box-shadow: 0px 0px 42px 1px rgba(21,138,81,1);
+    -webkit-box-shadow: 0px 0px 9px 1px rgb(0, 255, 90);   
+    -moz-box-shadow: 0px 0px 9px 1px rgb(0, 255, 90);  
+    box-shadow: 0px 0px 9px 1px rgb(0, 255, 90);
 }
 
 .theBack{
@@ -125,16 +125,6 @@ td{
     transition: 0.2s ease-in-out;
     transform: rotateY(-45deg);
 }*/
-
-.find1
-{
-    
-}
-
-.find2
-{
-    
-}
 
 #character1
 {
