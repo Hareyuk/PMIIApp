@@ -32,8 +32,8 @@ var turnNumber = 0;
 var selectorPieces = [0,1,2,3,4];
 var players;
 
-function startGame() {
-    getData();
+function loadGame()
+{
     if(finishedSearch)
     {
         if(gameData.dataPuzzle)
@@ -62,6 +62,11 @@ function startGame() {
     showNames();
     document.addEventListener("keydown", pressKey);
     document.addEventListener("keyup", keyUp);
+}
+
+function startGame() {
+    getData();
+    loadGame();
 }
 
 function showNames()
@@ -587,6 +592,7 @@ function startJigsaw(newJigsaw)
             numberImage = genRandom(0,8);
         } while (numberImage == lastImage)
         //Just to know if is new game or is there save
+        selectorPieces = [0,1,2,3,4];
         puzzleMatrix = buildMatrixJigsaw(numberImage);
         arrayPieces = generateArrayPieces(numberImage);
     }
@@ -876,11 +882,16 @@ function selectPiece(img2Selected)
         div.classList.remove("selected");
         if(validatePuzzle(puzzleMatrix))
         {
+            gameData.dataPuzzle = false;
+            gameData.dataSaved = false;
             alert('Won!');
             if(turn == "johan")
             {
-                turn = lefara;
+                turn = "lefara";
+                document.getElementById("game").innerHTML = null;
+                loadGame();
             }
+            else
             {
                 //Código de victorias
                 if(players[0].pointCP < players[1].pointCP)
@@ -896,8 +907,7 @@ function selectPiece(img2Selected)
                     alert("Tie!");
                 }
             }
-            gameData.dataPuzzle = false;
-            gameData.dataSaved = false;
+            saveData();
         }
     }
     else if(img2Selected == img1Selected)
