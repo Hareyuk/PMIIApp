@@ -73,7 +73,7 @@ function showNames()
 {
     var div = document.getElementById("names");
     var p = document.createElement("p");
-    p.innerHTML = players[0].nick;
+    p.innerHTML = "Turno:<br>" + players[turnNumber].nick;
     div.appendChild(p);
 }
 
@@ -230,6 +230,11 @@ function moveTable() {
     var px; 
     var x = window.matchMedia("(max-width: 375px)");
     if(x.matches) px = 60;
+    else
+    {
+        x = window.matchMedia("(max-height: 375px) and (orientation: landscape)");
+        if(x.matches) px=60;
+    }
     x = window.matchMedia("(min-width: 376px)");
     if(x.matches)
     {
@@ -466,6 +471,8 @@ function getData() {
         turnNumber = 1;
     }
     mapMatrix = gameData.mapMatrix;
+    numberImage = gameData.numberImage;
+    lastImage = gameData.lastImage;
     posPlayer = gameData.posPlayer;
 }
 
@@ -592,6 +599,7 @@ function startJigsaw(newJigsaw)
             numberImage = genRandom(0,8);
         } while (numberImage == lastImage)
         //Just to know if is new game or is there save
+        selectorPieces = [0,1,2,3,4];
         puzzleMatrix = buildMatrixJigsaw(numberImage);
         arrayPieces = generateArrayPieces(numberImage);
     }
@@ -890,6 +898,7 @@ function selectPiece(img2Selected)
                 document.getElementById("game").innerHTML = null;
                 loadGame();
             }
+            else
             {
                 //Código de victorias
                 if(players[0].pointCP < players[1].pointCP)
@@ -904,6 +913,7 @@ function selectPiece(img2Selected)
                 {
                     alert("Tie!");
                 }
+                lastImage = null;
             }
             saveData();
         }

@@ -313,6 +313,15 @@ span{
 
 @media only screen and (orientation: portrait)
 {
+    button
+    {
+        font-size: 1.2em;
+    }
+
+    #msgBox
+    {
+        font-size: 1.3em;
+    }
     table, #displayInfo
     {
         width: 100%;

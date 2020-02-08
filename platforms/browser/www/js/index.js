@@ -169,6 +169,8 @@ function takePicture(num)
         //alert('Failed because: ' + message);
         alert('Ha habido algún problema con la cámara, código de error: ' + message + '\nSe utilizará una imagen provisional.');
         var image = document.getElementById('myImage' + num);
+        image.classList.remove("hidden");
+        image.alt = "Photo";
         image.src = "img/profile"+num+".png";
     }
 }
@@ -308,7 +310,7 @@ function showInfo()
         pPl.innerHTML += " <br>Puntaje de memotest: " + players[(i-1)].pointMT;
         pPl.innerHTML += "<br>Puntaje de Atrapa puzzles: " + players[(i-1)].pointCP;
     }
-    document.querySelector('buttonCredits').classList.remove('hidden');
+    document.getElementById('buttonCredits').classList.remove('hidden');
 }
 
 function hideInfo()

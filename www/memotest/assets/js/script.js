@@ -396,6 +396,7 @@ function winPlayer()
 {
     if(players[0].pointMT > players[1].pointMT)
     {
+
         alert('Ganó el jugador 1');
     }
     else if(players[1].pointMT > players[0].pointMT)
@@ -432,8 +433,19 @@ function fillArrayTwice(cant, list){
     return myNewArray;
 }
 
-function restart()
+function showMessageBox(id)
 {
+    document.getElementById(id).classList.remove("hidden");
+}
+
+function closeMsgBox(id)
+{
+    document.getElementById(id).classList.add('hidden');
+}
+
+function restartGame()
+{
+    document.getElementById("msgBox").classList.add("hidden");
     document.getElementById("restart").disabled = true;
     var select = document.getElementById('rowsAndCols');
     select.disabled = false;

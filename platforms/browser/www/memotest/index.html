@@ -16,9 +16,16 @@
         <div id="character1">
         </div>
         <div id="character2"></div>
-        <div id="winner" class="hidden">
-            <img src="" alt="">
-            
+        <div id="messageWinner" class="hidden">
+            <img id="imgWin" src="" alt="">
+            <button onclick="closeMsgBox('messageWinner');">Aceptar</button>
+        </div>
+        <div id="msgBox" class="hidden">
+            <div>
+                <p>¿Estás seguro que deseas reiniciar?</p>
+                <button onclick="restartGame();">Sí</button>
+                <button onclick="closeMsgBox('msgBox');">No</button>
+            </div>
         </div>
             <div class="app">
                 <a href="../index.html"><img src="../img/back.svg" alt="back"></a></a>
@@ -28,7 +35,7 @@
                     <option value="5">5x5</option>
                     <option value="6">6x6</option>
                 </select>
-                <button id="restart" onclick="restart()" disabled>Reiniciar</button>
+                <button id="restart" onclick="showMessageBox('msgBox')" disabled>Reiniciar</button>
                 <div id="info" class="info">
                     <div id="turnos"></div>
                     <p id="point1"></p>

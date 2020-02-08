@@ -207,6 +207,14 @@ h1
     background-color: rgba(0,0,0,0.8);
 }
 
+#profiles img, #formPlayers img
+{
+    max-width: 100px;
+    max-height: 100px;
+    display: block;
+    margin: 0.2em auto 1em !important;
+}
+
 #player2
 {
     margin-bottom: 1em;
@@ -322,6 +330,17 @@ h1
     
     .app{
         width: 100%;
+        height: auto !important;
+    }
+
+    #profiles img
+    {
+        
+    }
+
+    #credits
+    {
+        font-size: 1.1em;
     }
 
     #character1, #character2
@@ -331,6 +350,7 @@ h1
 
     #shadowBox
     {
+        width: 85%;
         top: 5%;
         position: absolute;
         padding: 1em 2em;

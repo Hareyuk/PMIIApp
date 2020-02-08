@@ -185,9 +185,25 @@ td, .start_position_player, .pieces
     display: inline-block;
 }
 
-
 @media only screen and (max-width: 375px), screen and (max-height: 375px) and (orientation: landscape)
 {
+    header
+    {
+        display: none;
+    }
+
+    .app
+    {
+        height: 100vh !important;
+    }
+
+    #names
+    {
+        position: absolute;
+        top: 20%;
+        left: 0;
+    }
+
     #maze
     {
         

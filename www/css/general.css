@@ -105,12 +105,6 @@ button:hover{
     animation-timing-function: linear;
 }
 
-#profiles img, #formPlayers img
-{
-    max-width: 100px;
-    max-height: 100px;
-}
-
 img[alt="back"]
 {
     position: absolute;
