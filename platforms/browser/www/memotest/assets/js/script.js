@@ -340,9 +340,9 @@ function swapIt(pos1,pos2,card) {
                         }
                         card.classList.add("reverse");
                         cardAux.classList.add("reverse");
-                        showPoints();
                         canClick = true; 
                         changeTurn();
+                        showPoints();
                         cardAux = null;
                         characterAux=null;
                         posAuxI = null;
@@ -361,11 +361,11 @@ function swapIt(pos1,pos2,card) {
 
 function changeTurn(){
     if(turn==1){
-        turn++;
-        console.log("le toca al jugador 1")
-    }else{
-        turn--;
+        turn=2;
         console.log("le toca al jugador 2")
+    }else{
+        turn=1;
+        console.log("le toca al jugador 1")
     }
 }
 
@@ -394,6 +394,7 @@ function endGame() {
 
 function winPlayer()
 {
+    document.getElementById("restart").disabled = true;
     var div = document.getElementById("winBackground");
     var link = "url(";
     var p = document.getElementById("pWinner");
@@ -412,7 +413,7 @@ function winPlayer()
         link += "'assets/images/tie.png')";
         p.innerHTML = "¡" + players[0].nick + " y " + players[1].nick + " han empatado!";
     }
-    div.style.backgroundImage = "assets/images/tie.png";
+    div.style.backgroundImage = link;
     showMessageBox("messageWinner");
 }
 
