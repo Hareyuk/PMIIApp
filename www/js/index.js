@@ -98,7 +98,9 @@ var app = {
         {
             if(audio)
             {
-                document.getElementById("audio").play();
+                var theme = document.getElementById("audio");
+                theme.play()
+                theme.volume = 0.4;
             }
             else
             {
@@ -121,6 +123,12 @@ var app = {
     }
 };
 
+function playPopAudio()
+{
+    var audio = document.getElementById("popAudio");
+    audio.currentTime = 0;
+    audio.play();
+}
 
 app.initialize();
 

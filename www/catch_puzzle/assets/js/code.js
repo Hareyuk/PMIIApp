@@ -28,6 +28,8 @@ var arrayPieces=[];
 var puzzleMatrix=[];
 var times = {};
 var turnNumber = 0;
+var theme = document.getElementById("theme");
+theme.volume = 0.4;
 //For pieces' selector
 var selectorPieces = [0,1,2,3,4];
 var players;

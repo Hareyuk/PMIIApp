@@ -9,6 +9,8 @@ var savingCells = [];
 var gameData = [];
 var gameClean;
 var players = [];
+var theme = document.getElementById("themeAudio");
+theme.volume = 0.4;
 
 function loadLocalStorage()
 {
@@ -58,13 +60,15 @@ function reloadTableData()
 
 function instruc() //Show instructions
 {
+    playPopAudio();
     $("#msgBox").removeClass("none");
-    $("#msgBox").append('<div><h3>Instrucciones</h3><p>- El primer jugador en marcar 3 en línea en cualquier dirección (vertical, horizontal o diagonal) gana y obtiene 1 punto.</p><p>- Los jugadores tomarán turnos para marcar en la grilla.</p><p>- El juego se termina cuando los 9 casilleros están marcados.</p><p>- En caso de un empate ninguno de los jugadores obtiene puntos.</p><p>¡¡A disfrutar!!</p><button onclick="msgBoxDone()">¡Ok!</button></div>');
+    $("#msgBox").append('<div><h3>Instrucciones</h3><p>- El primer jugador en marcar 3 en línea en cualquier dirección (vertical, horizontal o diagonal) gana y obtiene 1 punto.</p><p>- Los jugadores tomarán turnos para marcar en la grilla.</p><p>- El juego se termina cuando los 9 casilleros están marcados.</p><p>- En caso de un empate ninguno de los jugadores obtiene puntos.</p><p>¡¡A disfrutar!!</p><button onclick="msgBoxDone()">¡Ok!</button onclick="playPopAudio();"></div>');
 }
 
 //Generar el cartel "¿Estás seguro?" con un parámetro para saber si es del reiniciar o salir
 function areYouSure()
 {
+    playPopAudio();
     $("#msgBox").removeClass("none");
      $("#msgBox").append('<div><h3>¿Seguro que quiere reiniciar?</h3><button onclick="msgBoxDone(1)">Sí, deseo reiniciar</button><button onclick="msgBoxDone()">No, quiero seguir jugando</button></div>');
     $("#msgBox").addClass("sureAbout");
@@ -73,6 +77,7 @@ function areYouSure()
 
 function msgBoxDone(num)
 {
+    playPopAudio();
     $("#msgBox").empty();
     $("#msgBox").addClass("none");
     $("#msgBox").removeClass("sureAbout");  
@@ -165,15 +170,30 @@ function generateCol(row)
         }
         else
         {
-            txt += "<td id='col" +count+"' class='pointingActive' onclick='putSymbol("+count+")'></td>";    
+            txt += "<td id='col" +count+"' class='pointingActive' onmouseover='playOnHoverSound()' onclick='putSymbol("+count+")'></td>";    
         }
         count++;
     }
     return txt;
 }
 
+function playOnHoverSound()
+{
+    var audio = document.getElementById("onhoverAudio");
+    audio.currentTime = 0;
+    audio.play();
+}
+
+function playPopAudio()
+{
+    var audio = document.getElementById("popAudio");
+    audio.currentTime = 0;
+    audio.play();
+}
+
 function restartGame(num)
 {
+    playPopAudio();
     if(num==1)
     {
         saveData();
@@ -190,6 +210,20 @@ function restartGame(num)
     $("#winner").remove();
 }
 
+function playClickAudio()
+{
+    var audio = document.getElementById("clickAudio");
+    audio.currentTime=0;
+    audio.play();
+}
+
+function playVictoryAudio()
+{
+    var audio = document.getElementById("victoryAudio");
+    audio.currentTime=0;
+    audio.play();
+}
+
 function putSymbol(num)
 {
     if(flagGaming)
@@ -197,8 +231,10 @@ function putSymbol(num)
         saveData();
         var col = $('#col'+num);
         if(col.is(':empty') ) { 
+            playClickAudio();
             col.removeClass('pointingActive');
             col.addClass('dontClick');
+            col.removeAttr("onmouseover");
             //If its empty, put X or O
             //Put the number in the dimensional array matrix
             if(num == 1 || num == 4 || num == 7)
@@ -316,6 +352,7 @@ function validateWin()
         let imgPlayerWin;
         //Player winner! *claps claps*
         paintCellsWin();
+        playVictoryAudio();
         if(turn == 0)
         {
             //LOCALSTORAGE: Podríamos meter aquí los localStorage de victorias de jugadores
@@ -338,7 +375,6 @@ function validateWin()
     }
     saveData();
 }
-
 
 function showPoints()
 {
@@ -419,6 +455,7 @@ function noOneIsClickable()
     for(i=1;i<10;i++)
     {
         $('#col'+i).removeClass('pointingActive');
+        $('#col'+i).removeAttr("onmouseover");
         $('#col'+i).addClass('dontClick');
     }
 }

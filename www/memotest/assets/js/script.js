@@ -101,6 +101,8 @@ var players = [];
 var turn;
 var size;
 var finishingPair = 0;
+var theme = document.getElementById("theme");
+theme.volume = 0.4;
 
 // elements that form the table
 var table = document.getElementById('memo');

@@ -98,7 +98,9 @@ var app = {
         {
             if(audio)
             {
-                document.getElementById("audio").play();
+                var theme = document.getElementById("audio");
+                theme.play()
+                theme.volume = 0.4;
             }
             else
             {

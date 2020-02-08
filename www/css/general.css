@@ -178,3 +178,8 @@ button:disabled, select:disabled
         background-color: gray;
         border-color: #767676;
 }
+
+audio
+{
+    display: none !important;
+}
