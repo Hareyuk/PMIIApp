@@ -394,19 +394,26 @@ function endGame() {
 
 function winPlayer()
 {
+    var div = document.getElementById("winBackground");
+    var link = "url(";
+    var p = document.getElementById("pWinner");
     if(players[0].pointMT > players[1].pointMT)
     {
-
-        alert('Ganó el jugador 1');
+        link += "'assets/images/win1.png')";
+        p.innerHTML = "¡El jugador " + players[0].nick + " ha ganado!";
     }
     else if(players[1].pointMT > players[0].pointMT)
     {
-        alert('Ganó el jugador 2');
+        link += "'assets/images/win2.png')";
+        p.innerHTML = "¡El jugador " + players[1].nick + " ha ganado!";
     }
     else
     {
-        alert('Empate');
+        link += "'assets/images/tie.png')";
+        p.innerHTML = "¡" + players[0].nick + " y " + players[1].nick + " han empatado!";
     }
+    div.style.backgroundImage = "assets/images/tie.png";
+    showMessageBox("messageWinner");
 }
 
 function genRandom(min, max)

@@ -61,11 +61,6 @@ td{
     width: 100px;
 }
 
-.theCard:hover
-{
-    transform: scale(1.1);
-}
-
 .theCard{
     overflow: visible;
     width: 70px;
@@ -73,7 +68,7 @@ td{
     transform-style: preserve-3d;
     -webkit-transition: all 0.7s ease-in-out;
     -webkit-transform-style: preserve-3d;    /* Safari 4-8 */
-    transition: all 0.7s ease-in-out transform 0.2s ease-in-out;
+    transition: all 0.7s ease-in-out;
 }
     
 .theFront, .theBack{
@@ -101,7 +96,7 @@ td{
     box-shadow: 0px 0px 9px 1px rgb(0, 255, 90);
 }
 
-#msgBox
+#msgBox,  #messageWinner
 {
     position: fixed;
     top: 0px;
@@ -113,7 +108,7 @@ td{
     background-color: rgba(0,0,0,0.5);
 }
 
-#msgBox div
+#msgBox div, #messageWinner div
 {
     position: absolute;
     padding: 2em;
@@ -121,6 +116,12 @@ td{
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: rgba(0,0,0,0.5);
+}
+
+#messageWinner div
+{
+    width: 80%;
+    height: 50%;
 }
 
 #msgBox p
