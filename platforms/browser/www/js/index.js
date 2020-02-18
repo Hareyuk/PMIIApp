@@ -123,6 +123,12 @@ var app = {
     }
 };
 
+function playPopAudio()
+{
+    var audio = document.getElementById("popAudio");
+    audio.currentTime = 0;
+    audio.play();
+}
 
 app.initialize();
 

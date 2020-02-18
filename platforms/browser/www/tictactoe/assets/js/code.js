@@ -387,6 +387,7 @@ function showPoints()
 
 function restartPoints()
 {
+    playPopAudio();
     $("#msgBox").removeClass("none");
      $("#msgBox").append('<div><h3>¿Reiniciar los puntos?</h3><button onclick="msgBoxDone(2)">Sí</button><button onclick="msgBoxDone()">No</button></div>');
     $("#msgBox").addClass("sureAbout");
