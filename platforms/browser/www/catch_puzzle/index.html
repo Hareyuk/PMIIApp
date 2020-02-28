@@ -8,7 +8,6 @@
     <link rel="stylesheet" media="screen" type="text/css" href="assets/css/styles.css">
     <link rel="stylesheet" media="screen" type="text/css" href="../css/general.css">
     <link rel="shortcut icon" type="image/png" href="../img/fav.png"/>
-    <link rel="shortcut icon" type="image/png" href="../img/fav.png"/>
     <title>Atrapa puzzle!</title>
 </head>
 <body onload="startGame();">
@@ -16,6 +15,11 @@
         <h1>Atrapa puzzle!</h1>
     </header>
     <main>
+        <div id="msgBox">
+            <div id="msgBoxInfo">
+                
+            </div>
+        </div>
         <div id="character1">
 
         </div>
@@ -31,7 +35,7 @@
         <div id="texture"></div>
     </main>
     <footer>
-        <audio loop autoplay>
+        <audio loop autoplay id="theme">
             <source src="assets/audio/catch_puzzle.mp3" type="audio/mpeg">
         </audio>
     </footer>

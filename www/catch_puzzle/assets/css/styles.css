@@ -114,7 +114,42 @@ table
     left: 0;
 }
 
+#msgBox
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.5);
+    color: white;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+}
 
+#msgBoxInfo
+{
+    background-color: black;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+#msgBoxInfo figure
+{
+    display: flex;
+    align-items: center;
+}
+
+#msgBoxInfo img
+{
+    max-width: 100px;
+}
+
+.border_red
+{
+    border: rgba(180,0,0,0.5) 5px groove;
+}
 
 .grabPieces
 {
@@ -185,6 +220,29 @@ td, .start_position_player, .pieces
     display: inline-block;
 }
 
+.nameCatch
+{
+    position: fixed;
+    left: 50%;
+    top: 5%;
+    transform: translate(-50%,0);
+    color: white;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.namePuzzle
+{
+    position: fixed;
+    left: 50%;
+    top: 5%;
+    transform: translate(-50%,0);
+    color: white;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+
 @media only screen and (max-width: 375px), screen and (max-height: 375px) and (orientation: landscape)
 {
     header
@@ -197,18 +255,17 @@ td, .start_position_player, .pieces
         height: 100vh !important;
     }
 
-    #names
-    {
-        position: absolute;
-        top: 20%;
-        left: 0;
-    }
-
-    #maze
+    #maze, #jigsaw
     {
         
         height: 300px;
         width: 300px;
+    }
+
+    .piece
+    {
+        width: 60px;
+        height: 60px;
     }
 
     table
@@ -258,6 +315,18 @@ td, .start_position_player, .pieces
         width: 375px;
     }
 
+    #jigsaw
+    {
+        height: 350px;
+        width: 350px
+    }
+
+    .piece
+    {
+        width: 75px;
+        height: 75px;
+    }
+
     table
     {
         height: 1500px;
@@ -290,6 +359,18 @@ td, .start_position_player, .pieces
         height: 420px;
     }
 
+    #jigsaw
+    {
+        width: 400px;
+        height: 400px;
+    }
+
+    .piece
+    {
+        width: 84px;
+        height: 84px;
+    }
+
     table
     {
         height: 1680px;
@@ -313,12 +394,19 @@ td, .start_position_player, .pieces
     }
 }
 
+
 @media only screen and (min-width: 630px) and (min-height: 630px)
 {
     #maze
     {
         width: 620px;
         height: 620px;
+    }
+
+    #jigsaw
+    {
+        width: 600px;
+        height: 600px;
     }
 
     table
@@ -384,6 +472,13 @@ td, .start_position_player, .pieces
     .buttonTap
     {
         display: block;
+    }
+
+    #msgBoxInfo
+    {
+        width: 80%;
+        height: 35%;
+        background-position: center;
     }
 }
 

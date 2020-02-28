@@ -50,6 +50,7 @@ function loadGame()
     }
     else
     {
+        msgBox(true,0);
         if(!gameData.dataSaved)
         {
             mapMatrix = generateMatrix(widthMap, heightMap, mapMatrix);
@@ -71,11 +72,74 @@ function startGame() {
     loadGame();
 }
 
+function msgBox(on, num, winner)
+{
+    var msgBox = document.getElementById("msgBox");
+    var div = document.getElementById("msgBoxInfo");
+    if(on == true)
+    {
+        msgBox.classList.remove("hidden");
+    }
+    else
+    {
+        msgBox.classList.add("hidden");
+        div.innerHTML = "";
+        div.classList.remove("border_red");
+    }
+    switch(num)
+    {
+        case 0:
+            //when seeking pieces starts
+            div.classList.add("border_red");
+            var figure = document.createElement("figure");
+            var img = document.createElement("img");
+            img.src = "assets/img/piece.png";
+            img.alt = "pieces";
+            var figcaption = document.createElement("figcaption");
+            figcaption.innerHTML = "¡Tienes que recolectar estas piezas!";
+            figure.appendChild(img);
+            figure.appendChild(figcaption);
+            var figure2 = document.createElement("figure");
+            var img2 = document.createElement("img");
+            img2.src = "assets/img/dontpass.png";
+            img2.alt = "can't pass";
+            var figcaption2 = document.createElement("figcaption");
+            figcaption2.innerHTML = "No son mortales pero no se pueden avanzar ahí.";
+            figure2.appendChild(img2);
+            figure2.appendChild(figcaption2);
+            var p = document.createElement("p");
+            p.innerHTML ="¡El objetivo del juego es conseguir todas las piezas!<br>En dispositivo táctil te mueves presionando los círculos que verás alrededor. ¡En computadora presioná las teclas!"
+            var button = document.createElement("button");
+            if(gameData.dataSaved = true) button.innerHTML = "Continuar";
+            else button.innerHTML = "¡Empezar!";
+            button.addEventListener("click", function(){ msgBox("false", 0);});
+            div.appendChild(figure);
+            div.appendChild(figure2);
+            div.appendChild(p);
+            div.appendChild(button);
+            break;
+        case 1:
+            //when jigsaw starts
+            break;
+        case 2:
+            //change player
+            break;
+        case 3:
+            //victory
+            break;
+        case 4:
+            //is going to restart
+            break;
+    }
+}
+
 function showNames()
 {
     var div = document.getElementById("names");
+    div.innerHTML = "";
     var p = document.createElement("p");
     p.innerHTML = "Turno:<br>" + players[turnNumber].nick;
+    div.classList.add("nameCatch");
     div.appendChild(p);
 }
 
@@ -228,40 +292,77 @@ function generateMazeTable(w, h, m) {
     tableGame = document.getElementById("tableGame");
 }
 
-function moveTable() {
+function sizePixels(stateGame)
+{
     var px; 
-    var x = window.matchMedia("(max-width: 375px)");
-    if(x.matches) px = 60;
+    if(stateGame == 0) //Seeking pieces
+    {
+        var x = window.matchMedia("(max-width: 375px)");
+        if(x.matches) px = 60;
+        else
+        {
+            x = window.matchMedia("(max-height: 375px) and (orientation: landscape)");
+            if(x.matches) px=60;
+        }
+        x = window.matchMedia("(min-width: 376px)");
+        if(x.matches)
+        {
+            x=window.matchMedia("(min-height: 376px)");
+            if(x.matches) px = 75;
+        }
+        x = window.matchMedia("(min-width: 421px)");
+        if(x.matches)
+        {
+            x=window.matchMedia("(min-height: 421px)");
+            if(x.matches) px = 84;
+        }
+        x = window.matchMedia("(min-width: 630px)");
+        if(x.matches)
+        {
+            x=window.matchMedia("(min-height: 630px)");
+            if(x.matches) px=124;
+        }
+        x = window.matchMedia("(min-width: 769px)");
+        if(x.matches)
+        {
+            x=window.matchMedia("(min-height: 769px)");
+            if(x.matches) px=150;
+        }
+    }
     else
     {
-        x = window.matchMedia("(max-height: 375px) and (orientation: landscape)");
-        if(x.matches) px=60;
+        var x = window.matchMedia("(max-width: 375px)");
+        if(x.matches) px = 60;
+        else
+        {
+            x = window.matchMedia("(max-height: 375px) and (orientation: landscape)");
+            if(x.matches) px=60;
+        }
+        x = window.matchMedia("(min-width: 376px)");
+        if(x.matches)
+        {
+            x=window.matchMedia("(min-height: 376px)");
+            if(x.matches) px = 70;
+        }
+        x = window.matchMedia("(min-width: 421px)");
+        if(x.matches)
+        {
+            x=window.matchMedia("(min-height: 421px)");
+            if(x.matches) px = 80;
+        }
+        x = window.matchMedia("(min-width: 630px)");
+        if(x.matches)
+        {
+            x=window.matchMedia("(min-height: 630px)");
+            if(x.matches) px=120;
+        }
     }
-    x = window.matchMedia("(min-width: 376px)");
-    if(x.matches)
-    {
-        x=window.matchMedia("(min-height: 376px)");
-        if(x.matches) px = 75;
-    }
-    x = window.matchMedia("(min-width: 421px)");
-    if(x.matches)
-    {
-        x=window.matchMedia("(min-height: 421px)");
-        if(x.matches) px = 84;
-    }
-    x = window.matchMedia("(min-width: 630px)");
-    if(x.matches)
-    {
-        x=window.matchMedia("(min-height: 630px)");
-        if(x.matches) px=124;
-    }
-    x = window.matchMedia("(min-width: 769px)");
-    if(x.matches)
-    {
-        x=window.matchMedia("(min-height: 769px)");
-        if(x.matches) px=150;
-    }
+    return px;
+}
 
+function moveTable() {
+    
+    var px = sizePixels(0);
     tableGame.style.top = (-posPlayer.x * px+(px*2)) + "px";
     tableGame.style.left = (-posPlayer.y * px+(px*2)) + "px";
 }
@@ -598,7 +699,7 @@ function startJigsaw(newJigsaw)
     {
         do 
         {
-            numberImage = genRandom(0,8);
+            numberImage = genRandom(0,10);
         } while (numberImage == lastImage)
         //Just to know if is new game or is there save
         selectorPieces = [0,1,2,3,4];
@@ -606,9 +707,17 @@ function startJigsaw(newJigsaw)
         arrayPieces = generateArrayPieces(numberImage);
     }
     //Show
+    infoPlayerPuzzle();
     buildTableJigsaw(puzzleMatrix);
     buildMenuPieces();
     buildButtonsJigsaw();
+}
+
+function infoPlayerPuzzle()
+{
+    var div = document.getElementById("names");
+    div.classList.remove("nameCatch");
+    div.classList.add("namePuzzle");
 }
 
 function buildMatrixJigsaw()
@@ -616,12 +725,13 @@ function buildMatrixJigsaw()
     var m = [];
     var rowPieces = 5;
     var colPieces = 5;
+    var px = sizePixels(1);
     for(var i = 0; i < rowPieces; i++)
     {
         m.push([]);
         for(var j = 0; j < colPieces; j++)
         {
-            m[i][j] = {top:-(120*i)+"px",left: (-120*j)+"px", src: "cellJigsaw.png", alt: "empty"};
+            m[i][j] = {top:-(px*i)+"px",left: (-px*j)+"px", src: "cellJigsaw.png", alt: "empty"};
         }
     }
     return m;
@@ -667,11 +777,12 @@ function generateArrayPieces()
     var array = [];
     var amountPiecesX = 5;
     var amountPiecesY = 5;
+    var px = sizePixels(1);
     for(var i = 0; i < amountPiecesX;i++)
     {
         for(var j = 0; j < amountPiecesY;j++)
         {
-            array.push({top:-(120*i)+"px",left: (-120*j)+"px", alt: "piece"});
+            array.push({top:-(px*i)+"px",left: (-px*j)+"px", alt: "piece"});
         } 
     }
     array = shuffle(array);
@@ -915,7 +1026,13 @@ function selectPiece(img2Selected)
                 {
                     alert("Tie!");
                 }
+                turn = "johan";
                 lastImage = null;
+                gameData.saveData = false;
+                finishedSearch = false;
+                gameData.dataPuzzle = false;
+                document.getElementById("game").innerHTML = "";
+                loadGame();
             }
             saveData();
         }
@@ -943,6 +1060,7 @@ function isFromMenu(id)
 
 function changeMenuPieces(num)
 {
+    var px = sizePixels(1);
     for(var i =0;i < 5; i++)
     {
         var img = document.getElementById("eligible"+i);
@@ -975,7 +1093,7 @@ function changeMenuPieces(num)
         {
             //all cels empty
             img.style.top = 0+"px";
-            img.style.left = (i*-120)+"px";
+            img.style.left = (i*-px)+"px";
             img.alt = "empty";
             img.src = "assets/img/cellJigsaw.png";
         }
@@ -1000,14 +1118,15 @@ function buildButtonsJigsaw()
 
 function validatePuzzle(mapGame)
 {
+    var px = sizePixels(1);
     for(var i = 0; i < mapGame.length; i++)
     {
         for(var j = 0; j < mapGame[i].length; j++)
         {
             var topPlayer = mapGame[i][j].top;
-            var topWin = (-i*120)+"px";
+            var topWin = (-i*px)+"px";
             var leftPlayer = mapGame[i][j].left;
-            var leftWin = (-j*120)+"px";
+            var leftWin = (-j*px)+"px";
             var altPlayer = mapGame[i][j].alt;
             if(altPlayer == "empty" || topPlayer != topWin || leftPlayer != leftWin)
             {
