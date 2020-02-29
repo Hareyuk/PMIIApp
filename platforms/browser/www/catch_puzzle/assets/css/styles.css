@@ -121,7 +121,7 @@ table
     left: 0;
     background-color: rgba(0,0,0,0.5);
     color: white;
-    z-index: 1;
+    z-index: 2;
     width: 100%;
     height: 100%;
 }
@@ -129,6 +129,38 @@ table
 #msgBoxInfo
 {
     background-color: black;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    padding: 1em;
+}
+
+#msgBoxInfo *
+{
+    margin: 0.5em 0;
+}
+
+#msgBoxInfo button
+{
+    font-size: 1em;
+    width: 100%;
+}
+
+.full
+{
+    max-width: 100%;
+}
+
+#msgBoxInfo figure
+{
+    display: flex;
+    align-items: center;
+}
+
+#msgBoxInfo img
+{
+    max-width: 100px;
 }
 
 .border_red

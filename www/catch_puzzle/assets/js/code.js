@@ -34,6 +34,11 @@ theme.volume = 0.4;
 var selectorPieces = [0,1,2,3,4];
 var players;
 
+function startGame() {
+    getData();
+    loadGame();
+}
+
 function loadGame()
 {
     if(finishedSearch)
@@ -50,7 +55,7 @@ function loadGame()
     }
     else
     {
-        msgBox(true,0);
+        showMsgBox(0);
         if(!gameData.dataSaved)
         {
             mapMatrix = generateMatrix(widthMap, heightMap, mapMatrix);
@@ -67,25 +72,12 @@ function loadGame()
     document.addEventListener("keyup", keyUp);
 }
 
-function startGame() {
-    getData();
-    loadGame();
-}
-
-function msgBox(on, num, winner)
+function showMsgBox(num, winner)
 {
     var msgBox = document.getElementById("msgBox");
     var div = document.getElementById("msgBoxInfo");
-    if(on == true)
-    {
-        msgBox.classList.remove("hidden");
-    }
-    else
-    {
-        msgBox.classList.add("hidden");
-        div.innerHTML = "";
-        div.classList.remove("border_red");
-    }
+    msgBox.classList.remove("hidden");
+    var txt = "Continuar";
     switch(num)
     {
         case 0:
@@ -109,17 +101,41 @@ function msgBox(on, num, winner)
             figure2.appendChild(figcaption2);
             var p = document.createElement("p");
             p.innerHTML ="¡El objetivo del juego es conseguir todas las piezas!<br>En dispositivo táctil te mueves presionando los círculos que verás alrededor. ¡En computadora presioná las teclas!"
-            var button = document.createElement("button");
-            if(gameData.dataSaved = true) button.innerHTML = "Continuar";
-            else button.innerHTML = "¡Empezar!";
-            button.addEventListener("click", function(){ msgBox("false", 0);});
             div.appendChild(figure);
             div.appendChild(figure2);
             div.appendChild(p);
-            div.appendChild(button);
             break;
         case 1:
             //when jigsaw starts
+            div.classList.add("border_red");
+            var figure = document.createElement("figure");
+            var img = document.createElement("img");
+            img.src = "assets/img/piece_normal.png";
+            img.alt = "normal piece";
+            var figcaption = document.createElement("figcaption");
+            figcaption.innerHTML = "Estas son piezas.";
+            figure.appendChild(img);
+            figure.appendChild(figcaption);
+            var figure2 = document.createElement("figure");
+            var img2 = document.createElement("img");
+            img2.src = "assets/img/piece_selected.png";
+            img2.alt = "piece selected";
+            var figcaption2 = document.createElement("figcaption");
+            figcaption2.innerHTML = "Cuando les hacés click para seleccionar una, tienen un brillo alrededor.";
+            figure2.appendChild(img2);
+            figure2.appendChild(figcaption2);
+            var figure3 = document.createElement("figure");
+            var img3 = document.createElement("img");
+            img3.src = "assets/img/piece_tuto.png";
+            img3.alt = "tutorial";
+            img3.classList.add("full");
+            var figcaption3 = document.createElement("figcaption");
+            figcaption3.innerHTML = "¡Una vez seleccionada una pieza, haz otro click en el tablero!";
+            figure3.appendChild(img3);
+            figure3.appendChild(figcaption3);
+            div.appendChild(figure);
+            div.appendChild(figure2);
+            div.appendChild(figure3);
             break;
         case 2:
             //change player
@@ -129,8 +145,25 @@ function msgBox(on, num, winner)
             break;
         case 4:
             //is going to restart
+            txt = "Reiniciar juego";
             break;
     }
+
+    var button = document.createElement("button");
+    button.innerHTML = txt;
+    button.addEventListener("click", function(){ 
+        closeMsgBox();
+    });
+    div.appendChild(button);
+}
+
+function closeMsgBox()
+{
+    var msgBox = document.getElementById("msgBox");
+    var div = document.getElementById("msgBoxInfo");
+    msgBox.classList.add("hidden");
+    div.classList.remove("border-red");
+    div.innerHTML = "";
 }
 
 function showNames()
@@ -577,6 +610,9 @@ function getData() {
     numberImage = gameData.numberImage;
     lastImage = gameData.lastImage;
     posPlayer = gameData.posPlayer;
+    puzzleMatrix = gameData.puzzleMatrix;
+    arrayPieces = gameData.arrayPieces;
+    finishedSearch = gameData.finishedSearch;
 }
 
 function saveData() {
@@ -587,6 +623,7 @@ function saveData() {
     gameData.puzzleMatrix = puzzleMatrix;
     gameData.arrayPieces = arrayPieces;
     gameData.lastImage = lastImage;
+    gameData.finishedSearch = finishedSearch;
     localStorage.setItem("dataCP", JSON.stringify(gameData));
 }
 
@@ -694,6 +731,7 @@ function stillSeekingPieces(w,h,m)
 
 function startJigsaw(newJigsaw)
 {
+    showMsgBox(1);
     gameData.dataPuzzle = true;
     if(newJigsaw == 1)
     {
@@ -822,7 +860,7 @@ function blackScreen()
         document.querySelector("#maze").remove();
         startJigsaw(1);
         div.style.opacity = '0';
-        gameData.finishedSearch = true;
+        finishedSearch = true;
         saveData();
     }, 1100);
     setTimeout(() => {
@@ -1028,7 +1066,7 @@ function selectPiece(img2Selected)
                 }
                 turn = "johan";
                 lastImage = null;
-                gameData.saveData = false;
+                gameData.dataSaved = false;
                 finishedSearch = false;
                 gameData.dataPuzzle = false;
                 document.getElementById("game").innerHTML = "";
