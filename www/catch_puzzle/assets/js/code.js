@@ -1126,15 +1126,13 @@ function changeMenuPieces(num)
         var count = positionList+i*num;
         if(count > arrayPieces.length-1)
         {
-            count -= arrayPieces.length-1;
+            count -= (arrayPieces.length-1);
         }
         else if(count < 0)
         {
-            count += arrayPieces.length;
+            count += (arrayPieces.length-1);
         }
         var img = document.getElementById("eligible"+i);
-        img.style.top = arrayPieces[count].top;
-        img.style.left = arrayPieces[count].left;
         if(arrayPieces.length-1 < 5 && i > arrayPieces.length - 1)
         {
             img.alt = "empty";
@@ -1142,6 +1140,8 @@ function changeMenuPieces(num)
         }
         else
         {
+            img.style.top = arrayPieces[count].top;
+            img.style.left = arrayPieces[count].left;
             img.alt = arrayPieces[count].alt;
             img.src = 'assets/img/'+numberImage+'/full.png';
         }
