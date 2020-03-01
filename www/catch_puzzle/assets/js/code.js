@@ -1015,7 +1015,7 @@ function selectPiece(img2Selected)
                var id2 = img2Selected.id;
                if(isFromMenu(id2))
                {
-                    var obj = {top: img1Selected.style.top, left: img1Selected.style.left, alt: img1Selected.alt};
+                    var obj = {top: img1Selected.style.top, left: img1Selected.style.left, alt: img1Selected.alt, src: img1Selected.src};
                     img1Selected.style.top = img2Selected.style.top;
                     img1Selected.style.left = img2Selected.style.left;
                     img1Selected.src = img2Selected.src;
