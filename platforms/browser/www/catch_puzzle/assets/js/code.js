@@ -769,7 +769,7 @@ function buildMatrixJigsaw()
         m.push([]);
         for(var j = 0; j < colPieces; j++)
         {
-            m[i][j] = {top:-(px*i)+"px",left: (-px*j)+"px", src: "cellJigsaw.png", alt: "empty"};
+            m[i][j] = {top:-(px*i)+"px",left: (-px*j)+"px", src: "assets/img/cellJigsaw.png", alt: "empty"};
         }
     }
     return m;
@@ -791,7 +791,7 @@ function buildTableJigsaw(m)
             {
                 selectPiece(this);
             });
-            img.src= "assets/img/" + m[i][j].src;
+            img.src= m[i][j].src;
             img.alt = m[i][j].alt;
             img.style.top=m[i][j].top;
             img.style.left=m[i][j].left;
@@ -1188,5 +1188,5 @@ function updatePuzzleMatrix(idSelected, imgSelected)
     var saveAlt = imgSelected.alt;
     var obj = {top: saveTop, left: saveLeft, src: saveSrc, alt: saveAlt};
     puzzleMatrix[pieceX][pieceY] = obj;
-    console.log('ID recibido: ' + position);
+    saveData();
 }
