@@ -31,7 +31,7 @@ var turnNumber = 0;
 var theme = document.getElementById("theme");
 theme.volume = 0.4;
 //For pieces' selector
-var selectorPieces = [0,1,2,3,4];
+var positionList = 0;
 var players;
 
 function startGame() {
@@ -740,7 +740,7 @@ function startJigsaw(newJigsaw)
             numberImage = genRandom(0,10);
         } while (numberImage == lastImage)
         //Just to know if is new game or is there save
-        selectorPieces = [0,1,2,3,4];
+        positionList = 0;
         puzzleMatrix = buildMatrixJigsaw(numberImage);
         arrayPieces = generateArrayPieces(numberImage);
     }
@@ -959,8 +959,7 @@ function selectPiece(img2Selected)
                     img1Selected.style.left = aux.left;
                     id = id.substring(8,9);
                     id = parseInt(id);
-                    var pieceSelected = selectorPieces[id];
-                    arrayPieces.splice(pieceSelected,1,{top: aux.top, left: aux.left, alt: aux.alt});
+                    arrayPieces.splice(id,1,{top: aux.top, left: aux.left, alt: aux.alt});
                     updatePuzzleMatrix(img2Selected, img2Selected);
                     console.log("Cambiamos pieza 1 de menú y pieza 2 de tablero");
                 }
@@ -979,8 +978,8 @@ function selectPiece(img2Selected)
                     //Restore the array with the piece (1) returned in menu.
                     id2 = id2.substring(8,9);
                     id2 = parseInt(id2);
-                    var pieceSelected = selectorPieces[id2];
-                    arrayPieces.splice(pieceSelected,1,{top: img2Selected.style.top, left: img2Selected.style.left, alt: img2Selected.alt});
+                    var obj = {top: img2Selected.style.top, left: img2Selected.style.left, alt: img2Selected.alt, src: img2Selected.src};
+                    arrayPieces.splice(id2,1,obj);
                     updatePuzzleMatrix(img1Selected, img1Selected);
                     console.log("Devolvimos la pieza 1 al menú y el 2° del menú pasó al tablero");
                 }
@@ -1007,12 +1006,7 @@ function selectPiece(img2Selected)
                 img2Selected.alt = img1Selected.alt;
                 id = id.substring(8,9);
                 id = parseInt(id);
-                var pieceSelected = selectorPieces[id];
-                arrayPieces.splice(pieceSelected,1);
-                for(var i = id;i < 5;i++)
-                {
-                    selectorPieces[i] -= 1;
-                }
+                arrayPieces.splice(id,1);
                 updatePuzzleMatrix(img2Selected, img1Selected);
                 console.log("Pusimos una pieza del menú en una casilla vacía de la tabla");
             }
@@ -1029,7 +1023,7 @@ function selectPiece(img2Selected)
                     arrayPieces.push(obj);
                     updatePuzzleMatrix(img1Selected, img2Selected);
                     var lastPosition = arrayPieces.length-1;
-                    selectorPieces[lastPosition]=lastPosition;
+                    positionList[lastPosition]=lastPosition;
                     console.log("La pieza 1 del tablero volvió al menu");
                }
                else
@@ -1056,6 +1050,7 @@ function selectPiece(img2Selected)
         {
             gameData.dataPuzzle = false;
             gameData.dataSaved = false;
+            stillSeekingPieces = false;
             alert('Won!');
             if(turn == "johan")
             {
@@ -1113,41 +1108,42 @@ function isFromMenu(id)
 function changeMenuPieces(num)
 {
     var px = sizePixels(1);
+    positionList += num;
+    if(num == 0)
+    {
+        num = 1; //Evade error
+    }
+    if(positionList < 0)
+    {
+        positionList = arrayPieces.length-1;
+    }
+    if(positionList > arrayPieces.length-1)
+    {
+        positionList = 0;
+    }
     for(var i =0;i < 5; i++)
     {
-        var img = document.getElementById("eligible"+i);
-        if(arrayPieces.length > 0)
+        var count = positionList+i*num;
+        if(count > arrayPieces.length-1)
         {
-            selectorPieces[i] += num;
-            if(selectorPieces[i] < 0)
-            {
-                selectorPieces[i] = arrayPieces.length-1;
-            }
-            if(selectorPieces[i] > arrayPieces.length-1)
-            {
-                selectorPieces[i] = 0;
-            }
-            var pieceSelected = selectorPieces[i];
-            img.style.top = arrayPieces[pieceSelected].top;
-            img.style.left = arrayPieces[pieceSelected].left;
-            if(arrayPieces.length-1 < 5 && i > arrayPieces.length - 1)
-            {
-                img.alt = "empty";
-                img.src = "assets/img/cellJigsaw.png";
-            }
-            else
-            {
-                img.alt = arrayPieces[pieceSelected].alt;
-                img.src = 'assets/img/'+numberImage+'/full.png';
-            }
+            count -= arrayPieces.length-1;
+        }
+        else if(count < 0)
+        {
+            count += arrayPieces.length;
+        }
+        var img = document.getElementById("eligible"+i);
+        img.style.top = arrayPieces[count].top;
+        img.style.left = arrayPieces[count].left;
+        if(arrayPieces.length-1 < 5 && i > arrayPieces.length - 1)
+        {
+            img.alt = "empty";
+            img.src = "assets/img/cellJigsaw.png";
         }
         else
         {
-            //all cels empty
-            img.style.top = 0+"px";
-            img.style.left = (i*-px)+"px";
-            img.alt = "empty";
-            img.src = "assets/img/cellJigsaw.png";
+            img.alt = arrayPieces[count].alt;
+            img.src = 'assets/img/'+numberImage+'/full.png';
         }
     }
 }

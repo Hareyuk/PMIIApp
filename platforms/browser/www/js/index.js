@@ -64,14 +64,14 @@ var dataCP =
 {
     dataSaved: false,
     finishedSearch: false,
-    mapMatrix: [],
+    dataPuzzle: false,
     posPlayer: {},
     turn: "johan",
-    dataPuzzle: false,
-    puzzleMatrix: [],
     arrayPieces: [],
     numberImage: null,
-    lastImage: null
+    lastImage: null,
+    puzzleMatrix: [],
+    mapMatrix: []
 }
 var audio = false;
 
