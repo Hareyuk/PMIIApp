@@ -884,14 +884,24 @@ function buildMenuPieces()
         var div = document.createElement('div');
         div.classList.add("piece");
         var img = document.createElement("img");
-        img.src = "assets/img/"+numberImage+"/full.png";
-        img.style.top = arrayPieces[i].top;
-        img.style.left= arrayPieces[i].left;
-        img.alt = arrayPieces[i].alt;
-        img.value = arrayPieces[i].id;
         img.id = "eligible"+i;
         img.draggable = false;
         img.addEventListener("click", function(){ selectPiece(this); });
+        if(arrayPieces.length > i)
+        {
+            
+            img.src = "assets/img/"+numberImage+"/full.png";
+            img.style.top = arrayPieces[i].top;
+            img.style.left= arrayPieces[i].left;
+            img.alt = arrayPieces[i].alt;
+        }
+        else
+        {
+            img.src = "assets/img/cellJigsaw.png";
+            img.style.top = "-120px";
+            img.style.left= "-120px";
+            img.alt = "Empty";
+        }
         div.appendChild(img);
         content.appendChild(div);
     }
@@ -999,6 +1009,10 @@ function selectPiece(img2Selected)
                 id = parseInt(id);
                 var pieceSelected = selectorPieces[id];
                 arrayPieces.splice(pieceSelected,1);
+                for(var i = id;i < 5;i++)
+                {
+                    selectorPieces[i] -= 1;
+                }
                 updatePuzzleMatrix(img2Selected, img1Selected);
                 console.log("Pusimos una pieza del menú en una casilla vacía de la tabla");
             }
