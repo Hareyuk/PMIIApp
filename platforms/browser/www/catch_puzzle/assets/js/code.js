@@ -862,11 +862,14 @@ function buildTableJigsaw(m)
         table.appendChild(tr);
     }
     document.getElementById('game').appendChild(table);
+    var div = document.createElement("div");
+    div.id = "card";
     var img = document.createElement("img");
-    img.src = 'assets/img/'+numberImage+'/full.png';
+    img.src = 'assets/img/'+numberImage+'/card.png';
     img.draggable = false;
-    img.classList.add("guide_img");
-    document.getElementById('game').appendChild(img);
+    div.classList.add("hidden");
+    div.appendChild(img);
+    document.getElementById('game').appendChild(div);
 }
 
 function generateArrayPieces()
@@ -1109,40 +1112,45 @@ function selectPiece(img2Selected)
         {
             gameData.dataPuzzle = false;
             gameData.dataSaved = false;
-            stillSeekingPieces = false;
-            alert('Won!');
+            finishedSearch = false;
             if(turn == "johan")
             {
-                turn = "lefara";
-                document.getElementById("game").innerHTML = null;
-                loadGame();
+                animationCardResolved();
+                setTimeout(function()
+                {
+                    turn = "lefara";
+                    document.getElementById("game").innerHTML = null;
+                    saveData();
+                    loadGame();
+                },8000);
             }
             else
             {
-                //Código de victorias
-                if(players[0].pointCP < players[1].pointCP)
+                animationCardResolved();
+                setTimeout(function()
                 {
-                    alert(players[0].nick + " ha ganado!");
-                    playJohanVoice(2);
-                }
-                else if(players[0].pointCP > players[1].pointCP)
-                {
-                    alert(players[1].nick + " ha ganado!");
-                    playLefaraVoice(2);
-                }
-                else
-                {
-                    alert("Tie!");
-                }
-                turn = "johan";
-                lastImage = null;
-                gameData.dataSaved = false;
-                finishedSearch = false;
-                gameData.dataPuzzle = false;
-                document.getElementById("game").innerHTML = "";
-                loadGame();
+                    //Código de victorias
+                    if(players[0].pointCP < players[1].pointCP)
+                    {
+                        alert(players[0].nick + " ha ganado!");
+                        playJohanVoice(2);
+                    }
+                    else if(players[0].pointCP > players[1].pointCP)
+                    {
+                        alert(players[1].nick + " ha ganado!");
+                        playLefaraVoice(2);
+                    }
+                    else
+                    {
+                        alert("Tie!");
+                    }
+                    turn = "johan";
+                    lastImage = null;
+                    document.getElementById("game").innerHTML = "";
+                    saveData();
+                    loadGame();
+                },8000);
             }
-            saveData();
         }
     }
     else if(img2Selected == img1Selected)
@@ -1152,6 +1160,13 @@ function selectPiece(img2Selected)
         img1Selected=null;
         div.classList.remove("selected");
     }
+}
+
+function animationCardResolved()
+{
+    var div = document.getElementById("card");
+    div.classList.remove("hidden");
+    div.children[0].classList.add("animatedCard");
 }
 
 function isFromMenu(id)
