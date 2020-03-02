@@ -406,6 +406,31 @@ h1
     transform: translate(-50%,10%);
 }
 
+.win
+{
+    width: 50%;
+    background-position: center;
+    height: 50%;
+    background-size: cover;
+    text-align: center;
+    position: relative;
+}
+
+.win p
+{
+    font-size: 1.5em;
+    filter: drop-shadow(0px 0px 3px black);
+}
+
+.win button
+{
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translate(-50%,0);
+    width: 80%;
+}
+
 
 @media only screen and (max-width: 800px) and (orientation: portrait), screen and (max-height: 800px) and (orientation: landscape)
 {
@@ -521,7 +546,7 @@ h1
 {
     .nameCatch
     {
-        top: 85%;
+        top: 85% !important;
     }
     header
     {
@@ -597,11 +622,6 @@ h1
     {
         width: 80%;
         background-position: center;
-    }
-
-    .win
-    {
-        height: 35%;
     }
 
 }

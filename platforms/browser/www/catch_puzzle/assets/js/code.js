@@ -214,6 +214,29 @@ function showMsgBox(num, winner)
             break;
         case 3:
             //victory
+            var link;
+            var p = document.createElement("p");
+            var txtW = "¡Ha ganado el jugador ";
+            if(winner == "johan")
+            {
+                link = "url('assets/img/win_j.png')";
+                txtW  += players[0].nick + "!";
+            }
+            else if (winner =="lefara")
+            {
+                link = "url('assets/img/win_l.png')";
+                txtW  += players[1].nick + "!";
+            }
+            else
+            {
+                txtW = "¡Empate!"
+                link = "url('assets/img/tie.png')";
+            }
+            div.style.backgroundImage = link;
+            p.innerHTML = txtW;
+            txt = "Empezar de vuelta"
+            div.appendChild(p);
+            div.classList.add('win');
             break;
     }
 
@@ -245,6 +268,13 @@ function closeMsgBox(num)
             }
             saveData();
         });
+    }
+    else if (num == 3)
+    {
+        div.style.backgroundImage = "";
+        div.classList.remove('win');
+        loadGame();
+        document.getElementById("game").innerHTML = "";
     }
 }
 
@@ -1165,28 +1195,26 @@ function selectPiece(img2Selected)
                 animationCardResolved();
                 setTimeout(function()
                 {
-                    //Código de victorias
+                    document.getElementById("card").remove();
                     if(players[0].pointCP < players[1].pointCP)
                     {
-                        alert(players[0].nick + " ha ganado!");
+                        showMsgBox(3, "johan");
                         playJohanVoice(2);
                     }
                     else if(players[0].pointCP > players[1].pointCP)
                     {
-                        alert(players[1].nick + " ha ganado!");
+                        showMsgBox(3, "lefara");
                         playLefaraVoice(2);
                     }
                     else
                     {
-                        alert("Tie!");
+                        showMsgBox(3, "tie");
                     }
                     turn = "johan";
                     lastImage = null;
-                    document.getElementById("game").innerHTML = "";
                     players[0].pointCP = 0;
                     players[1].pointCP = 0;
                     saveData();
-                    loadGame();
                 },8000);
             }
         }
