@@ -33,10 +33,22 @@ theme.volume = 0.3;
 //For pieces' selector
 var positionList = 0;
 var players;
+var intervalTimer;
 
 function startGame() {
     getData();
     loadGame();
+}
+
+//Extracted from p5 formula1
+function  formatTimeInMins(time)
+{
+    //I get minutes
+    let m = Math.floor(time/ 60);
+    //I get seconds
+    let s = Math.floor(time%60);
+    //I return the text  "XXmXX.XXXs" (X = some number unknown)
+    return ("" + m).padStart(2, "0") + "m" + ("" + s).padStart(2, "0") + "s";
 }
 
 function playJohanVoice(num)
@@ -212,13 +224,27 @@ function showMsgBox(num, winner)
     div.appendChild(button);
 }
 
-function closeMsgBox()
+function closeMsgBox(num)
 {
     var msgBox = document.getElementById("msgBox");
     var div = document.getElementById("msgBoxInfo");
     msgBox.classList.add("hidden");
     div.classList.remove("border-red");
     div.innerHTML = "";
+    if(num < 3)
+    {
+        intervalTimer = setInterval(function(){
+            if(turn == "johan")
+            {
+                players[0].pointCP++;   
+            }
+            else
+            {
+                players[1].pointCP++;
+            }
+            saveData();
+        });
+    }
 }
 
 function showNames()
@@ -680,6 +706,7 @@ function saveData() {
     gameData.lastImage = lastImage;
     gameData.finishedSearch = finishedSearch;
     localStorage.setItem("dataCP", JSON.stringify(gameData));
+    localStorage.setItem("players",JSON.stringify(players));
 }
 
 
@@ -1119,6 +1146,7 @@ function selectPiece(img2Selected)
             finishedSearch = false;
             if(turn == "johan")
             {
+                clearInterval(intervalTimer);
                 animationCardResolved();
                 setTimeout(function()
                 {
@@ -1130,6 +1158,7 @@ function selectPiece(img2Selected)
             }
             else
             {
+                clearInterval(intervalTimer);
                 animationCardResolved();
                 setTimeout(function()
                 {
@@ -1151,6 +1180,8 @@ function selectPiece(img2Selected)
                     turn = "johan";
                     lastImage = null;
                     document.getElementById("game").innerHTML = "";
+                    players[0].pointCP = 0;
+                    players[1].pointCP = 0;
                     saveData();
                     loadGame();
                 },8000);
