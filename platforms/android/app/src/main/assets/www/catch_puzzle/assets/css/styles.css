@@ -26,34 +26,146 @@ header
     background-color: rgba(255,255,255,0.6);
 }
 
-.app
+#game
 {
-    width: 70%;
-    height: 95vh;
+    position: relative;
+}
+
+#maze
+{
+    position: relative;
+    overflow: hidden;
     margin: 0 auto;
 }
 
-#game div
+#jigsaw
 {
-    position: relative;
-    height: 500px;
-    width: 500px;
-    overflow: hidden;
+    background-color: black;
+    background-size: cover;
+    margin: 0 auto;
+    position: initial;
+    width: 600px;
+    height: 600px;
 }
+
 
 table
 {
     transition: 0.4s ease-in;
-    height: 500px;
-    width: 500px;
+    position: absolute;
     top: 0px;
     left: 0px;
     border-collapse: collapse;
 }
 
+.character
+{
+    position: absolute;
+    z-index: 1;
+}
+
+#shadow_character
+{
+    border-radius: 100%;
+    position: relative;
+    background-color: black;
+    filter:blur(3px) !important;
+    opacity: 0.8;
+    margin: initial !important;
+}
+
 .pieces
 {
     background-image: url(../img/piece.png);
+}
+
+.piece
+{
+    border: rgba(180,0,0,0.5) 5px groove;
+    position: relative;
+    width: 120px;
+    height: 120px;
+    overflow: hidden;
+}
+
+.selected
+{
+    filter: drop-shadow(0 0 1em yellow);
+}
+
+.guide_img
+{
+    position: absolute;
+    top: 2%;
+    left: 50%;
+    width: 600px;
+    height: 600px;
+    transform: translate(-50%, 0);
+    opacity: 0;
+    display: none;
+}
+
+.piece img
+{
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    top: 0;
+    left: 0;
+}
+
+#msgBox
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.5);
+    color: white;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+}
+
+#msgBoxInfo
+{
+    background-color: black;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    padding: 1em;
+}
+
+#msgBoxInfo *
+{
+    margin: 0.5em 0;
+}
+
+#msgBoxInfo button
+{
+    font-size: 1em;
+    width: 100%;
+}
+
+.full
+{
+    max-width: 100%;
+}
+
+#msgBoxInfo figure
+{
+    display: flex;
+    align-items: center;
+}
+
+#msgBoxInfo img
+{
+    max-width: 100px;
+}
+
+.border_red
+{
+    border: rgba(180,0,0,0.5) 5px groove;
 }
 
 .grabPieces
@@ -100,12 +212,6 @@ table
     }
 }
 
-/*td
-{
-    width: 100px;
-    height: 100px;
-}*/
-
 .doNotPass
 {
     background-image: url(../img/dontpass.png);
@@ -118,7 +224,7 @@ table
 
 .start_position_player
 {
-    background-color: steelblue;
+    background-image: url(../img/initial.png);
 }
 
 td, .start_position_player, .pieces
@@ -126,20 +232,248 @@ td, .start_position_player, .pieces
     background-size: contain;
 }
 
-
-.character
+#contentPieces .piece
 {
-    position: absolute;
-    z-index: 1;
-    width: 100px;
-    height: 100px;
-    left: 200px;
-    top: 200px;
+    display: inline-block;
 }
 
-@media only screen and (min-width: 992px)
+.nameCatch
 {
+    position: fixed;
+    left: 50%;
+    top: 5%;
+    transform: translate(-50%,0);
+    color: white;
+    font-size: 1.5em;
+    text-align: center;
+    text-shadow: 0px 0px 5px black;
+}
 
+.namePuzzle
+{
+    position: fixed;
+    left: 25%;
+    top: 5%;
+    transform: translate(-50%,0);
+    color: white;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+
+@media only screen and (max-width: 375px), screen and (max-height: 375px) and (orientation: landscape)
+{
+    header
+    {
+        display: none;
+    }
+
+    #maze, #jigsaw
+    {
+        
+        height: 300px;
+        width: 300px;
+    }
+
+    .piece
+    {
+        width: 60px;
+        height: 60px;
+    }
+
+    table
+    {
+        height: 1200px;
+        width: 1200px;
+    }
+
+    .character
+    {
+        width: 60px;
+        height: 60px;
+        left: 120px;
+        top: 120px;
+    }
+
+    #shadow_character
+    {
+        width:30px !important;
+        height: 15px !important;
+        top: 170px;
+        left: 135px;
+    }
+
+    #maze
+    {
+        filter: brightness(1.2);
+    }
+
+    .buttonTap
+    {
+        display: block;
+    }
+
+    h1
+    {
+        font-size: 1.35em;
+    }
+
+}
+
+@media only screen and (min-width: 376px) and (min-height: 376px)
+{
+    #maze
+    {
+        height: 375px;
+        width: 375px;
+    }
+
+    #jigsaw
+    {
+        height: 350px;
+        width: 350px
+    }
+
+    .piece
+    {
+        width: 75px;
+        height: 75px;
+    }
+
+    table
+    {
+        height: 1500px;
+        width: 1500px;
+    }
+
+    .character
+    {
+        width: 75px;
+        height: 75px;
+        left: 150px;
+        top: 150px;
+    }
+
+    #shadow_character
+    {
+        width:30px !important;
+        height: 10px !important;
+        top: 215px;
+        left: 175px;
+    }
+
+}
+
+@media only screen and (min-width: 421px) and (min-height: 421px)
+{
+    #maze
+    {
+        width: 420px;
+        height: 420px;
+    }
+
+    #jigsaw
+    {
+        width: 400px;
+        height: 400px;
+    }
+
+    .piece
+    {
+        width: 84px;
+        height: 84px;
+    }
+
+    table
+    {
+        height: 1680px;
+        width: 1680px;
+    }
+
+    .character
+    {
+        width: 84px;
+        height: 84px;
+        left: 168px;
+        top: 168px;
+    }
+
+    #shadow_character
+    {
+        width:30px !important;
+        height: 10px !important;
+        top: 240px;
+        left: 195px;
+    }
+}
+
+
+@media only screen and (min-width: 630px) and (min-height: 630px)
+{
+    #maze
+    {
+        width: 620px;
+        height: 620px;
+    }
+
+    #jigsaw
+    {
+        width: 600px;
+        height: 600px;
+    }
+
+    table
+    {
+        width: 2480px;
+        height: 2480px;
+    }
+
+    .character
+    {
+        width: 124px;
+        height: 124px;
+        left: 248px;
+        top: 248px;
+    }
+
+    #shadow_character
+    {
+        width:60px !important;
+        height: 20px !important;
+        top: 350px;
+        left: 280px;
+    }
+}
+
+@media only screen and (min-width: 769px) and (min-height: 769px)
+{
+    #maze
+    {
+        width: 750px;
+        height: 750px;
+    }
+
+    table
+    {
+        width:3000px;
+        height: 3000px;
+    }
+
+    .character
+    {
+        width: 150px;
+        height: 150px;
+        left: 300px;
+        top: 300px;
+    }
+
+    #shadow_character
+    {
+        width:60px !important;
+        height: 20px !important;
+        top: 420px;
+        left: 345px;
+    }
 }
 
 @media only screen and (orientation: portrait)
@@ -148,20 +482,76 @@ td, .start_position_player, .pieces
         width: 100%;
     }
 
+    .buttonTap
+    {
+        display: block;
+    }
 
+    #msgBoxInfo
+    {
+        width: 80%;
+        height: 35%;
+        background-position: center;
+    }
 }
 
-@media only screen and (max-height: 600px) and (orientation: landscape) {
-    
-    h1
+@media only screen and (orientation: landscape) and (max-width: 1023px)
+{
+    #character1, #character2
     {
-        font-size: 1.35em;
+        display: none;
     }
 
-    button
+    .app, header
     {
-        padding: 0.5em 2em;
+        width: 100%;
     }
-    
+}
 
+@media only screen and (orientation: landscape) and (max-width: 1076px)
+{
+    .buttonTap
+    {
+        display: block;
+    }
+}
+
+.blackScreen
+{
+    transition: 1s;
+    background-color: black;
+    z-index: 10;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70%;
+    height: 100%;
+}
+
+
+#texture
+{
+    background-image: url(../img/texture.gif);
+}
+
+img[alt="back"]
+{
+    z-index: 1;
+}
+
+.buttonJigsaw
+{
+    background-color: rgba(0,0,0,0.5);
+    color: white;
+    border: none;
+    border-radius: 0;
+    font-size: 1.2em;
+    padding: 1.5em;
+}
+
+.buttonJigsaw:hover
+{
+    transform: none;
+    background-color: rgba(0,0,0,0.8);
 }

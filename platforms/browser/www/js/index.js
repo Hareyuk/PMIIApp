@@ -73,6 +73,8 @@ var dataCP =
     puzzleMatrix: [],
     mapMatrix: []
 }
+var intervalAudio;
+var contVoice = 0;
 var audio = false;
 
 
@@ -94,6 +96,7 @@ var app = {
     receivedEvent: function(id) {
         console.log('Received Event: ' + id);
         //My code starts here
+        intervalAudio = setInterval(voicePlay,10000)
         document.addEventListener("click",function()
         {
             if(audio)
@@ -122,6 +125,39 @@ var app = {
         }
     }
 };
+
+function voicePlay()
+{
+    if(contVoice > 3)
+    {
+        contVoice=0;
+    }
+    var audio;
+    switch(contVoice)
+    {
+        case 0:
+            audio = document.getElementById("voiceK1");
+            audio.currentTime = 0;
+            audio.play();
+            break;
+        case 1:
+            audio = document.getElementById("voiceC1");
+            audio.currentTime = 0;
+            audio.play();
+            break;
+        case 2:
+            audio = document.getElementById("voiceK2");
+            audio.currentTime = 0;
+            audio.play();
+            break;
+        case 3:
+            audio = document.getElementById("voiceC2");
+            audio.currentTime = 0;
+            audio.play();
+            break;
+    }
+    contVoice++;
+}
 
 function playPopAudio()
 {
@@ -352,3 +388,4 @@ function credits(num)
         document.getElementById('credits').classList.add("hidden");
     }
 }
+

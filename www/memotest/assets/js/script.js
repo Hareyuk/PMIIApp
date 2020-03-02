@@ -215,19 +215,32 @@ function buildTable()
     table.innerHTML = "";
     for(i=0;i<size;i++)
     {
-        var fRow = document.createElement("tr");
         for(j=0;j<size;j++)
         {
             var dataCard = createCards(i,j,matrixGame[i][j]);
-            fRow.appendChild(dataCard);
+            table.appendChild(dataCard);
         }
-        table.appendChild(fRow);
     }
     showPoints();
 }
 
+function playTommuVoice(num)
+{
+    var audio = document.getElementById("voiceT"+ num);
+    audio.currentTime = 0;
+    audio.play();
+}
+
+function playFreyaVoice(num)
+{
+    var audio = document.getElementById("voiceF"+ num);
+    audio.currentTime = 0;
+    audio.play();
+}
+
 function createCards(a,b,objectArray) {
-    var cols = document.createElement("td");
+    var div = document.createElement("div");
+    div.classList.add("cardObject");
     var card = document.createElement("div");
     //This will have this class only wasn't found
     if(matrixGame[a][b].found == 0) card.setAttribute("class","theCard reverse");
@@ -253,13 +266,13 @@ function createCards(a,b,objectArray) {
 
     card.setAttribute("onclick", "swapIt("+a+","+b+",this)");
 
-    cols.insertAdjacentElement("beforeend", card);
+    div.insertAdjacentElement("beforeend", card);
     card.insertAdjacentElement("beforeend", front);
     card.insertAdjacentElement("beforeend", back);
     back.insertAdjacentElement("beforeend", img);
     //al parecer esto es más rápido que appendChild owo? : https://jsperf.com/insertadjacenthtml-vs-innerhtml-vs-appendchild https://stackoverflow.com/questions/16126960/what-is-the-difference-between-appendchild-insertadjacenthtml-and-innerhtml
 
-    return cols;
+    return div;
 }
 
 
@@ -302,9 +315,11 @@ function swapIt(pos1,pos2,card) {
                     if (turn ==  1) {
                         players[0].pointMT += points;
                         classAdd = "find1";
+                        playTommuVoice(1);
                     }else{
                         players[1].pointMT += points;
                         classAdd = "find2";
+                        playFreyaVoice(1);
                     }
                     matrixGame[pos1][pos2].found = turn;
                     matrixGame[posAuxI][posAuxJ].found = turn;
@@ -338,6 +353,15 @@ function swapIt(pos1,pos2,card) {
                             }else{
                                 players[1].pointMT -= 750;
                             }
+                        }
+
+                        if(turn == 1)
+                        {
+                            playTommuVoice(2);
+                        }
+                        else
+                        {
+                            playFreyaVoice(2);
                         }
                         card.classList.add("reverse");
                         cardAux.classList.add("reverse");
@@ -403,11 +427,13 @@ function winPlayer()
     {
         link += "'assets/images/win1.png')";
         p.innerHTML = "¡El jugador " + players[0].nick + " ha ganado!";
+        playTommuVoice(3);
     }
     else if(players[1].pointMT > players[0].pointMT)
     {
         link += "'assets/images/win2.png')";
         p.innerHTML = "¡El jugador " + players[1].nick + " ha ganado!";
+        playFreyaVoice(3);
     }
     else
     {

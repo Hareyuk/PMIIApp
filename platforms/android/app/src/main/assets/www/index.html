@@ -40,9 +40,8 @@
         <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
         <link rel="stylesheet" type="text/css" href="css/index.css">
         <link rel="stylesheet" type="text/css" href="css/general.css">
-        <link rel="shortcut icon" type="image/png" href="img/fav.png"/>
-        <link rel="shortcut icon" type="image/png" href="img/fav.png"/>
-        <title>Hello World</title>
+        <link rel="icon" href="img/fav.png" type="image/png">
+        <title>AD Games</title>
     </head>
     <body>
             <div id="character1">
@@ -53,8 +52,9 @@
                     <div id='shadowBox' class="hidden">
                         <form id="formPlayers" action="javascript:submitData()">
                             <div>
-                                <label class="namePlayer">Perfil del jugador 1</label>
-                                
+                                <label 
+                                class="namePlayer">Perfil del jugador 1</label>
+                                <br>
                                 <label>Nombre: </label> <input type="text" id="namePlayer1" placeholder="Ingrese su nombre" value="" disabled>
                                 
                                 <label>Apodo: </label> <input type="text" id="nickName1" placeholder="Ingrese su apodo" value="" disabled>
@@ -65,7 +65,7 @@
                             
                                 <div>
                                 <label class="namePlayer">Perfil del jugador 2</label>
-                                
+                                <br>
                                 <label>Nombre: </label> <input type="text" id="namePlayer2" placeholder="Ingrese su nombre" value="" disabled>
                                 
                                 <label>Apodo: </label> <input type="text" id="nickName2" placeholder="Ingrese su apodo" value="" disabled>
@@ -86,7 +86,7 @@
                         </div>
                         
                         <button id="editButton" class="hidden" onclick="javascript:editProfiles();">Editar perfiles</button>
-                        <button onclick="credits(0)">Mostrar Créditos</button>
+                        <button id="buttonCredits" class="hidden" onclick="credits(0)">Mostrar Créditos</button>
                         <div id="profiles" class="hidden">
                             <article id="player1">
                                     <h3>Nombre de jugador</h3>
@@ -114,11 +114,21 @@
                 <p>Memotest creado por: Axel Julian Dumas Cutuli, María Agustina Mattioli Pacheco y Micaela Belén Fernández</p>
                 <p>Atrapa puzzlez creado por: Axel Julian Dumas Cutuli</p>
                 <P>Aplicación integrada por: Axel Julian Dumas Cutuli</P>
+                <p>Música: Little Busters! & Mario Oddysey</p>
                 <p>Íconos hechos por:<a href="https://www.flaticon.es/autores/smashicons" title="Smashicons">Smashicons</a>, desde <a href="https://www.flaticon.es/"     title="Flaticon">www.flaticon.com</a></p>
                 <button onclick="credits(1)">Cerrar</button>
             </div>
         <div id="texture">
         </div>
+
+        
+        <audio id="audio" >
+            <source src="audio/menu.mp3" type="audio/mpeg">
+        </audio>
+
+        <audio id="popAudio">
+            <source src="audio/pop.mp3" type="audio/mpeg">
+        </audio>
         
 
         <script type="text/javascript" src="cordova.js"></script>

@@ -5,6 +5,11 @@
     font-style: normal;
 }
 
+html, body
+{
+    height: 100%;
+}
+
 @font-face {
     font-family: "Lato";
     src: url("../fonts/Lato-Regular.ttf");
@@ -31,12 +36,16 @@
 
 #character1
 {
-    transform: rotateY(180deg)
+    transform: rotateY(180deg);
+    left: 0;
 }
 
 .app
 {
+    width: 70%;
     background-color: rgba(255,255,255,0.6);
+    margin: 0 auto;
+    height: -webkit-fill-available;
 }
 
 body
@@ -62,7 +71,7 @@ input:not([type="submit"])
     padding: 0.2em;
 }
 
-button, input[type="submit"]{
+button, select, input[type="submit"], #cantPlay a{
     border-width: 5px;
     border-style: groove;
     border-color: brown;
@@ -88,9 +97,8 @@ button:hover{
 
 #texture
 {
-    background-image: url("../img/texture.gif");
     position: fixed;
-    height: 100vh;
+    height: -webkit-fill-available;
     width: 100vw;
     background-position: center;
     top: 0;
@@ -140,7 +148,6 @@ img[alt="back"]
         left:0;
         width: 5vh;
     }
-
 }
 
 @media only screen and (orientation: landscape) and (max-height: 600px)
@@ -158,9 +165,25 @@ img[alt="back"]
 
 @media only screen and (max-height: 600px) and (orientation: landscape) {
 
-    button
+    button, select
     {
         padding: 0.5em 2em;
     }
 
+    *
+    {
+        transition: none;
+    }
+
+}
+
+button:disabled, select:disabled
+{
+        background-color: gray;
+        border-color: #767676;
+}
+
+audio
+{
+    display: none !important;
 }

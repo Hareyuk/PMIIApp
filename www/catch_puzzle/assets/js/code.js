@@ -29,7 +29,7 @@ var puzzleMatrix=[];
 var times = {};
 var turnNumber = 0;
 var theme = document.getElementById("theme");
-theme.volume = 0.4;
+theme.volume = 0.3;
 //For pieces' selector
 var positionList = 0;
 var players;
@@ -37,6 +37,20 @@ var players;
 function startGame() {
     getData();
     loadGame();
+}
+
+function playJohanVoice(num)
+{
+    var audio = document.getElementById("voiceJ"+num);
+    audio.currentTime = 0;
+    audio.play();
+}
+
+function playLefaraVoice(num)
+{
+    var audio = document.getElementById("voiceL"+num);
+    audio.currentTime = 0;
+    audio.play();
 }
 
 function loadGame()
@@ -63,6 +77,7 @@ function loadGame()
             mapMatrix = putPieces(widthMap, heightMap, mapMatrix);
             mapMatrix = putPlayerInMaze(widthMap, heightMap, mapMatrix);
         }
+        buildButtonMob();
         generateMazeTable(widthMap, heightMap, mapMatrix);
         moveTable();
         generateCharacter(turn);
@@ -70,6 +85,42 @@ function loadGame()
     showNames();
     document.addEventListener("keydown", pressKey);
     document.addEventListener("keyup", keyUp);
+}
+
+function buildButtonMob()
+{
+    var game = document.getElementById("game");
+    for(var i = 0; i < 2; i++)
+    {
+        var buttonUp = document.createElement("button");
+        buttonUp.innerHTML = "↑";
+        buttonUp.addEventListener("click", function(){
+            movePlayer(-1,0,"up");
+        });
+        var buttonLeft = document.createElement("button");
+        buttonLeft.innerHTML = "←";
+        buttonLeft.addEventListener("click", function(){
+            movePlayer(0,-1,"left");
+        });
+        var buttonRight = document.createElement("button");
+        buttonRight.innerHTML = "→";
+        buttonRight.addEventListener("click", function(){
+            movePlayer(0,1,"right");
+        });
+        var buttonDown = document.createElement("button");
+        buttonDown.innerHTML = "↓";
+        buttonDown.addEventListener("click", function(){
+            movePlayer(1,0,"down");
+        });
+        var cont = document.createElement("div");
+        cont.id = "boxButtons"+i;
+        cont.classList.add("buttonTap");
+        cont.appendChild(buttonLeft);
+        cont.appendChild(buttonUp);
+        cont.appendChild(buttonDown);
+        cont.appendChild(buttonRight);
+        game.appendChild(cont); 
+    }
 }
 
 function showMsgBox(num, winner)
@@ -670,6 +721,14 @@ async function askFindObject(x,y)
             var td = tr.childNodes[y];
             td.classList.remove('pieces');
             td.classList.add('passThrough');
+            if(turn == "johan")
+            {
+                playJohanVoice(1);
+            }
+            else
+            {
+                playLefaraVoice(1);
+            }
             grabPiece();
        }, 200);
             
@@ -1064,10 +1123,12 @@ function selectPiece(img2Selected)
                 if(players[0].pointCP < players[1].pointCP)
                 {
                     alert(players[0].nick + " ha ganado!");
+                    playJohanVoice(2);
                 }
                 else if(players[0].pointCP > players[1].pointCP)
                 {
                     alert(players[1].nick + " ha ganado!");
+                    playLefaraVoice(2);
                 }
                 else
                 {

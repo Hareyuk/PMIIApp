@@ -131,7 +131,7 @@ img:active[alt="mark O"]
     background-color: rgba(255,255,255,0.6);
     width: 70%;
     margin: 0 auto;
-    height: 90vh !important;
+    height: -webkit-fill-available;
 }
 
 #game{
@@ -174,7 +174,7 @@ td
 }
 
 #msgBox p{
-    font-size: 1.1em;
+    font-size: 1em;
     margin: 0.3em 0;
 }
 
@@ -311,6 +311,14 @@ span{
     font-weight: bold;
 }
 
+@media only screen and (orientation:landscape)
+{
+    .app
+    {
+        height: 90vh !important;
+    }
+}
+
 @media only screen and (orientation: portrait)
 {
     button
@@ -342,7 +350,7 @@ span{
     header
     {
         width: 100%;
-        height: 5vh;
+        height: 8vh;
     }
     .app{
         width: 100vw;
@@ -380,10 +388,13 @@ span{
         width: 100%;
     }
 
-    .app
+    #winner div
     {
-        height: 90vh !important;
+        height: 80%;
+        width: 80%;
     }
+
+
 }
 
 @media only screen and (max-height: 600px) and (orientation: landscape) {
@@ -393,16 +404,10 @@ span{
         font-size: 1.5em;
     }
 
-    #winner div
-    {
-        height: 80%;
-        width: 80%;
-    }
-
     .app
     {
-        height: 80vh;
         padding-top: 10vh;
+        height: 80vh !important;
     }
 
     header

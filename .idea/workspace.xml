@@ -11,7 +11,7 @@
   <component name="DefaultGradleProjectSettings">
     <option name="isMigrated" value="true" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="Pixel_2_API_29" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="Pixel_XL_API_28" />
   <component name="FileEditorManager">
     <leaf />
   </component>
@@ -36,8 +36,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -54,6 +52,8 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -119,10 +119,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
       <window_info id="Captures" order="0" weight="0.25" />
-      <window_info active="true" id="Project" order="1" visible="true" weight="0.21949404" />
+      <window_info active="true" id="Project" order="1" visible="true" weight="0.21917808" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Image Layers" order="3" />
       <window_info id="Designer" order="4" />

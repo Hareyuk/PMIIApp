@@ -70,6 +70,11 @@ table {
     background-color: rgba(255,255,255,0.6);
 }
 
+#texture
+{
+    background-image: url(../img/texture.gif);
+}
+
 #character1
 {
     background-image: url('../img/kylian.png');
@@ -83,7 +88,7 @@ table {
     transform: translate(-100%,0);
 }
 
-.cordova-camera-capture, .cordova-camera-select
+.cordova-camera-capture
 {
     background-color: rgba(255,255,255,0.6);
     padding: 2em;
@@ -95,6 +100,12 @@ table {
     flex-wrap: wrap;
     justify-content: center;
 }
+
+.cordova-camera-capture button
+{
+    width: 100%;
+}
+
 
 .playerName
 {
@@ -194,6 +205,14 @@ h1
     left: 50%;
     transform: translate(-50%,-50%);
     background-color: rgba(0,0,0,0.8);
+}
+
+#profiles img, #formPlayers img
+{
+    max-width: 100px;
+    max-height: 100px;
+    display: block;
+    margin: 0.2em auto 1em !important;
 }
 
 #player2
@@ -300,9 +319,9 @@ h1
         margin-top: 1em;
     }
 
-    *:hover
+    *
     {
-        transform: scale(1);
+        transition: none !important;
     }
 }
 
@@ -313,6 +332,11 @@ h1
         width: 100%;
     }
 
+    #credits
+    {
+        font-size: 1.1em;
+    }
+
     #character1, #character2
     {
         width:0;
@@ -320,20 +344,13 @@ h1
 
     #shadowBox
     {
+        width: 85%;
         top: 5%;
         position: absolute;
         padding: 1em 2em;
         transform: translate(-50%,0);
     }
-
-    *:hover
-    {
-        transform: scale(1);
-    }
-}
-
-@media only screen and (max-height: 600px) and (orientation: landscape) {
-
+    
     #profiles img
     {
         width: 80px;
@@ -368,4 +385,12 @@ h1
         padding: 0.5em 2em !important;
     }
 
+}
+
+@media only screen and (orientation: landscape) and (max-height: 800px)
+{
+    *
+    {
+        transition: none !important;
+    }
 }

@@ -44,8 +44,6 @@ var dataTTT =
 {
     dataSaved: false,
     board: [],
-    player1ID: 0,
-    player2ID: 1,
     turnPlayer: 0,
     canClick: true,
     gameClean: false,
@@ -58,8 +56,6 @@ var dataMT =
     dataSaved: false,
     size: 0,
     matrix: [],
-    player1ID: 0,
-    player2ID: 1,
     pairsFound: 0,
     turnPlayer: 0,
 }
@@ -67,13 +63,17 @@ var dataMT =
 var dataCP =
 {
     dataSaved: false,
-    player1Points: 0,
-    player2Points: 1,
-    mapMatrix: [],
+    finishedSearch: false,
+    dataPuzzle: false,
     posPlayer: {},
-    times: [],
-    turn: 0,
+    turn: "johan",
+    arrayPieces: [],
+    numberImage: null,
+    lastImage: null,
+    puzzleMatrix: [],
+    mapMatrix: []
 }
+var audio = false;
 
 
 var app = {
@@ -94,6 +94,19 @@ var app = {
     receivedEvent: function(id) {
         console.log('Received Event: ' + id);
         //My code starts here
+        document.addEventListener("click",function()
+        {
+            if(audio)
+            {
+                var theme = document.getElementById("audio");
+                theme.play()
+                theme.volume = 0.4;
+            }
+            else
+            {
+                audio = true;
+            }
+        })
         if(localStorage.length > 0)
         {
             loadData();
@@ -110,6 +123,13 @@ var app = {
     }
 };
 
+function playPopAudio()
+{
+    var audio = document.getElementById("popAudio");
+    audio.currentTime = 0;
+    audio.play();
+}
+
 app.initialize();
 
 function showGames()
@@ -124,61 +144,27 @@ function loadInputs()
     document.getElementById("shadowBox").classList.remove('hidden');
     document.getElementById("sendData").disabled = false;
     var btn1 = document.getElementById('takePicture1');
-    btn1.setAttribute("formaction", "javascript:whichPicture(1)");
+    btn1.setAttribute("formaction", "javascript:takePicture(1)");
     document.getElementById("takePicture1").disabled = false;
     document.getElementById("namePlayer1").disabled = false;
     document.getElementById("nickName1").disabled = false;
     var btn2 = document.getElementById('takePicture2');
-    btn2.setAttribute("formaction", "javascript:whichPicture(2)");
+    btn2.setAttribute("formaction", "javascript:takePicture(2)");
     document.getElementById("takePicture2").disabled = false;
     document.getElementById("namePlayer2").disabled = false;
     document.getElementById("nickName2").disabled = false;
 }
 
-function whichPicture(num)
-{
-    var div = document.createElement('div');
-    div.id = "whichPicture";
-    var button = document.createElement('button');
-    button.addEventListener("click", function(){takePicture(num,0)})
-    button.innerHTML= "Sacar foto con cámara";
-    div.appendChild(button);
-    button = document.createElement("button");
-    button.addEventListener("click", function(){takePicture(num,1)})
-    button.innerHTML = "Subir de mi dispositivo";
-    div.appendChild(button);
-    document.body.appendChild(div);
-}
-
-function takePicture(num, option)
+function takePicture(num)
 {  
-    document.getElementById('whichPicture').remove();
-    if(option==0)
-    {
-        navigator.camera.getPicture(onSuccess, onFail, { 
-            quality: 30,
-            mediaType: Camera.MediaType.PICTURE,
-            destinationType: Camera.DestinationType.DATA_URL,
-            targetHeight: 100,
-            targetWidth: 100,   
-            correctOrientation: true,
-            allowEdit: false
-        });
-    }
-    else
-    {
-        navigator.camera.getPicture(onSuccess, onFail, { 
-            quality: 30,
-            mediaType: Camera.MediaType.PICTURE,
-            destinationType: Camera.DestinationType.DATA_URL,
-            targetHeight: 100,
-            targetWidth: 100,   
-            correctOrientation: true,
-            allowEdit: true,
-            sourceType:Camera.PictureSourceType.PHOTOLIBRARY
-            
-        });
-    }
+
+    navigator.camera.getPicture(onSuccess, onFail, { 
+        quality: 30,
+        mediaType: Camera.MediaType.PICTURE,
+        destinationType: Camera.DestinationType.DATA_URL,
+        correctOrientation: true,
+        allowEdit: false
+    });
     
     function onSuccess(imageData) {
         var image = document.getElementById('myImage' + num);
@@ -188,7 +174,12 @@ function takePicture(num, option)
     }
     
     function onFail(message) {
-        alert('Failed because: ' + message);
+        //alert('Failed because: ' + message);
+        alert('Ha habido algún problema con la cámara, código de error: ' + message + '\nSe utilizará una imagen provisional.');
+        var image = document.getElementById('myImage' + num);
+        image.classList.remove("hidden");
+        image.alt = "Photo";
+        image.src = "img/profile"+num+".png";
     }
 }
 
@@ -326,8 +317,8 @@ function showInfo()
         pPl.innerHTML += "<br>Puntaje de tateti: "+players[(i-1)].pointTTT; 
         pPl.innerHTML += " <br>Puntaje de memotest: " + players[(i-1)].pointMT;
         pPl.innerHTML += "<br>Puntaje de Atrapa puzzles: " + players[(i-1)].pointCP;
-
     }
+    document.getElementById('buttonCredits').classList.remove('hidden');
 }
 
 function hideInfo()

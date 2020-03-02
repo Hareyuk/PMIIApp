@@ -65,7 +65,7 @@ table {
 {
     text-align: center;
     width: 70%;
-    min-height: 100vh;
+    min-height: 100%;
     margin: 0 auto;
     background-color: rgba(255,255,255,0.6);
 }
@@ -319,9 +319,9 @@ h1
         margin-top: 1em;
     }
 
-    *:hover
+    *
     {
-        transform: scale(1);
+        transition: none !important;
     }
 }
 
@@ -330,12 +330,6 @@ h1
     
     .app{
         width: 100%;
-        height: auto !important;
-    }
-
-    #profiles img
-    {
-        
     }
 
     #credits
@@ -356,15 +350,7 @@ h1
         padding: 1em 2em;
         transform: translate(-50%,0);
     }
-
-    *:hover
-    {
-        transform: scale(1);
-    }
-}
-
-@media only screen and (max-height: 600px) and (orientation: landscape) {
-
+    
     #profiles img
     {
         width: 80px;
@@ -399,4 +385,12 @@ h1
         padding: 0.5em 2em !important;
     }
 
+}
+
+@media only screen and (orientation: landscape) and (max-height: 800px)
+{
+    *
+    {
+        transition: none !important;
+    }
 }

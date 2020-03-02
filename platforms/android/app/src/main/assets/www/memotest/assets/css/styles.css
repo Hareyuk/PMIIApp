@@ -7,6 +7,10 @@ p, #turnos{
     height: 1.5rem;
 }
 
+#texture
+{
+    background-image: url(../images/texture.gif);
+}
 
 #game
 {
@@ -18,6 +22,20 @@ p, #turnos{
     left: 15%;
 }
 
+header
+{
+    height: 5vh;
+    text-align: center;
+    width: 70%;
+    background-color: rgba(255,255,255,0.6);
+    position: relative;
+    left: 15%;
+}
+
+select
+{
+    margin-top: 5em;
+}
 
 table{
     border-collapse: collapse;
@@ -32,7 +50,7 @@ tbody{
     flex-wrap: wrap;
 }
 
-td{
+.cardObject{
     border: none;
     padding: 5px 0px;
     text-align: center;
@@ -40,32 +58,105 @@ td{
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
-    width: 100px;
+    width: 120px;
 }
 
 .theCard{
     overflow: visible;
-    border-radius: 0.5em;
-    border: 0.2em black solid;
-    width: 70px;
-    height: 110px;
+    width: 80px;
+    height: 127px;
     transform-style: preserve-3d;
     -webkit-transition: all 0.7s ease-in-out;
     -webkit-transform-style: preserve-3d;    /* Safari 4-8 */
     transition: all 0.7s ease-in-out;
-    box-shadow: rgba(12, 12, 12, 0.13) 3px 3px 3px;
 }
     
 .theFront, .theBack{
-    width: 70px;
-    height: 110px;
+    width: 80px;
+    height: 127px;
 }
 
 .theFront{
     background-image:url(../images/reverse.png);
     background-size: contain;
     backface-visibility: hidden;
+}
+
+.find1 .theBack
+{
+    -webkit-box-shadow: 0px 0px 1px rgba(68, 0, 102, 0.83);
+    -moz-box-shadow: 0px 0px 1px rgba(68, 0, 102, 0.83);
+    box-shadow: 0px 0px 9px 1px rgba(68, 0, 102, 0.83);
+}
+
+.find2 .theBack
+{
+    -webkit-box-shadow: 0px 0px 9px 1px rgb(0, 255, 90);   
+    -moz-box-shadow: 0px 0px 9px 1px rgb(0, 255, 90);  
+    box-shadow: 0px 0px 9px 1px rgb(0, 255, 90);
+}
+
+#msgBox,  #messageWinner
+{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    color: white;
+    z-index: 10;
+    background-color: rgba(0,0,0,0.5);
+}
+
+#msgBox div, #messageWinner div
+{
+    position: absolute;
+    padding: 2em;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0,0,0,0.5);
+}
+
+#messageWinner div
+{
+    width: 50%;
+    height: 50%;
+    background-size: cover;
+    background-position: center;
+    padding: 0;
+}
+
+#messageWinner button
+{
+    position: absolute;
+    bottom: 4em;
+    width: 90%;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+#pWinner
+{
+    font-size: 2.5em;
+    text-align: center;
+    filter: drop-shadow(0px 0px 2px black);
+}
+
+#msgBox p
+{
+    font-size: 1.5em;
+    text-align: center;
+}
+
+#msgBox button
+{
+    width: 50%;
+    font-size: 1em;
+    margin: 2em auto;
+    display: block;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
 }
 
 .theBack{
@@ -83,25 +174,7 @@ td{
 }
 
 .theBack img{
-    max-width: 90%;
-}
-
-/*td img[alt="reverse"]:hover
-{
-    transition: 0.2s ease-in-out;
-    transform: rotateY(-45deg);
-}*/
-
-.find1
-{
-    /* filter: invert(1); */
-    border-color: rgb(255, 78, 101);
-}
-
-.find2
-{
-    /* filter: sepia(1); */
-    border-color: rgb(55, 75, 255);
+    max-width: 100%;
 }
 
 #character1
@@ -117,6 +190,22 @@ td{
     background-image: url('../images/freya.png');
 }
 
+.app
+{
+    min-height: 95vh;
+}
+
+#cantPlay
+{
+    display: none;
+}
+
+#info
+{
+    text-align: center;
+    font-size: 1.1em;
+}
+
 @media only screen and (orientation: portrait)
 {
     #character1, #character2
@@ -128,9 +217,26 @@ td{
         width: 100%;
     }
 
+    header
+    {
+        left: 0;
+        width: 100%;
+    }
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 800px) and (orientation:portrait) {
+    select
+    {
+        margin-top: 1em;
+    }
+
+    .cardObject
+    {
+        width: 130px;
+    }
+}
+
+@media only screen and (max-width: 600px) and (orientation:portrait) {
     #games, #profiles
     {
         width: 100%;
@@ -141,10 +247,65 @@ td{
         width:0;
     }
 
+    .app
+    {
+        display: none;
+    }
+
+    #cantPlay
+    {
+        display: flex;
+        align-items: center;
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: rgba(0,0,0,0.8);
+        width: 100%;
+        height: 100%;
+        color: white;
+    }
+
+    #cantPlay p
+    {
+        text-align: center;
+        width: 80%;
+        margin-top: 2em;
+        margin: 0 auto;
+        font-size: 1.2em;
+    }  
+    
+    #cantPlay a
+    {
+        display: block;
+        text-align: center;
+        text-decoration: none;
+        width: 80%;
+        margin: 0 auto;
+        margin-top: 5em;
+        font-size: 1.2em;
+    }
 }
 
-@media only screen and (max-height: 600px) and (orientation: landscape) {
+@media only screen and (max-height: 800px) and (orientation: landscape) {
+
+    select
+    {
+        margin-top: 1em;
+    }
     
+    .theFront, .theBack, .theCard
+    {
+        width: 70px;
+        height: 110px;
+    }
+
+    .cardObject
+    {
+        width: 79px;
+        padding: 1em 0px;
+    }
+
     #games a
     {
         font-size: 1em;
@@ -167,4 +328,35 @@ td{
         padding-bottom: 0.5em;
     }
 
+}
+
+@media only screen and (max-height: 600px) and (orientation: landscape) {
+    #info
+    {
+        position: absolute;
+        top: 0;
+        left: 100%;
+        transform: translate(-100%,0);
+        width: 60%;
+    }
+
+    .cardObject
+    {
+        width: 75px;
+        padding: 5px 0px;
+    }
+
+    header
+    {
+        left: 0;
+        width: 100%;
+        text-align: left;
+    }
+
+    h1
+    {
+        position: relative;
+        left: 7%;
+        display: inline;
+    }
 }

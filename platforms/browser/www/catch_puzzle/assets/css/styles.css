@@ -4,6 +4,11 @@
     margin: 0;
 }
 
+main
+{
+    height: 95% !important;
+}
+
 #character1
 {
     background-image: url('../img/johan.png');
@@ -260,17 +265,138 @@ td, .start_position_player, .pieces
     text-align: center;
 }
 
+h1
+{
+    text-align: center;
+    display: inline;
+    position: absolute;
+    left: 80%;
+    top: 0;
+}
+
+.buttonTap
+{
+    display: none;
+    z-index: 1;
+    position: fixed;
+}
+
+.buttonTap button
+{
+    background-color: rgba(255,0,0,0.5);
+    color: black;
+    font-size: 1em;
+    font-weight: bolder;
+    font-family: fantasy;
+    padding: 15px;
+    border: rgba(180,0,0,0.8) 3px groove;
+}
+
+.buttonTap button:hover
+{
+    transform: none;
+}
+
+.buttonTap button:nth-child(1), .buttonTap button:nth-child(4)
+{
+    transform: translate(0,-50%);
+}
+
+.buttonTap button:nth-child(2)
+{
+    position: absolute;
+    left: 33%;
+    top: -100%;
+}
+
+.buttonTap button:nth-child(2), .buttonTap button:nth-child(3)
+{
+    padding: 15px 20px;
+}
+
+.app
+{
+    height: 100% !important;
+}
+@media only screen and (max-width: 800px) and (orientation: portrait), screen and (max-height: 800px) and (orientation: landscape)
+{
+    .buttonTap
+    {
+        display: flex;
+    }
+
+    .app
+    {
+        height: 100%;
+    }
+}
+
+@media only screen and (max-height: 600px) and (orientation: landscape)
+{
+    #boxButtons0
+    {
+        left: 1%;
+        transform: translate(0, -100%);
+    }
+
+    #boxButtons1
+    {
+        left: 99%;
+        transform: translate(-100%, -100%);
+    }
+}
+
+@media only screen and (max-width: 600px) and (orientation: portrait)
+{
+
+}
+
+@media only screen and (max-width: 800px) and (orientation: portrait)
+{
+    
+}
+
+
+@media only screen and (max-height: 800px) and (orientation: landscape)
+{
+    .nameCatch 
+    {
+        color: black;
+        text-shadow: none;
+        left: 10%;
+        top: 10%;
+    }
+}
+
+@media only screen and (orientation: portrait)
+{
+    .app, header{
+        width: 100%;
+    }
+
+    .buttonTap
+    {
+        display: block;
+    }
+
+    #msgBoxInfo
+    {
+        width: 80%;
+        background-position: center;
+    }
+
+    .win
+    {
+        height: 35%;
+    }
+}
+
 
 @media only screen and (max-width: 375px), screen and (max-height: 375px) and (orientation: landscape)
 {
     header
     {
         display: none;
-    }
-
-    .app
-    {
-        height: 100vh !important;
     }
 
     #maze, #jigsaw
@@ -311,11 +437,6 @@ td, .start_position_player, .pieces
     #maze
     {
         filter: brightness(1.2);
-    }
-
-    .buttonTap
-    {
-        display: block;
     }
 
     h1
@@ -481,24 +602,6 @@ td, .start_position_player, .pieces
     }
 }
 
-@media only screen and (orientation: portrait)
-{
-    .app, header{
-        width: 100%;
-    }
-
-    .buttonTap
-    {
-        display: block;
-    }
-
-    #msgBoxInfo
-    {
-        width: 80%;
-        height: 35%;
-        background-position: center;
-    }
-}
 
 @media only screen and (orientation: landscape) and (max-width: 1023px)
 {
@@ -510,14 +613,6 @@ td, .start_position_player, .pieces
     .app, header
     {
         width: 100%;
-    }
-}
-
-@media only screen and (orientation: landscape) and (max-width: 1076px)
-{
-    .buttonTap
-    {
-        display: block;
     }
 }
 

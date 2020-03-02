@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" media="screen" href="assets/css/styles.css">
     <link rel="stylesheet" media="screen" href="../css/general.css">
-    <link rel="shortcut icon" type="image/png" href="../img/fav.png"/>
+    <link rel="stylesheet" media="screen" href="assets/css/styles.css">
     <link rel="shortcut icon" type="image/png" href="../img/fav.png"/>
     <title>Memotest</title>
 </head>
@@ -17,25 +16,45 @@
         <div id="character1">
         </div>
         <div id="character2"></div>
-            <div id="game">
-            <a href="../index.html"><a href="../index.html"><img src="../img/back.svg" alt="back"></a></a>
-            <select id='rowsAndCols' onchange='selectTable()'>
-                <option value="none" selected disabled hidden>Seleccionar</option>
-                <option value="4">4x4</option>
-                <option value="5">5x5</option>
-                <option value="6">6x6</option>
-            </select>
-            <div id="turnos"></div>
-            <p id="point1"></p>
-            <p id="point2"></p>
-            <table>
+        <div id="messageWinner" class="hidden">
+            <div id="winBackground">
+                <p id="pWinner"></p>
+                <button onclick="closeMsgBox('messageWinner');">Aceptar</button>
+            </div>
+        </div>
+        <div id="msgBox" class="hidden">
+            <div>
+                <p>¿Estás seguro que deseas reiniciar?</p>
+                <button onclick="restartGame();">Sí</button>
+                <button onclick="closeMsgBox('msgBox');">No</button>
+            </div>
+        </div>
+            <div class="app">
+                <a href="../index.html"><img src="../img/back.svg" alt="back"></a></a>
+                <select id='rowsAndCols' onchange='selectTable()'>
+                    <option value="none" selected disabled hidden>Seleccionar</option>
+                    <option value="4">4x4</option>
+                    <option value="5">5x5</option>
+                    <option value="6">6x6</option>
+                </select>
+                <button id="restart" onclick="showMessageBox('msgBox')" disabled>Reiniciar</button>
+                <div id="info" class="info">
+                    <div id="turnos"></div>
+                    <p id="point1"></p>
+                    <p id="point2"></p>
+                </div>
+                <table>
                 <tbody id='memo'></tbody>
                 <!--JS-->
             </table>
         </div>
         <div id="texture"></div>
+        <div id="cantPlay"><p>Sólo se puede jugar al memotest con el dispositivo en horizontal. Gire su dispositivo o regrese.</p><a href="../index.html">Regresar</a></div>
     </main>
     <footer>
+        <audio loop autoplay id="theme">
+            <source src="assets/audio/memotest.mp3" type="audio/mpeg">
+        </audio>
     </footer>
     <script src="assets/js/script.js"></script>
 </body>

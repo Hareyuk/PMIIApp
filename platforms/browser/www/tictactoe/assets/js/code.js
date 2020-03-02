@@ -191,6 +191,20 @@ function playPopAudio()
     audio.play();
 }
 
+function playVoltVoice()
+{
+    var audio = document.getElementById("voiceV");
+    audio.currentTime = 0;
+    audio.play();
+}
+
+function playNinaVoice()
+{
+    var audio = document.getElementById("voiceN");
+    audio.currentTime = 0;
+    audio.play();
+}
+
 function restartGame(num)
 {
     playPopAudio();
@@ -358,12 +372,14 @@ function validateWin()
             //LOCALSTORAGE: Podríamos meter aquí los localStorage de victorias de jugadores
             winPl1++;
             imgPlayerWin = "url('assets/images/win_x.jpg')";
+            playVoltVoice();
         }
         else
         {
             winPl2++;
             imgPlayerWin = "url('assets/images/win_o.jpg')";
             changePlayer();
+            playNinaVoice();
         }
         $("#handPlayer").remove();
         noOneIsClickable();
