@@ -3,6 +3,11 @@
     margin: 0;
 }
 
+main
+{
+    height: 95% !important;
+}
+
 p, #turnos{
     height: 1.5rem;
 }
@@ -192,7 +197,7 @@ tbody{
 
 .app
 {
-    min-height: 95vh;
+    min-height: 100%;
 }
 
 #cantPlay

@@ -269,9 +269,6 @@ h1
 {
     text-align: center;
     display: inline;
-    position: absolute;
-    left: 80%;
-    top: 0;
 }
 
 .buttonTap
@@ -401,6 +398,14 @@ h1
     }
 }
 
+#contentPieces
+{
+    display: flex;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%,10%);
+}
+
 
 @media only screen and (max-width: 800px) and (orientation: portrait), screen and (max-height: 800px) and (orientation: landscape)
 {
@@ -428,6 +433,29 @@ h1
         left: 99%;
         transform: translate(-100%, -100%);
     }
+
+    #msgBoxInfo
+    {
+        
+        width: 80%;
+    }
+
+    #msgBoxInfo img
+    {
+        max-width: 65px;
+    }
+
+    main
+    {
+        height: 100% !important;
+    }
+
+    .nameCatch
+    {
+        top: 10%;
+        left: 15%;
+        color: black !important;
+    }
 }
 
 @media only screen and (max-width: 600px) and (orientation: portrait)
@@ -437,7 +465,11 @@ h1
 
 @media only screen and (max-width: 800px) and (orientation: portrait)
 {
-    
+    .nameCatch
+    {
+        left: 50%;
+        top: 75%;
+    }   
 }
 
 
@@ -447,9 +479,11 @@ h1
     {
         color: black;
         text-shadow: none;
-        left: 10%;
-        top: 10%;
+        left: 50%;
+        top: 4%;
+        color: white;
     }
+
 }
 
 @media only screen and (orientation: portrait)
@@ -473,6 +507,7 @@ h1
     {
         height: 35%;
     }
+
 }
 
 

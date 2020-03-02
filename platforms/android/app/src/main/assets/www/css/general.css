@@ -5,7 +5,7 @@
     font-style: normal;
 }
 
-html, body
+html, body, main
 {
     height: 100%;
 }
@@ -45,7 +45,6 @@ html, body
     width: 70%;
     background-color: rgba(255,255,255,0.6);
     margin: 0 auto;
-    height: -webkit-fill-available;
 }
 
 body

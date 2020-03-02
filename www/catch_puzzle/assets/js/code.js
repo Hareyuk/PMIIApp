@@ -96,10 +96,10 @@ function loadGame()
             mapMatrix = putPieces(widthMap, heightMap, mapMatrix);
             mapMatrix = putPlayerInMaze(widthMap, heightMap, mapMatrix);
         }
-        buildButtonMob();
         generateMazeTable(widthMap, heightMap, mapMatrix);
         moveTable();
         generateCharacter(turn);
+        buildButtonMob();
     }
     showNames();
     document.addEventListener("keydown", pressKey);
@@ -210,6 +210,7 @@ function showMsgBox(num, winner)
         case 2:
             var p = document.createElement("p");
             p.innerHTML = "¡Ya terminó tu turno, " + players[0].nick +"!<br>¡Es ahora turno del " + players[1].nick + "!";
+            div.appendChild(p);
             break;
         case 3:
             //victory
@@ -821,6 +822,7 @@ function stillSeekingPieces(w,h,m)
 
 function startJigsaw(newJigsaw)
 {
+
     showMsgBox(1);
     gameData.dataPuzzle = true;
     if(newJigsaw == 1)
@@ -951,6 +953,8 @@ function blackScreen()
     }, 100);
     setTimeout(() => {
         document.querySelector("#maze").remove();
+        document.getElementById("boxButtons0").remove();
+        document.getElementById("boxButtons1").remove();
         startJigsaw(1);
         div.style.opacity = '0';
         finishedSearch = true;
@@ -965,7 +969,6 @@ function buildMenuPieces()
 {
     var content = document.createElement("div");
     content.id = "contentPieces";
-    
     var button = document.createElement("button");
     button.addEventListener("click", function() {  changeMenuPieces(-1); });
     button.innerHTML = "<";

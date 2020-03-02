@@ -29,14 +29,40 @@ var puzzleMatrix=[];
 var times = {};
 var turnNumber = 0;
 var theme = document.getElementById("theme");
-theme.volume = 0.4;
+theme.volume = 0.3;
 //For pieces' selector
 var positionList = 0;
 var players;
+var intervalTimer;
 
 function startGame() {
     getData();
     loadGame();
+}
+
+//Extracted from p5 formula1
+function  formatTimeInMins(time)
+{
+    //I get minutes
+    let m = Math.floor(time/ 60);
+    //I get seconds
+    let s = Math.floor(time%60);
+    //I return the text  "XXmXX.XXXs" (X = some number unknown)
+    return ("" + m).padStart(2, "0") + "m" + ("" + s).padStart(2, "0") + "s";
+}
+
+function playJohanVoice(num)
+{
+    var audio = document.getElementById("voiceJ"+num);
+    audio.currentTime = 0;
+    audio.play();
+}
+
+function playLefaraVoice(num)
+{
+    var audio = document.getElementById("voiceL"+num);
+    audio.currentTime = 0;
+    audio.play();
 }
 
 function loadGame()
@@ -55,7 +81,14 @@ function loadGame()
     }
     else
     {
-        showMsgBox(0);
+        if(turn == "johan")
+        {
+            showMsgBox(0);
+        }
+        else
+        {
+            showMsgBox(2);
+        }
         if(!gameData.dataSaved)
         {
             mapMatrix = generateMatrix(widthMap, heightMap, mapMatrix);
@@ -66,10 +99,47 @@ function loadGame()
         generateMazeTable(widthMap, heightMap, mapMatrix);
         moveTable();
         generateCharacter(turn);
+        buildButtonMob();
     }
     showNames();
     document.addEventListener("keydown", pressKey);
     document.addEventListener("keyup", keyUp);
+}
+
+function buildButtonMob()
+{
+    var game = document.getElementById("game");
+    for(var i = 0; i < 2; i++)
+    {
+        var buttonUp = document.createElement("button");
+        buttonUp.innerHTML = "↑";
+        buttonUp.addEventListener("click", function(){
+            movePlayer(-1,0,"up");
+        });
+        var buttonLeft = document.createElement("button");
+        buttonLeft.innerHTML = "←";
+        buttonLeft.addEventListener("click", function(){
+            movePlayer(0,-1,"left");
+        });
+        var buttonRight = document.createElement("button");
+        buttonRight.innerHTML = "→";
+        buttonRight.addEventListener("click", function(){
+            movePlayer(0,1,"right");
+        });
+        var buttonDown = document.createElement("button");
+        buttonDown.innerHTML = "↓";
+        buttonDown.addEventListener("click", function(){
+            movePlayer(1,0,"down");
+        });
+        var cont = document.createElement("div");
+        cont.id = "boxButtons"+i;
+        cont.classList.add("buttonTap");
+        cont.appendChild(buttonLeft);
+        cont.appendChild(buttonUp);
+        cont.appendChild(buttonDown);
+        cont.appendChild(buttonRight);
+        game.appendChild(cont); 
+    }
 }
 
 function showMsgBox(num, winner)
@@ -100,7 +170,7 @@ function showMsgBox(num, winner)
             figure2.appendChild(img2);
             figure2.appendChild(figcaption2);
             var p = document.createElement("p");
-            p.innerHTML ="¡El objetivo del juego es conseguir todas las piezas!<br>En dispositivo táctil te mueves presionando los círculos que verás alrededor. ¡En computadora presioná las teclas!"
+            p.innerHTML ="¡El objetivo del juego es conseguir todas las piezas!<br>En dispositivo táctil te mueves presionando los círculos que verás alrededor. ¡En computadora presioná las teclas!<br>¿Cómo ganar? ¡Hazlo más rápido que tu rival!"
             div.appendChild(figure);
             div.appendChild(figure2);
             div.appendChild(p);
@@ -138,32 +208,44 @@ function showMsgBox(num, winner)
             div.appendChild(figure3);
             break;
         case 2:
-            //change player
+            var p = document.createElement("p");
+            p.innerHTML = "¡Ya terminó tu turno, " + players[0].nick +"!<br>¡Es ahora turno del " + players[1].nick + "!";
+            div.appendChild(p);
             break;
         case 3:
             //victory
-            break;
-        case 4:
-            //is going to restart
-            txt = "Reiniciar juego";
             break;
     }
 
     var button = document.createElement("button");
     button.innerHTML = txt;
     button.addEventListener("click", function(){ 
-        closeMsgBox();
+        closeMsgBox(num);
     });
     div.appendChild(button);
 }
 
-function closeMsgBox()
+function closeMsgBox(num)
 {
     var msgBox = document.getElementById("msgBox");
     var div = document.getElementById("msgBoxInfo");
     msgBox.classList.add("hidden");
     div.classList.remove("border-red");
     div.innerHTML = "";
+    if(num < 3)
+    {
+        intervalTimer = setInterval(function(){
+            if(turn == "johan")
+            {
+                players[0].pointCP++;   
+            }
+            else
+            {
+                players[1].pointCP++;
+            }
+            saveData();
+        });
+    }
 }
 
 function showNames()
@@ -625,6 +707,7 @@ function saveData() {
     gameData.lastImage = lastImage;
     gameData.finishedSearch = finishedSearch;
     localStorage.setItem("dataCP", JSON.stringify(gameData));
+    localStorage.setItem("players",JSON.stringify(players));
 }
 
 
@@ -670,6 +753,14 @@ async function askFindObject(x,y)
             var td = tr.childNodes[y];
             td.classList.remove('pieces');
             td.classList.add('passThrough');
+            if(turn == "johan")
+            {
+                playJohanVoice(1);
+            }
+            else
+            {
+                playLefaraVoice(1);
+            }
             grabPiece();
        }, 200);
             
@@ -731,6 +822,7 @@ function stillSeekingPieces(w,h,m)
 
 function startJigsaw(newJigsaw)
 {
+
     showMsgBox(1);
     gameData.dataPuzzle = true;
     if(newJigsaw == 1)
@@ -803,11 +895,14 @@ function buildTableJigsaw(m)
         table.appendChild(tr);
     }
     document.getElementById('game').appendChild(table);
+    var div = document.createElement("div");
+    div.id = "card";
     var img = document.createElement("img");
-    img.src = 'assets/img/'+numberImage+'/full.png';
+    img.src = 'assets/img/'+numberImage+'/card.png';
     img.draggable = false;
-    img.classList.add("guide_img");
-    document.getElementById('game').appendChild(img);
+    div.classList.add("hidden");
+    div.appendChild(img);
+    document.getElementById('game').appendChild(div);
 }
 
 function generateArrayPieces()
@@ -858,6 +953,8 @@ function blackScreen()
     }, 100);
     setTimeout(() => {
         document.querySelector("#maze").remove();
+        document.getElementById("boxButtons0").remove();
+        document.getElementById("boxButtons1").remove();
         startJigsaw(1);
         div.style.opacity = '0';
         finishedSearch = true;
@@ -872,7 +969,6 @@ function buildMenuPieces()
 {
     var content = document.createElement("div");
     content.id = "contentPieces";
-    
     var button = document.createElement("button");
     button.addEventListener("click", function() {  changeMenuPieces(-1); });
     button.innerHTML = "<";
@@ -1050,38 +1146,49 @@ function selectPiece(img2Selected)
         {
             gameData.dataPuzzle = false;
             gameData.dataSaved = false;
-            stillSeekingPieces = false;
-            alert('Won!');
+            finishedSearch = false;
             if(turn == "johan")
             {
-                turn = "lefara";
-                document.getElementById("game").innerHTML = null;
-                loadGame();
+                clearInterval(intervalTimer);
+                animationCardResolved();
+                setTimeout(function()
+                {
+                    turn = "lefara";
+                    document.getElementById("game").innerHTML = null;
+                    saveData();
+                    loadGame();
+                },8000);
             }
             else
             {
-                //Código de victorias
-                if(players[0].pointCP < players[1].pointCP)
+                clearInterval(intervalTimer);
+                animationCardResolved();
+                setTimeout(function()
                 {
-                    alert(players[0].nick + " ha ganado!");
-                }
-                else if(players[0].pointCP > players[1].pointCP)
-                {
-                    alert(players[1].nick + " ha ganado!");
-                }
-                else
-                {
-                    alert("Tie!");
-                }
-                turn = "johan";
-                lastImage = null;
-                gameData.dataSaved = false;
-                finishedSearch = false;
-                gameData.dataPuzzle = false;
-                document.getElementById("game").innerHTML = "";
-                loadGame();
+                    //Código de victorias
+                    if(players[0].pointCP < players[1].pointCP)
+                    {
+                        alert(players[0].nick + " ha ganado!");
+                        playJohanVoice(2);
+                    }
+                    else if(players[0].pointCP > players[1].pointCP)
+                    {
+                        alert(players[1].nick + " ha ganado!");
+                        playLefaraVoice(2);
+                    }
+                    else
+                    {
+                        alert("Tie!");
+                    }
+                    turn = "johan";
+                    lastImage = null;
+                    document.getElementById("game").innerHTML = "";
+                    players[0].pointCP = 0;
+                    players[1].pointCP = 0;
+                    saveData();
+                    loadGame();
+                },8000);
             }
-            saveData();
         }
     }
     else if(img2Selected == img1Selected)
@@ -1091,6 +1198,13 @@ function selectPiece(img2Selected)
         img1Selected=null;
         div.classList.remove("selected");
     }
+}
+
+function animationCardResolved()
+{
+    var div = document.getElementById("card");
+    div.classList.remove("hidden");
+    div.children[0].classList.add("animatedCard");
 }
 
 function isFromMenu(id)

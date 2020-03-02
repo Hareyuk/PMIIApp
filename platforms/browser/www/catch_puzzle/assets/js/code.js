@@ -33,10 +33,22 @@ theme.volume = 0.3;
 //For pieces' selector
 var positionList = 0;
 var players;
+var intervalTimer;
 
 function startGame() {
     getData();
     loadGame();
+}
+
+//Extracted from p5 formula1
+function  formatTimeInMins(time)
+{
+    //I get minutes
+    let m = Math.floor(time/ 60);
+    //I get seconds
+    let s = Math.floor(time%60);
+    //I return the text  "XXmXX.XXXs" (X = some number unknown)
+    return ("" + m).padStart(2, "0") + "m" + ("" + s).padStart(2, "0") + "s";
 }
 
 function playJohanVoice(num)
@@ -69,7 +81,14 @@ function loadGame()
     }
     else
     {
-        showMsgBox(0);
+        if(turn == "johan")
+        {
+            showMsgBox(0);
+        }
+        else
+        {
+            showMsgBox(2);
+        }
         if(!gameData.dataSaved)
         {
             mapMatrix = generateMatrix(widthMap, heightMap, mapMatrix);
@@ -77,10 +96,10 @@ function loadGame()
             mapMatrix = putPieces(widthMap, heightMap, mapMatrix);
             mapMatrix = putPlayerInMaze(widthMap, heightMap, mapMatrix);
         }
-        buildButtonMob();
         generateMazeTable(widthMap, heightMap, mapMatrix);
         moveTable();
         generateCharacter(turn);
+        buildButtonMob();
     }
     showNames();
     document.addEventListener("keydown", pressKey);
@@ -151,7 +170,7 @@ function showMsgBox(num, winner)
             figure2.appendChild(img2);
             figure2.appendChild(figcaption2);
             var p = document.createElement("p");
-            p.innerHTML ="¡El objetivo del juego es conseguir todas las piezas!<br>En dispositivo táctil te mueves presionando los círculos que verás alrededor. ¡En computadora presioná las teclas!"
+            p.innerHTML ="¡El objetivo del juego es conseguir todas las piezas!<br>En dispositivo táctil te mueves presionando los círculos que verás alrededor. ¡En computadora presioná las teclas!<br>¿Cómo ganar? ¡Hazlo más rápido que tu rival!"
             div.appendChild(figure);
             div.appendChild(figure2);
             div.appendChild(p);
@@ -189,32 +208,44 @@ function showMsgBox(num, winner)
             div.appendChild(figure3);
             break;
         case 2:
-            //change player
+            var p = document.createElement("p");
+            p.innerHTML = "¡Ya terminó tu turno, " + players[0].nick +"!<br>¡Es ahora turno del " + players[1].nick + "!";
+            div.appendChild(p);
             break;
         case 3:
             //victory
-            break;
-        case 4:
-            //is going to restart
-            txt = "Reiniciar juego";
             break;
     }
 
     var button = document.createElement("button");
     button.innerHTML = txt;
     button.addEventListener("click", function(){ 
-        closeMsgBox();
+        closeMsgBox(num);
     });
     div.appendChild(button);
 }
 
-function closeMsgBox()
+function closeMsgBox(num)
 {
     var msgBox = document.getElementById("msgBox");
     var div = document.getElementById("msgBoxInfo");
     msgBox.classList.add("hidden");
     div.classList.remove("border-red");
     div.innerHTML = "";
+    if(num < 3)
+    {
+        intervalTimer = setInterval(function(){
+            if(turn == "johan")
+            {
+                players[0].pointCP++;   
+            }
+            else
+            {
+                players[1].pointCP++;
+            }
+            saveData();
+        });
+    }
 }
 
 function showNames()
@@ -676,6 +707,7 @@ function saveData() {
     gameData.lastImage = lastImage;
     gameData.finishedSearch = finishedSearch;
     localStorage.setItem("dataCP", JSON.stringify(gameData));
+    localStorage.setItem("players",JSON.stringify(players));
 }
 
 
@@ -790,6 +822,7 @@ function stillSeekingPieces(w,h,m)
 
 function startJigsaw(newJigsaw)
 {
+
     showMsgBox(1);
     gameData.dataPuzzle = true;
     if(newJigsaw == 1)
@@ -920,6 +953,8 @@ function blackScreen()
     }, 100);
     setTimeout(() => {
         document.querySelector("#maze").remove();
+        document.getElementById("boxButtons0").remove();
+        document.getElementById("boxButtons1").remove();
         startJigsaw(1);
         div.style.opacity = '0';
         finishedSearch = true;
@@ -934,7 +969,6 @@ function buildMenuPieces()
 {
     var content = document.createElement("div");
     content.id = "contentPieces";
-    
     var button = document.createElement("button");
     button.addEventListener("click", function() {  changeMenuPieces(-1); });
     button.innerHTML = "<";
@@ -1115,6 +1149,7 @@ function selectPiece(img2Selected)
             finishedSearch = false;
             if(turn == "johan")
             {
+                clearInterval(intervalTimer);
                 animationCardResolved();
                 setTimeout(function()
                 {
@@ -1126,6 +1161,7 @@ function selectPiece(img2Selected)
             }
             else
             {
+                clearInterval(intervalTimer);
                 animationCardResolved();
                 setTimeout(function()
                 {
@@ -1147,6 +1183,8 @@ function selectPiece(img2Selected)
                     turn = "johan";
                     lastImage = null;
                     document.getElementById("game").innerHTML = "";
+                    players[0].pointCP = 0;
+                    players[1].pointCP = 0;
                     saveData();
                     loadGame();
                 },8000);
