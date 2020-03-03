@@ -267,14 +267,14 @@ function closeMsgBox(num)
                 players[1].pointCP++;
             }
             saveData();
-        });
+        },1000);
     }
     else if (num == 3)
     {
         div.style.backgroundImage = "";
         div.classList.remove('win');
-        loadGame();
         document.getElementById("game").innerHTML = "";
+        loadGame();
     }
 }
 
@@ -1043,13 +1043,25 @@ function buildMenuPieces()
 
 function selectPiece(img2Selected)
 {
-    //Is a piece or empty cell?   
+    //Not chosen piece   
     if(img1Selected == null)
     {
-        //Not chosen piece
-        var div = img2Selected.parentNode;
-        div.classList.add("selected");
-        img1Selected = img2Selected;
+        var id = img2Selected.id;
+        if(isFromMenu(id))
+        {
+            if(img2Selected.alt == "piece")
+            {
+                var div = img2Selected.parentNode;
+                div.classList.add("selected");
+                img1Selected = img2Selected;
+            }
+        }
+        else
+        {
+            var div = img2Selected.parentNode;
+                div.classList.add("selected");
+                img1Selected = img2Selected;
+        }
     }
     else if (img1Selected != img2Selected && img2Selected.alt != "empty" || img1Selected.alt != "empty" && img1Selected.alt != img2Selected.alt)
     {

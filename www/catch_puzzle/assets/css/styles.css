@@ -431,6 +431,9 @@ h1
     width: 80%;
 }
 
+.win button:hover {
+    transform: translate(-50%,0);
+}
 
 @media only screen and (max-width: 800px) and (orientation: portrait), screen and (max-height: 800px) and (orientation: landscape)
 {
@@ -520,6 +523,11 @@ h1
     {
         top: 1em;
     }
+
+    .win
+    {
+        height: 80%;
+    }
 }
 
 @media only screen and (max-height: 800px) and (orientation: landscape)
@@ -538,6 +546,11 @@ h1
     #boxButtons1
     {
         left: 80%;
+    }
+
+    .win
+    {
+        width: 80% !important;
     }
 
 }
@@ -622,6 +635,12 @@ h1
     {
         width: 80%;
         background-position: center;
+    }
+
+    .win
+    {
+        height: 35% !important;
+        width: 80% !important;
     }
 
 }
