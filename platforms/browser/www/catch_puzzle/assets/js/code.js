@@ -487,13 +487,13 @@ function sizePixels(stateGame)
         if(x.matches)
         {
             x=window.matchMedia("(min-height: 376px)");
-            if(x.matches) px = 70;
+            if(x.matches) px = 75;
         }
         x = window.matchMedia("(min-width: 421px)");
         if(x.matches)
         {
             x=window.matchMedia("(min-height: 421px)");
-            if(x.matches) px = 80;
+            if(x.matches) px = 84;
         }
         x = window.matchMedia("(min-width: 630px)");
         if(x.matches)
@@ -502,6 +502,7 @@ function sizePixels(stateGame)
             if(x.matches) px=120;
         }
     }
+    console.log("PX: " + px)
     return px;
 }
 
@@ -1065,6 +1066,7 @@ function selectPiece(img2Selected)
     }
     else if (img1Selected != img2Selected && img2Selected.alt != "empty" || img1Selected.alt != "empty" && img1Selected.alt != img2Selected.alt)
     {
+        clearInterval(intervalTimer);
         var div = img1Selected.parentNode; //For remove class CSS "selected"
         if(img1Selected.alt == "empty" )
         {
@@ -1097,7 +1099,9 @@ function selectPiece(img2Selected)
                     img1Selected.style.left = aux.left;
                     id = id.substring(8,9);
                     id = parseInt(id);
-                    arrayPieces.splice(id,1,{top: aux.top, left: aux.left, alt: aux.alt});
+                    var pos = id + positionList;
+                    if(pos>arrayPieces.length-1) pos=arrayPieces.length-1 - positionList;
+                    arrayPieces.splice(pos,1,{top: aux.top, left: aux.left, alt: aux.alt});
                     updatePuzzleMatrix(img2Selected, img2Selected);
                     console.log("Cambiamos pieza 1 de menú y pieza 2 de tablero");
                 }
@@ -1117,7 +1121,9 @@ function selectPiece(img2Selected)
                     id2 = id2.substring(8,9);
                     id2 = parseInt(id2);
                     var obj = {top: img2Selected.style.top, left: img2Selected.style.left, alt: img2Selected.alt, src: img2Selected.src};
-                    arrayPieces.splice(id2,1,obj);
+                    var pos = id2 + positionList;
+                    if(pos>arrayPieces.length-1) pos=arrayPieces.length-1 - positionList;
+                    arrayPieces.splice(pos,1,obj);
                     updatePuzzleMatrix(img1Selected, img1Selected);
                     console.log("Devolvimos la pieza 1 al menú y el 2° del menú pasó al tablero");
                 }
@@ -1144,7 +1150,9 @@ function selectPiece(img2Selected)
                 img2Selected.alt = img1Selected.alt;
                 id = id.substring(8,9);
                 id = parseInt(id);
-                arrayPieces.splice(id,1);
+                var pos = id + positionList;
+                if(pos>arrayPieces.length-1) pos=arrayPieces.length-1 - positionList;
+                arrayPieces.splice(pos,1);
                 updatePuzzleMatrix(img2Selected, img1Selected);
                 console.log("Pusimos una pieza del menú en una casilla vacía de la tabla");
             }
@@ -1230,6 +1238,17 @@ function selectPiece(img2Selected)
                 },8000);
             }
         }
+        intervalTimer = setInterval(function(){
+            if(turn == "johan")
+            {
+                players[0].pointCP++;   
+            }
+            else
+            {
+                players[1].pointCP++;
+            }
+            saveData();
+        },1000);
     }
     else if(img2Selected == img1Selected)
     {

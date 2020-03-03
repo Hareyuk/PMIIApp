@@ -488,6 +488,7 @@ h1
         top: 10% !important;
         left: 15% !important;
         color: black !important;
+        text-shadow: none;
     }
 
     #contentPieces
@@ -496,7 +497,7 @@ h1
         display: table-column-group;
         top: 5%;
         left: 75%;
-        transform: none;
+        transform: none !important;
     }
     
     #contentPieces * {
@@ -535,7 +536,23 @@ h1
     .nameCatch 
     {
         left: 50%;
-        top: 4%;
+        top: 0%;
+        position: absolute;
+    }
+
+    header
+    {
+        display: none;
+    }
+
+    main
+    {
+        height: 100% !important;
+    }
+
+    #contentPieces
+    {
+        transform: translate(-50%,1%);
     }
 
     #boxButtons0
@@ -599,7 +616,9 @@ h1
     .nameCatch
     {
         left: 50%;
-        top: 75%;
+        top: 85% !important;
+        color: black !important;
+        text-shadow: none !important;
     }   
 
     #boxButtons0
@@ -653,7 +672,7 @@ h1
         display: none;
     }
 
-    #maze, #jigsaw
+    #maze, #jigsaw, .piece img
     {
         
         height: 300px;
@@ -708,7 +727,7 @@ h1
         width: 375px;
     }
 
-    #jigsaw
+    #jigsaw, .piece img
     {
         height: 350px;
         width: 350px
@@ -752,7 +771,7 @@ h1
         height: 420px;
     }
 
-    #jigsaw
+    #jigsaw, .piece img
     {
         width: 400px;
         height: 400px;
@@ -796,12 +815,22 @@ h1
         height: 620px;
     }
 
-    #jigsaw
+    #jigsaw, .piece img
     {
         width: 600px;
         height: 600px;
     }
 
+    #contentPieces
+    {
+        width: 100%;
+    }
+
+    .piece
+    {
+        width: 120px;
+        height: 120px;
+    }
     table
     {
         width: 2480px;
@@ -822,6 +851,14 @@ h1
         height: 20px !important;
         top: 350px;
         left: 280px;
+    }
+}
+
+@media only screen and (min-width: 801px) and (min-height: 801px)
+{
+    #contentPieces
+    {
+        width: unset;
     }
 }
 
