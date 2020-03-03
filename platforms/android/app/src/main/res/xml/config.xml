@@ -27,6 +27,6 @@
     <icon density="hdpi" src="res/android/hdpi.png" />
     <icon density="xhdpi" src="res/android/xhdpi.png" />
     <icon density="xxhdpi" src="res/android/xxhdpi.png" />
-    <icon density="   " src="res/android/xxxhdpi.png" />
+    <icon density="xxxhdpi" src="res/android/xxxhdpi.png" />
     <preference name="loglevel" value="DEBUG" />
 </widget>

@@ -215,11 +215,13 @@ function buildTable()
     table.innerHTML = "";
     for(i=0;i<size;i++)
     {
+        var tr = document.createElement("tr");
         for(j=0;j<size;j++)
         {
             var dataCard = createCards(i,j,matrixGame[i][j]);
-            table.appendChild(dataCard);
+            tr.appendChild(dataCard);
         }
+        table.appendChild(tr)
     }
     showPoints();
 }
@@ -246,8 +248,8 @@ function playVictorySound()
 }
 
 function createCards(a,b,objectArray) {
-    var div = document.createElement("div");
-    div.classList.add("cardObject");
+    var td = document.createElement("td");
+    td.classList.add("cardObject");
     var card = document.createElement("div");
     //This will have this class only wasn't found
     if(matrixGame[a][b].found == 0) card.setAttribute("class","theCard reverse");
@@ -273,13 +275,13 @@ function createCards(a,b,objectArray) {
 
     card.setAttribute("onclick", "swapIt("+a+","+b+",this)");
 
-    div.insertAdjacentElement("beforeend", card);
+    td.insertAdjacentElement("beforeend", card);
     card.insertAdjacentElement("beforeend", front);
     card.insertAdjacentElement("beforeend", back);
     back.insertAdjacentElement("beforeend", img);
     //al parecer esto es más rápido que appendChild owo? : https://jsperf.com/insertadjacenthtml-vs-innerhtml-vs-appendchild https://stackoverflow.com/questions/16126960/what-is-the-difference-between-appendchild-insertadjacenthtml-and-innerhtml
 
-    return div;
+    return td;
 }
 
 

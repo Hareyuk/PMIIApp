@@ -9,7 +9,7 @@ main
 }
 
 p, #turnos{
-    height: 1.5rem;
+    height: 1.5em;
 }
 
 #texture
@@ -74,6 +74,14 @@ tbody{
     -webkit-transition: all 0.7s ease-in-out;
     -webkit-transform-style: preserve-3d;    /* Safari 4-8 */
     transition: all 0.7s ease-in-out;
+}
+
+tr
+{
+    width: 100%;
+    text-align: center;
+    display: flex;
+    place-content: space-evenly;
 }
     
 .theFront, .theBack{
@@ -182,6 +190,11 @@ tbody{
     max-width: 100%;
 }
 
+#character1, #character2
+{
+    position: fixed;
+}
+
 #character1
 {
     left: 0;
@@ -237,7 +250,7 @@ tbody{
 
     .cardObject
     {
-        width: 130px;
+        width: 120px;
     }
 }
 
@@ -254,12 +267,42 @@ tbody{
 
     .app
     {
+        width: 100%;
+    }
+
+    .cardObject
+    {
+        width: 81px;
+    }
+
+    #msgBox button
+    {
+        width: 80%;
+    }
+
+    #msgBox p
+    {
+        height: unset;
+    }
+
+    select option:nth-child(4) {
+        display: none;
+    }
+}
+
+@media only screen and (max-height: 800px) and (orientation: landscape) {
+    #character1, #character2
+    {
+        width:0;
+    }
+
+    .app
+    {
         display: none;
     }
 
     #cantPlay
     {
-        display: flex;
         align-items: center;
         display: block;
         position: fixed;
@@ -269,99 +312,27 @@ tbody{
         width: 100%;
         height: 100%;
         color: white;
+        text-align: center;
     }
 
     #cantPlay p
     {
-        text-align: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
         width: 80%;
-        margin-top: 2em;
-        margin: 0 auto;
-        font-size: 1.2em;
-    }  
-    
+        font-size: 1.5em;
+    }
+
     #cantPlay a
     {
-        display: block;
-        text-align: center;
         text-decoration: none;
-        width: 80%;
-        margin: 0 auto;
-        margin-top: 5em;
         font-size: 1.2em;
-    }
-}
-
-@media only screen and (max-height: 800px) and (orientation: landscape) {
-
-    select
-    {
-        margin-top: 1em;
-    }
-    
-    .theFront, .theBack, .theCard
-    {
-        width: 70px;
-        height: 110px;
-    }
-
-    .cardObject
-    {
-        width: 79px;
-        padding: 1em 0px;
-    }
-
-    #games a
-    {
-        font-size: 1em;
-    }
-    
-    h1
-    {
-        font-size: 2em;
-    }
-
-    #games
-    {
-        padding-top: 0.5em;
-        padding-bottom: 0.5em;
-    }
-
-    #profiles
-    {
-        padding-top: 0.5em;
-        padding-bottom: 0.5em;
-    }
-
-}
-
-@media only screen and (max-height: 600px) and (orientation: landscape) {
-    #info
-    {
+        width: 80%;
         position: absolute;
-        top: 0;
-        left: 100%;
-        transform: translate(-100%,0);
-        width: 60%;
-    }
-
-    .cardObject
-    {
-        width: 75px;
-        padding: 5px 0px;
-    }
-
-    header
-    {
-        left: 0;
-        width: 100%;
-        text-align: left;
-    }
-
-    h1
-    {
-        position: relative;
-        left: 7%;
-        display: inline;
+        top: 75%;
+        left: 50%;
+        transform: translate(-50%,-50%);
     }
 }
