@@ -3,7 +3,7 @@
   "display": "standalone",
   "name": "AD Games",
   "short_name": "AD Games",
-  "version": "io.cordova.hellocordova",
+  "version": "io.cordova.adgames",
   "description": "A sample Apache Cordova application that responds to the deviceready event.",
   "author": "Apache Cordova Team",
   "icons": [],
