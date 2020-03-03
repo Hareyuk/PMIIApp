@@ -871,7 +871,6 @@ function startJigsaw(newJigsaw)
     infoPlayerPuzzle();
     buildTableJigsaw(puzzleMatrix);
     buildMenuPieces();
-    buildButtonsJigsaw();
 }
 
 function infoPlayerPuzzle()
@@ -1001,7 +1000,7 @@ function buildMenuPieces()
     var content = document.createElement("div");
     content.id = "contentPieces";
     var button = document.createElement("button");
-    button.addEventListener("click", function() {  changeMenuPieces(-1); });
+    button.addEventListener("click", function() {  changeMenuPieces(1); });
     button.innerHTML = "<";
     button.classList.add("buttonJigsaw");
     content.appendChild(button);
@@ -1034,7 +1033,7 @@ function buildMenuPieces()
     }
 
     var button2 = document.createElement("button");
-    button2.addEventListener("click", function() { changeMenuPieces(1); });
+    button2.addEventListener("click", function() { changeMenuPieces(-1); });
     button2.innerHTML =">";
     button2.classList.add("buttonJigsaw");
     content.appendChild(button2);
@@ -1100,7 +1099,7 @@ function selectPiece(img2Selected)
                     id = id.substring(8,9);
                     id = parseInt(id);
                     var pos = id + positionList;
-                    if(pos>arrayPieces.length-1) pos=arrayPieces.length-1 - positionList;
+                    if(pos>arrayPieces.length-1) pos-=arrayPieces.length;
                     arrayPieces.splice(pos,1,{top: aux.top, left: aux.left, alt: aux.alt});
                     updatePuzzleMatrix(img2Selected, img2Selected);
                     console.log("Cambiamos pieza 1 de menú y pieza 2 de tablero");
@@ -1122,7 +1121,7 @@ function selectPiece(img2Selected)
                     id2 = parseInt(id2);
                     var obj = {top: img2Selected.style.top, left: img2Selected.style.left, alt: img2Selected.alt, src: img2Selected.src};
                     var pos = id2 + positionList;
-                    if(pos>arrayPieces.length-1) pos=arrayPieces.length-1 - positionList;
+                    if(pos>arrayPieces.length-1) pos-=arrayPieces.length;
                     arrayPieces.splice(pos,1,obj);
                     updatePuzzleMatrix(img1Selected, img1Selected);
                     console.log("Devolvimos la pieza 1 al menú y el 2° del menú pasó al tablero");
@@ -1151,7 +1150,7 @@ function selectPiece(img2Selected)
                 id = id.substring(8,9);
                 id = parseInt(id);
                 var pos = id + positionList;
-                if(pos>arrayPieces.length-1) pos=arrayPieces.length-1 - positionList;
+                if(pos>arrayPieces.length-1) pos-=arrayPieces.length;
                 arrayPieces.splice(pos,1);
                 updatePuzzleMatrix(img2Selected, img1Selected);
                 console.log("Pusimos una pieza del menú en una casilla vacía de la tabla");
@@ -1299,12 +1298,13 @@ function changeMenuPieces(num)
         var count = positionList+i*num;
         if(count > arrayPieces.length-1)
         {
-            count -= (arrayPieces.length-1);
+            count -= (arrayPieces.length);
         }
         else if(count < 0)
         {
             count += (arrayPieces.length-1);
         }
+        num = 1; //if is =1 it will ocurr error
         var img = document.getElementById("eligible"+i);
         if(arrayPieces.length-1 < 5 && i > arrayPieces.length - 1)
         {
@@ -1330,11 +1330,6 @@ function obtainPositionJigsaw(id)
         array[i] = Number(array[i]);
     }
     return array;
-}
-
-function buildButtonsJigsaw()
-{
-
 }
 
 function validatePuzzle(mapGame)
