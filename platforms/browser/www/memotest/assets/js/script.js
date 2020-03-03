@@ -238,6 +238,13 @@ function playFreyaVoice(num)
     audio.play();
 }
 
+function playVictorySound()
+{
+    var audio = document.getElementById("victoryAudio")
+    audio.currentTime = 0;
+    audio.play();
+}
+
 function createCards(a,b,objectArray) {
     var div = document.createElement("div");
     div.classList.add("cardObject");
@@ -440,6 +447,7 @@ function winPlayer()
         link += "'assets/images/tie.png')";
         p.innerHTML = "¡" + players[0].nick + " y " + players[1].nick + " han empatado!";
     }
+    playVictorySound();
     div.style.backgroundImage = link;
     showMessageBox("messageWinner");
 }

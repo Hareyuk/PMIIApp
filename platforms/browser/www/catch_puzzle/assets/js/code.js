@@ -65,6 +65,13 @@ function playLefaraVoice(num)
     audio.play();
 }
 
+function playVictorySound()
+{
+    var audio = document.getElementById("victoryAudio")
+    audio.currentTime = 0;
+    audio.play();
+}
+
 function loadGame()
 {
     if(finishedSearch)
@@ -1229,6 +1236,7 @@ function selectPiece(img2Selected)
                     {
                         showMsgBox(3, "tie");
                     }
+                    playVictorySound();
                     turn = "johan";
                     lastImage = null;
                     players[0].pointCP = 0;

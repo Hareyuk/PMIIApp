@@ -406,6 +406,34 @@ h1
     transform: translate(-50%,10%);
 }
 
+.win
+{
+    width: 50%;
+    background-position: center;
+    height: 50%;
+    background-size: cover;
+    text-align: center;
+    position: relative;
+}
+
+.win p
+{
+    font-size: 1.5em;
+    filter: drop-shadow(0px 0px 3px black);
+}
+
+.win button
+{
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translate(-50%,0);
+    width: 80%;
+}
+
+.win button:hover {
+    transform: translate(-50%,0);
+}
 
 @media only screen and (max-width: 800px) and (orientation: portrait), screen and (max-height: 800px) and (orientation: landscape)
 {
@@ -418,19 +446,24 @@ h1
     {
         height: 100%;
     }
+
+    #contentPieces *
+    {
+        transition: none;
+    }
 }
 
 @media only screen and (max-height: 600px) and (orientation: landscape)
 {
     #boxButtons0
     {
-        left: 1%;
+        left: 1% !important;
         transform: translate(0, -100%);
     }
 
     #boxButtons1
     {
-        left: 99%;
+        left: 99% !important;
         transform: translate(-100%, -100%);
     }
 
@@ -452,15 +485,130 @@ h1
 
     .nameCatch
     {
-        top: 10%;
-        left: 10%;
+        top: 10% !important;
+        left: 15% !important;
         color: black !important;
+        text-shadow: none;
     }
+
+    #contentPieces
+    {
+        position: absolute;
+        display: table-column-group;
+        top: 5%;
+        left: 75%;
+        transform: none !important;
+    }
+    
+    #contentPieces * {
+        display: inline-flex;
+    }
+
+    div.piece:nth-child(2) 
+    {
+        vertical-align: middle;
+    }
+
+    #jigsaw
+    {
+        position: relative;
+        top: 1em;
+    }
+
+    #header
+    {
+        display: none !important;
+    }
+
+    #maze
+    {
+        top: 1em;
+    }
+
+    .win
+    {
+        height: 80%;
+    }
+}
+
+@media only screen and (max-height: 800px) and (orientation: landscape)
+{
+    .nameCatch 
+    {
+        left: 50%;
+        top: 0%;
+        position: absolute;
+    }
+
+    header
+    {
+        display: none;
+    }
+
+    main
+    {
+        height: 100% !important;
+    }
+
+    #contentPieces
+    {
+        transform: translate(-50%,1%);
+    }
+
+    #boxButtons0
+    {
+        left: 5%;
+    }
+
+    #boxButtons1
+    {
+        left: 80%;
+    }
+
+    .win
+    {
+        width: 80% !important;
+    }
+
 }
 
 @media only screen and (max-width: 600px) and (orientation: portrait)
 {
+    .nameCatch
+    {
+        top: 85% !important;
+    }
+    header
+    {
+        display: block !important;
+    }
 
+    #contentPieces
+    {
+        width: 80%;
+        display: block;
+        text-align: center;
+    }
+
+    #contentPieces .piece
+    {
+        vertical-align: middle;
+    }
+
+    #boxButtons0
+    {
+        left: 4% !important;
+    }
+
+    #boxButtons1
+    {
+        left: 53% !important;
+    }
+
+    #boxButtons0, #boxButtons1
+    {
+        top: 65% !important;
+    }
 }
 
 @media only screen and (max-width: 800px) and (orientation: portrait)
@@ -468,23 +616,28 @@ h1
     .nameCatch
     {
         left: 50%;
-        top: 75%;
+        top: 85% !important;
+        color: black !important;
+        text-shadow: none !important;
     }   
-}
 
-
-@media only screen and (max-height: 800px) and (orientation: landscape)
-{
-    .nameCatch 
+    #boxButtons0
     {
-        color: black;
-        text-shadow: none;
-        left: 50%;
-        top: 5%;
-        color: white;
+        left: 5%;
     }
 
+    #boxButtons1
+    {
+        left: 75%;
+    }
+
+    #boxButtons0, #boxButtons1
+    {
+        top: 70%;
+    }
 }
+
+
 
 @media only screen and (orientation: portrait)
 {
@@ -505,7 +658,8 @@ h1
 
     .win
     {
-        height: 35%;
+        height: 35% !important;
+        width: 80% !important;
     }
 
 }
@@ -518,7 +672,7 @@ h1
         display: none;
     }
 
-    #maze, #jigsaw
+    #maze, #jigsaw, .piece img
     {
         
         height: 300px;
@@ -573,7 +727,7 @@ h1
         width: 375px;
     }
 
-    #jigsaw
+    #jigsaw, .piece img
     {
         height: 350px;
         width: 350px
@@ -617,7 +771,7 @@ h1
         height: 420px;
     }
 
-    #jigsaw
+    #jigsaw, .piece img
     {
         width: 400px;
         height: 400px;
@@ -661,12 +815,22 @@ h1
         height: 620px;
     }
 
-    #jigsaw
+    #jigsaw, .piece img
     {
         width: 600px;
         height: 600px;
     }
 
+    #contentPieces
+    {
+        width: 100%;
+    }
+
+    .piece
+    {
+        width: 120px;
+        height: 120px;
+    }
     table
     {
         width: 2480px;
@@ -687,6 +851,14 @@ h1
         height: 20px !important;
         top: 350px;
         left: 280px;
+    }
+}
+
+@media only screen and (min-width: 801px) and (min-height: 801px)
+{
+    #contentPieces
+    {
+        width: unset;
     }
 }
 

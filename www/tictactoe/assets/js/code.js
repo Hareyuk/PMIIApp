@@ -191,16 +191,16 @@ function playPopAudio()
     audio.play();
 }
 
-function playVoltVoice()
+function playVoltVoice(num)
 {
-    var audio = document.getElementById("voiceV");
+    var audio = document.getElementById("voiceV"+num);
     audio.currentTime = 0;
     audio.play();
 }
 
-function playNinaVoice()
+function playNinaVoice(num)
 {
-    var audio = document.getElementById("voiceN");
+    var audio = document.getElementById("voiceN"+num);
     audio.currentTime = 0;
     audio.play();
 }
@@ -274,11 +274,12 @@ function putSymbol(num)
             //Append PNG
             if(turn == 0)
             {
-                
+                playVoltVoice(2);
                 col.append('<img src="assets/images/x.png" alt="mark X">');
             }
             else
             {
+                playNinaVoice(2);
                 col.append('<img src="assets/images/o.png" alt="mark O">');
             }
             saveData();
@@ -372,14 +373,14 @@ function validateWin()
             //LOCALSTORAGE: Podríamos meter aquí los localStorage de victorias de jugadores
             winPl1++;
             imgPlayerWin = "url('assets/images/win_x.jpg')";
-            playVoltVoice();
+            playVoltVoice(1);
         }
         else
         {
             winPl2++;
             imgPlayerWin = "url('assets/images/win_o.jpg')";
             changePlayer();
-            playNinaVoice();
+            playNinaVoice(1);
         }
         $("#handPlayer").remove();
         noOneIsClickable();

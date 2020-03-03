@@ -214,6 +214,29 @@ function showMsgBox(num, winner)
             break;
         case 3:
             //victory
+            var link;
+            var p = document.createElement("p");
+            var txtW = "¡Ha ganado el jugador ";
+            if(winner == "johan")
+            {
+                link = "url('assets/img/win_j.png')";
+                txtW  += players[0].nick + "!";
+            }
+            else if (winner =="lefara")
+            {
+                link = "url('assets/img/win_l.png')";
+                txtW  += players[1].nick + "!";
+            }
+            else
+            {
+                txtW = "¡Empate!"
+                link = "url('assets/img/tie.png')";
+            }
+            div.style.backgroundImage = link;
+            p.innerHTML = txtW;
+            txt = "Empezar de vuelta"
+            div.appendChild(p);
+            div.classList.add('win');
             break;
     }
 
@@ -244,7 +267,14 @@ function closeMsgBox(num)
                 players[1].pointCP++;
             }
             saveData();
-        });
+        },1000);
+    }
+    else if (num == 3)
+    {
+        div.style.backgroundImage = "";
+        div.classList.remove('win');
+        document.getElementById("game").innerHTML = "";
+        loadGame();
     }
 }
 
@@ -457,13 +487,13 @@ function sizePixels(stateGame)
         if(x.matches)
         {
             x=window.matchMedia("(min-height: 376px)");
-            if(x.matches) px = 70;
+            if(x.matches) px = 75;
         }
         x = window.matchMedia("(min-width: 421px)");
         if(x.matches)
         {
             x=window.matchMedia("(min-height: 421px)");
-            if(x.matches) px = 80;
+            if(x.matches) px = 84;
         }
         x = window.matchMedia("(min-width: 630px)");
         if(x.matches)
@@ -472,6 +502,7 @@ function sizePixels(stateGame)
             if(x.matches) px=120;
         }
     }
+    console.log("PX: " + px)
     return px;
 }
 
@@ -840,7 +871,6 @@ function startJigsaw(newJigsaw)
     infoPlayerPuzzle();
     buildTableJigsaw(puzzleMatrix);
     buildMenuPieces();
-    buildButtonsJigsaw();
 }
 
 function infoPlayerPuzzle()
@@ -970,7 +1000,7 @@ function buildMenuPieces()
     var content = document.createElement("div");
     content.id = "contentPieces";
     var button = document.createElement("button");
-    button.addEventListener("click", function() {  changeMenuPieces(-1); });
+    button.addEventListener("click", function() {  changeMenuPieces(1); });
     button.innerHTML = "<";
     button.classList.add("buttonJigsaw");
     content.appendChild(button);
@@ -1003,7 +1033,7 @@ function buildMenuPieces()
     }
 
     var button2 = document.createElement("button");
-    button2.addEventListener("click", function() { changeMenuPieces(1); });
+    button2.addEventListener("click", function() { changeMenuPieces(-1); });
     button2.innerHTML =">";
     button2.classList.add("buttonJigsaw");
     content.appendChild(button2);
@@ -1013,16 +1043,29 @@ function buildMenuPieces()
 
 function selectPiece(img2Selected)
 {
-    //Is a piece or empty cell?   
+    //Not chosen piece   
     if(img1Selected == null)
     {
-        //Not chosen piece
-        var div = img2Selected.parentNode;
-        div.classList.add("selected");
-        img1Selected = img2Selected;
+        var id = img2Selected.id;
+        if(isFromMenu(id))
+        {
+            if(img2Selected.alt == "piece")
+            {
+                var div = img2Selected.parentNode;
+                div.classList.add("selected");
+                img1Selected = img2Selected;
+            }
+        }
+        else
+        {
+            var div = img2Selected.parentNode;
+                div.classList.add("selected");
+                img1Selected = img2Selected;
+        }
     }
     else if (img1Selected != img2Selected && img2Selected.alt != "empty" || img1Selected.alt != "empty" && img1Selected.alt != img2Selected.alt)
     {
+        clearInterval(intervalTimer);
         var div = img1Selected.parentNode; //For remove class CSS "selected"
         if(img1Selected.alt == "empty" )
         {
@@ -1055,7 +1098,9 @@ function selectPiece(img2Selected)
                     img1Selected.style.left = aux.left;
                     id = id.substring(8,9);
                     id = parseInt(id);
-                    arrayPieces.splice(id,1,{top: aux.top, left: aux.left, alt: aux.alt});
+                    var pos = id + positionList;
+                    if(pos>arrayPieces.length-1) pos-=arrayPieces.length;
+                    arrayPieces.splice(pos,1,{top: aux.top, left: aux.left, alt: aux.alt});
                     updatePuzzleMatrix(img2Selected, img2Selected);
                     console.log("Cambiamos pieza 1 de menú y pieza 2 de tablero");
                 }
@@ -1075,7 +1120,9 @@ function selectPiece(img2Selected)
                     id2 = id2.substring(8,9);
                     id2 = parseInt(id2);
                     var obj = {top: img2Selected.style.top, left: img2Selected.style.left, alt: img2Selected.alt, src: img2Selected.src};
-                    arrayPieces.splice(id2,1,obj);
+                    var pos = id2 + positionList;
+                    if(pos>arrayPieces.length-1) pos-=arrayPieces.length;
+                    arrayPieces.splice(pos,1,obj);
                     updatePuzzleMatrix(img1Selected, img1Selected);
                     console.log("Devolvimos la pieza 1 al menú y el 2° del menú pasó al tablero");
                 }
@@ -1102,7 +1149,9 @@ function selectPiece(img2Selected)
                 img2Selected.alt = img1Selected.alt;
                 id = id.substring(8,9);
                 id = parseInt(id);
-                arrayPieces.splice(id,1);
+                var pos = id + positionList;
+                if(pos>arrayPieces.length-1) pos-=arrayPieces.length;
+                arrayPieces.splice(pos,1);
                 updatePuzzleMatrix(img2Selected, img1Selected);
                 console.log("Pusimos una pieza del menú en una casilla vacía de la tabla");
             }
@@ -1165,31 +1214,40 @@ function selectPiece(img2Selected)
                 animationCardResolved();
                 setTimeout(function()
                 {
-                    //Código de victorias
+                    document.getElementById("card").remove();
                     if(players[0].pointCP < players[1].pointCP)
                     {
-                        alert(players[0].nick + " ha ganado!");
+                        showMsgBox(3, "johan");
                         playJohanVoice(2);
                     }
                     else if(players[0].pointCP > players[1].pointCP)
                     {
-                        alert(players[1].nick + " ha ganado!");
+                        showMsgBox(3, "lefara");
                         playLefaraVoice(2);
                     }
                     else
                     {
-                        alert("Tie!");
+                        showMsgBox(3, "tie");
                     }
                     turn = "johan";
                     lastImage = null;
-                    document.getElementById("game").innerHTML = "";
                     players[0].pointCP = 0;
                     players[1].pointCP = 0;
                     saveData();
-                    loadGame();
                 },8000);
             }
         }
+        intervalTimer = setInterval(function(){
+            if(turn == "johan")
+            {
+                players[0].pointCP++;   
+            }
+            else
+            {
+                players[1].pointCP++;
+            }
+            saveData();
+        },1000);
     }
     else if(img2Selected == img1Selected)
     {
@@ -1240,12 +1298,13 @@ function changeMenuPieces(num)
         var count = positionList+i*num;
         if(count > arrayPieces.length-1)
         {
-            count -= (arrayPieces.length-1);
+            count -= (arrayPieces.length);
         }
         else if(count < 0)
         {
             count += (arrayPieces.length-1);
         }
+        num = 1; //if is =1 it will ocurr error
         var img = document.getElementById("eligible"+i);
         if(arrayPieces.length-1 < 5 && i > arrayPieces.length - 1)
         {
@@ -1271,11 +1330,6 @@ function obtainPositionJigsaw(id)
         array[i] = Number(array[i]);
     }
     return array;
-}
-
-function buildButtonsJigsaw()
-{
-
 }
 
 function validatePuzzle(mapGame)
