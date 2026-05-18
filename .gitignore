@@ -1,0 +1,20 @@
+# Cordova specific
+node_modules/
+platforms/
+plugins/
+*.swp
+*.bak
+*~
+.DS_Store
+
+# IDEs
+.idea/
+.vscode/
+*.suo
+*.slnx.sqlite
+VSWorkspaceState.json
+.vs/
+
+# Gradle
+.gradle/
+build/
